@@ -55,6 +55,10 @@ public class KDTree<T> {
     public KDNode<T> find(Comparable[] keys) {
         return find(keys, keys).getFirst();
     }
+    /**
+     * Kód vytvorený pomocou AI, zdokumentované v kapitole Y.
+     * */
+    // TODO: doplniť kapitolu
     public LinkedList<KDNode<T>> find(Comparable[] minKeys, Comparable[] maxKeys) {
         LinkedList<T> found = new LinkedList<>();
 
@@ -82,7 +86,7 @@ public class KDTree<T> {
                 KDNode<T> rightSon = null;
             }
         }
-        
+
         return null;
     }
 }
