@@ -3,9 +3,10 @@ package tree.kdTree;
 import common.Comparable;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class KDTree<T> {
-    private int _k;
+    private final int _k;
     private KDNode<T> _root;
 
     public KDTree(int k) {
@@ -26,9 +27,8 @@ public class KDTree<T> {
 
         KDNode<T> parent = this._root;
         int depth = 0;
-        int dimensions = this._k;
         while(true) {
-            int keyIndex = depth % dimensions;
+            int keyIndex = depth % this._k;
 
             if(keys[keyIndex].compare(parent.getItem().getKey(keyIndex)) <= 0) {
                 KDNode<T> leftSon = parent.getLeftSon();
@@ -53,7 +53,10 @@ public class KDTree<T> {
             }
         }
     }
-    public KDNode<T> find() {
+    public KDNode<T> find(Comparable[] keys) {
+        return find(keys, keys).getFirst();
+    }
+    public List<KDNode<T>> find(Comparable[] minKeys, Comparable[] maxKeys) {
         return null;
     }
 }
