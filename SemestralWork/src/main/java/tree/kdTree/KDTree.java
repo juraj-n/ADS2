@@ -15,10 +15,10 @@ public class KDTree<T> {
     }
 
     public boolean insert(Comparable[] keys, T data) {
-        if(keys.length != this._k) {
+        if (keys.length != this._k) {
             throw new IllegalArgumentException("Number of keys must be the same as number of dimesions!");
         }
-        if(this._root == null) {
+        if (this._root == null) {
             _root = new KDNode<>(keys, data);
 
             return true;
@@ -26,10 +26,10 @@ public class KDTree<T> {
 
         KDNode<T> parent = this._root;
         int depth = 0;
-        while(true) {
+        while (true) {
             int keyIndex = depth % this._k;
 
-            if(keys[keyIndex].compare(parent.getKey(keyIndex)) <= 0) {
+            if (keys[keyIndex].compare(parent.getKey(keyIndex)) <= 0) {
                 KDNode<T> leftSon = parent.getLeftSon();
                 if(leftSon == null) {
                     parent.setLeftSon(keys, data);
@@ -53,40 +53,75 @@ public class KDTree<T> {
         }
     }
     public KDNode<T> find(Comparable[] keys) {
-        return find(keys, keys).getFirst();
+        return find(keys, keys).getFirst(); // TODO: zmeniť na LinkedList - môže aj viac ako jeden s takým kľúčom
     }
     /**
      * Kód vytvorený pomocou AI, zdokumentované v kapitole Y.
      * */
     // TODO: doplniť kapitolu
     public LinkedList<KDNode<T>> find(Comparable[] minKeys, Comparable[] maxKeys) {
-        LinkedList<T> found = new LinkedList<>();
+        LinkedList<KDNode<T>> found = new LinkedList<>();
+        if(this._root == null) {
+            return found;
+        }
 
-        KDNode<T> parent = this._root;
-        int depth = 0;
+        // Stacks
+        LinkedList<KDNode<T>> nodeStack = new LinkedList<>();
+        LinkedList<Integer> depthStack = new LinkedList<>();
 
-        while(true) {
+        nodeStack.push(this._root);
+        depthStack.push(0);
+
+        while (!nodeStack.isEmpty()) {
+            KDNode<T> current = nodeStack.pop();
+            int depth = depthStack.pop();
             int keyIndex = depth % this._k;
-            // K > MAX => leftSubtree
-            if(maxKeys[keyIndex].compare(parent.getKey(keyIndex)) == -1) {
-                KDNode<T> leftSon = parent.getLeftSon();
-                if(leftSon == null) {
 
+            // Left Subtree MAX < Key
+            if (maxKeys[keyIndex].compare(current.getKey(keyIndex)) == -1) {
+                KDNode<T> leftSon = current.getLeftSon();
+                if (leftSon != null) {
+                    nodeStack.push(leftSon);
+                    depthStack.push(depth + 1);
                 }
             }
-            // K = <MIN, MAX> => ? found & left + right Subtrees
-            if(minKeys[keyIndex].compare(parent.getKey(keyIndex)) <= 0
-                    && maxKeys[keyIndex].compare(parent.getKey(keyIndex)) >= 0
-            ) {
-                KDNode<T> leftSon = null;
-                KDNode<T> rightSon = null;
+            // Right Subtree MIN > Key
+            else if (minKeys[keyIndex].compare(current.getKey(keyIndex)) == 1) {
+                KDNode<T> rightSon = current.getRightSon();
+                if(rightSon != null) {
+                    nodeStack.push(rightSon);
+                    depthStack.push(depth + 1);
+                }
             }
-            // K < MIN => rightSubtree
-            if(minKeys[keyIndex].compare(parent.getKey(keyIndex)) == 1) {
-                KDNode<T> rightSon = null;
+            // Both Subtrees Key: <MIN, MAX>
+            else {
+                if (this.nodeInInterval(current, minKeys, maxKeys)) {
+                    found.add(current);
+                }
+
+                KDNode<T> rightSon = current.getRightSon();
+                if (rightSon != null) {
+                    nodeStack.push(rightSon);
+                    depthStack.push(depth + 1);
+                }
+                KDNode<T> leftSon = current.getLeftSon();
+                if (leftSon != null) {
+                    nodeStack.push(leftSon);
+                    depthStack.push(depth + 1);
+                }
             }
         }
 
-        return null;
+        return found;
+    }
+    private boolean nodeInInterval(KDNode<T> node, Comparable[] minKeys, Comparable[] maxKeys) {
+        for (int i = 0; i < this._k; i++) {
+            if (minKeys[i].compare(node.getKey(i)) == 1
+                    || maxKeys[i].compare(node.getKey(i)) == -1) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
