@@ -1,0 +1,6 @@
+# Maven
+SemestralWork/target/
+
+# IntelliJ IDEA files
+SemestralWork/.idea/
+SemestralWork/*.iml
