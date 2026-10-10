@@ -1,6 +1,7 @@
 package tree.kdTree;
 
 import common.Comparable;
+
 import java.util.Arrays;
 
 public class KDNode<T> {

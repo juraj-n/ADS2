@@ -2,7 +2,6 @@ package tree.kdTree;
 
 import common.Comparable;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 
 public class KDTree<T> {

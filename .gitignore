@@ -4,3 +4,6 @@ SemestralWork/target/
 # IntelliJ
 SemestralWork/.idea/
 SemestralWork/*.iml
+
+# UML
+doc/UML/*.bkp
