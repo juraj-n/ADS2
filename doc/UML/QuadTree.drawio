@@ -1,0 +1,40 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.6.6 Chrome/144.0.7559.236 Electron/40.8.4 Safari/537.36" version="29.6.6">
+  <diagram name="Page-1" id="0rTsrZk7jYHs3yqbQpds">
+    <mxGraphModel dx="868" dy="522" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="bWe6UjdxfAA-i_KnJWMI-1" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="QuadTree" vertex="1">
+          <mxGeometry height="198" width="300" x="40" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="bWe6UjdxfAA-i_KnJWMI-2" parent="bWe6UjdxfAA-i_KnJWMI-1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="- xMin: QuadKey&lt;div&gt;- xMax: QuadKey&lt;/div&gt;&lt;div&gt;- yMin: QuadKey&lt;/div&gt;&lt;div&gt;- yMax: QuadKey&lt;/div&gt;&lt;div&gt;- root: QuadNode&lt;/div&gt;" vertex="1">
+          <mxGeometry height="84" width="300" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="bWe6UjdxfAA-i_KnJWMI-3" parent="bWe6UjdxfAA-i_KnJWMI-1" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
+          <mxGeometry height="8" width="300" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="bWe6UjdxfAA-i_KnJWMI-4" parent="bWe6UjdxfAA-i_KnJWMI-1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ QuadTree(QK xMin, QK xMax, QK yMin, QK yMax)&lt;div&gt;+ insert(QuadKey data): boolean&lt;/div&gt;&lt;div&gt;+ find()&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="300" y="118" as="geometry" />
+        </mxCell>
+        <mxCell id="bWe6UjdxfAA-i_KnJWMI-5" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="&amp;lt;&amp;lt;Interface&amp;gt;&amp;gt;&lt;div&gt;QuadKey&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="220" x="40" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="bWe6UjdxfAA-i_KnJWMI-8" parent="bWe6UjdxfAA-i_KnJWMI-5" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ difference(QuadKey other): QuadKey&lt;div&gt;+ half(): QuadKey&lt;/div&gt;" vertex="1">
+          <mxGeometry height="40" width="220" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="bWe6UjdxfAA-i_KnJWMI-9" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="QuadNode" vertex="1">
+          <mxGeometry height="174" width="400" x="380" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="bWe6UjdxfAA-i_KnJWMI-10" parent="bWe6UjdxfAA-i_KnJWMI-9" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="- xMin: QuadKey&lt;div&gt;- xMax: QuadKey&lt;/div&gt;&lt;div&gt;- yMin: QuadKey&lt;/div&gt;&lt;div&gt;- yMax: QuadKey&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;- data: LinkedList&amp;lt;QK&amp;gt;&lt;/div&gt;&lt;div&gt;- children: QuadNode[4]&lt;/div&gt;" vertex="1">
+          <mxGeometry height="114" width="400" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="bWe6UjdxfAA-i_KnJWMI-11" parent="bWe6UjdxfAA-i_KnJWMI-9" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
+          <mxGeometry height="8" width="400" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="bWe6UjdxfAA-i_KnJWMI-12" parent="bWe6UjdxfAA-i_KnJWMI-9" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ QuadNode(QK xSubMin, QK xSubMax, QK ySubMin, QK ySubMax)" vertex="1">
+          <mxGeometry height="26" width="400" y="148" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

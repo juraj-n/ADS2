@@ -1,8 +1,8 @@
-import common.Comparable;
-import common.Test;
-import common.TestDouble;
-import tree.kdTree.KDNode;
-import tree.kdTree.KDTree;
+import dataStructures.common.Comparable;
+import temp.Test;
+import temp.TestDouble;
+import dataStructures.tree.kdTree.KDNode;
+import dataStructures.tree.kdTree.KDTree;
 
 import java.util.LinkedList;
 

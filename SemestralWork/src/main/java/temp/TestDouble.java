@@ -1,4 +1,6 @@
-package common;
+package temp;
+
+import dataStructures.common.Comparable;
 
 public class TestDouble implements Comparable {
 

@@ -1,6 +1,6 @@
-package tree.kdTree;
+package dataStructures.tree.kdTree;
 
-import common.Comparable;
+import dataStructures.common.Comparable;
 
 import java.util.Arrays;
 
