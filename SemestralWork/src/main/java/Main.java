@@ -34,6 +34,7 @@ public class Main {
         kdTree.insert(keys2, "B");
         kdTree.insert(keys3, "C");
         kdTree.insert(keys4, "A");
+        kdTree.insert(keys4, "A_Second");
         kdTree.insert(keys5, "E");
 
         Comparable[] minKeys = new Comparable[2];
@@ -45,11 +46,12 @@ public class Main {
         maxKeys[1] = new TestDouble(15.0);
 
         LinkedList<KDNode<String>> found = kdTree.find(minKeys, maxKeys);
-        for(var node : found) {
+        LinkedList<KDNode<String>> one = kdTree.find(keys4);
+        for (var node : found) {
             System.out.println("Najdeny node: " + node.getData());
         }
-
-        KDNode<String> one = kdTree.find(keys4);
-        System.out.println("Samostatny find: " + one.getData());
+        for (var node : one) {
+            System.out.println("Samostatny find: " + node.getData());
+        }
     }
 }

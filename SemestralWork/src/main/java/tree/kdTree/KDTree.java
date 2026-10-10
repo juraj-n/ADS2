@@ -51,8 +51,8 @@ public class KDTree<T> {
             }
         }
     }
-    public KDNode<T> find(Comparable[] keys) {
-        return find(keys, keys).getFirst(); // TODO: zmeniť na LinkedList - môže aj viac ako jeden s takým kľúčom
+    public LinkedList<KDNode<T>> find(Comparable[] keys) {
+        return find(keys, keys);
     }
     /**
      * Kód vytvorený pomocou AI, zdokumentované v kapitole Y.
