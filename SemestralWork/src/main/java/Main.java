@@ -5,6 +5,7 @@ import dataStructures.tree.kdTree.KDNode;
 import dataStructures.tree.kdTree.KDTree;
 
 import java.util.LinkedList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Main {
     public static void main(String[] args) {
