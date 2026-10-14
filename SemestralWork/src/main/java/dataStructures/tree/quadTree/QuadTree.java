@@ -2,17 +2,22 @@ package dataStructures.tree.quadTree;
 
 import dataStructures.common.QuadKey;
 
+import java.util.LinkedList;
+
 public class QuadTree<T> {
     private final QuadKey _xMin, _xMax, _yMin, _yMax;
+    private final int MAX_DEPTH;
     private final QuadNode<T> _root;
 
-    public QuadTree(QuadKey xMin, QuadKey xMax, QuadKey yMin, QuadKey yMax) {
+    public QuadTree(QuadKey xMin, QuadKey xMax, QuadKey yMin, QuadKey yMax, int maxDepth) {
         this._xMin = xMin;
         this._xMax = xMax;
         this._yMin = yMin;
         this._yMax = yMax;
 
-        this._root = null;
+        this.MAX_DEPTH = maxDepth;
+
+        this._root = new QuadNode<>(xMin, xMax, yMin, yMax);
     }
 
     public boolean insert(QuadKey xKey, QuadKey yKey, T data) {
@@ -24,25 +29,36 @@ public class QuadTree<T> {
             return false;
         }
 
-        // TODO: Current is null -> first insert goes to root
-
+        // TODO: allow equal keys to insert
         QuadNode<T> current = this._root;
+        int depth = 0;
         while (true) {
             if (current.isLeaf() && !current.hasData()) {
-                current.insertData(data);
+                current.insertData(xKey, yKey, data);
                 return true;
             }
             if (current.isLeaf() && current.hasData()) {
-                this.subdivide(current);
+                if (depth < this.MAX_DEPTH) {
+                    current.subdivide();
+                } else {
+                    current.insertData(xKey, yKey, data);
+                    return true;
+                }
             }
             // 0-NW, 1-NE, 2-SW, 3-SE
             int childIndex = current.getQuadrantIndex(xKey, yKey);
 
             current = current.getSon(childIndex);
+            depth++;
         }
     }
+    public LinkedList<T> find(QuadKey xKey, QuadKey yKey) {
+        return find(xKey, xKey, yKey, yKey);
+    }
+    public LinkedList<T> find(QuadKey xMinKey, QuadKey xMaxKey, QuadKey yMinKey, QuadKey yMaxKey) {
+        LinkedList<T> found = new LinkedList<>();
+        
 
-    private void subdivide(QuadNode<T> node) {
-
+        return found;
     }
 }

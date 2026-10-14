@@ -1,58 +1,22 @@
-import dataStructures.common.Comparable;
-import temp.Test;
-import temp.TestDouble;
-import dataStructures.tree.kdTree.KDNode;
-import dataStructures.tree.kdTree.KDTree;
-
-import java.util.LinkedList;
-import java.util.concurrent.CopyOnWriteArrayList;
+import dataStructures.tree.quadTree.QuadTree;
+import temp.Double;
+import temp.Integer;
 
 public class Main {
     public static void main(String[] args) {
-        KDTree<String> kdTree = new KDTree<>(2);
+        Integer xMin = new Integer(0);
+        Integer xMax = new Integer(100);
+        Double yMin = new Double(0.0);
+        Double yMax = new Double(100);
 
-        Comparable[] keys = new Comparable[2];
-        keys[0] = new Test(11);
-        keys[1] = new TestDouble(10.0);
+        QuadTree<String> quadTree = new QuadTree<>(xMin, xMax, yMin, yMax, 10);
 
-        Comparable[] keys2 = new Comparable[2];
-        keys2[0] = new Test(5);
-        keys2[1] = new TestDouble(12.0);
+        Integer xKey1 = new Integer(15);
+        Double yKey1 = new Double(15.0);
+        quadTree.insert(xKey1, yKey1, "First");
 
-        Comparable[] keys3 = new Comparable[2];
-        keys3[0] = new Test(10);
-        keys3[1] = new TestDouble(15.0);
-
-        Comparable[] keys4 = new Comparable[2];
-        keys4[0] = new Test(9);
-        keys4[1] = new TestDouble(5.0);
-
-        Comparable[] keys5 = new Comparable[2];
-        keys5[0] = new Test(15);
-        keys5[1] = new TestDouble(10.0);
-
-        kdTree.insert(keys, "D");
-        kdTree.insert(keys2, "B");
-        kdTree.insert(keys3, "C");
-        kdTree.insert(keys4, "A");
-        kdTree.insert(keys4, "A_Second");
-        kdTree.insert(keys5, "E");
-
-        Comparable[] minKeys = new Comparable[2];
-        minKeys[0] = new Test(5);
-        minKeys[1] = new TestDouble(5.0);
-
-        Comparable[] maxKeys = new Comparable[2];
-        maxKeys[0] = new Test(15);
-        maxKeys[1] = new TestDouble(15.0);
-
-        LinkedList<KDNode<String>> found = kdTree.find(minKeys, maxKeys);
-        LinkedList<KDNode<String>> one = kdTree.find(keys4);
-        for (var node : found) {
-            System.out.println("Najdeny node: " + node.getData());
-        }
-        for (var node : one) {
-            System.out.println("Samostatny find: " + node.getData());
-        }
+        Integer xKey2 = new Integer(75);
+        Double yKey2 = new Double(15.0);
+        quadTree.insert(xKey2, yKey2, "Second");
     }
 }

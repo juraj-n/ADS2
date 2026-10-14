@@ -8,7 +8,7 @@ import java.util.LinkedList;
 public class QuadNode<T> {
     private final QuadKey _xMin, _xMax, _yMin, _yMax;
     private ArrayList<QuadNode<T>> _sons;
-    private LinkedList<T> _data;
+    private LinkedList<QuadItem<T>> _data;
 
     public QuadNode(QuadKey xSubMin, QuadKey xSubMax, QuadKey ySubMin, QuadKey ySubMax) {
         this._xMin = xSubMin;
@@ -29,13 +29,38 @@ public class QuadNode<T> {
         QuadKey yHalf = this._yMax.subtract(this._yMax.subtract(this._yMin).half());
 
         if (xKey.compare(xHalf) == -1) { // WEST
-            return yKey.compare(yHalf) == -1 ? 2 : 0;
+            if (yKey.compare(yHalf) == -1) { // SOUTH
+                return 2;
+            } else { // NORTH
+                return 0;
+            }
         } else { // EAST
-            return yKey.compare(yHalf) == -1 ? 3 : 1;
+            if (yKey.compare(yHalf) == -1) { // SOUTH
+                return 3;
+            } else { // NORTH
+                return 1;
+            }
         }
     }
-    public void insertData(T data) {
-        this._data.add(data);
+    public void insertData(QuadKey xKey, QuadKey yKey, T data) {
+        this._data.add(new QuadItem<>(xKey, yKey, data));
+    }
+    public void subdivide() {
+        QuadKey xHalf = this._xMax.subtract(this._xMax.subtract(this._xMin).half());
+        QuadKey yHalf = this._yMax.subtract(this._yMax.subtract(this._yMin).half());
+
+        this._sons.add(0, new QuadNode<>(this._xMin, xHalf, yHalf, this._yMax)); // 0-NW
+        this._sons.add(1, new QuadNode<>(xHalf, this._xMax, yHalf, this._yMax)); // 1-NE
+        this._sons.add(2, new QuadNode<>(this._xMin, xHalf, this._yMin, yHalf)); // 2-SW
+        this._sons.add(3, new QuadNode<>(xHalf, this._xMax, this._yMin, yHalf)); // 3-SE
+
+        // Redistribute Data
+        for (var data : this._data) {
+            int childIndex = this.getQuadrantIndex(data.xKey(), data.yKey());
+            this._sons.get(childIndex).insertData(data.xKey(), data.yKey(), data.getData());
+            // TODO: remove data after redistribution
+        }
+
     }
 
     public boolean isLeaf() {
