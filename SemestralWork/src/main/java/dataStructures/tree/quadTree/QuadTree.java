@@ -29,7 +29,6 @@ public class QuadTree<T> {
             return false;
         }
 
-        // TODO: allow equal keys to insert
         QuadNode<T> current = this._root;
         int depth = 0;
         while (true) {
@@ -38,11 +37,13 @@ public class QuadTree<T> {
                 return true;
             }
             if (current.isLeaf() && current.hasData()) {
-                if (depth < this.MAX_DEPTH) {
-                    current.subdivide();
-                } else {
+                if (depth == this.MAX_DEPTH - 1
+                        || current.equalKeys(xKey, yKey)
+                ) {
                     current.insertData(xKey, yKey, data);
                     return true;
+                } else {
+                    current.subdivide();
                 }
             }
             // 0-NW, 1-NE, 2-SW, 3-SE
@@ -57,6 +58,7 @@ public class QuadTree<T> {
     }
     public LinkedList<T> find(QuadKey xMinKey, QuadKey xMaxKey, QuadKey yMinKey, QuadKey yMaxKey) {
         LinkedList<T> found = new LinkedList<>();
+
         
 
         return found;

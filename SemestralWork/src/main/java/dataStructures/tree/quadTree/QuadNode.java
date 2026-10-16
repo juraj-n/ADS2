@@ -17,7 +17,6 @@ public class QuadNode<T> {
         this._yMax = ySubMax;
 
         this._sons = new ArrayList<>(4); // 0-NW, 1-NE, 2-SW, 3-SE
-
         this._data = new LinkedList<>();
     }
 
@@ -45,6 +44,9 @@ public class QuadNode<T> {
     public void insertData(QuadKey xKey, QuadKey yKey, T data) {
         this._data.add(new QuadItem<>(xKey, yKey, data));
     }
+    public void setData(LinkedList<QuadItem<T>> data) {
+        this._data = data;
+    }
     public void subdivide() {
         QuadKey xHalf = this._xMax.subtract(this._xMax.subtract(this._xMin).half());
         QuadKey yHalf = this._yMax.subtract(this._yMax.subtract(this._yMin).half());
@@ -54,15 +56,24 @@ public class QuadNode<T> {
         this._sons.add(2, new QuadNode<>(this._xMin, xHalf, this._yMin, yHalf)); // 2-SW
         this._sons.add(3, new QuadNode<>(xHalf, this._xMax, this._yMin, yHalf)); // 3-SE
 
-        // Redistribute Data
-        for (var data : this._data) {
-            int childIndex = this.getQuadrantIndex(data.xKey(), data.yKey());
-            this._sons.get(childIndex).insertData(data.xKey(), data.yKey(), data.getData());
-            // TODO: remove data after redistribution
-        }
+        this.redistributeData();
+    }
+    private void redistributeData() {
+        QuadItem<T> first = this._data.getFirst();
+        int childIndex = this.getQuadrantIndex(first.xKey(), first.yKey());
 
+        this._sons.get(childIndex).setData(this._data);
+        this._data = new LinkedList<>();
     }
 
+    public boolean equalKeys(QuadKey xKey, QuadKey yKey) {
+        for (var data : this._data) {
+            if (data.xKey() == xKey && data.yKey() == yKey) {
+                return true;
+            }
+        }
+        return false;
+    }
     public boolean isLeaf() {
         for (QuadNode<T> son : this._sons) {
             if (son != null) {
