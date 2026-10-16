@@ -76,7 +76,7 @@ public class QuadTree<T> {
         while (!nodeStack.isEmpty()) {
             QuadNode<T> current = nodeStack.pop();
 
-            if (current.isLeaf() && current.hasData()) {
+            if (current.hasData()) {
                 // Check for data to be added to found
                 for (var data : current.getData()) {
                     if (data.xKey().compare(xMinKey) >= 0
@@ -87,8 +87,10 @@ public class QuadTree<T> {
                         found.add(data.getData());
                     }
                 }
-                continue;
             }
+
+            if (current.isLeaf())
+                continue;
 
             int[] indices = {
                     current.getQuadrantIndex(xMinKey, yMinKey),
