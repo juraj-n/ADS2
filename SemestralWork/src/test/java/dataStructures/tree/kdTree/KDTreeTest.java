@@ -19,13 +19,12 @@ public class KDTreeTest {
     private final int K_DIM = 3;
     private final int NUMBER_OF_OPERATIONS
             //= 10_000;
-            //= 20_000;
-            = 50_000;
+            = 20_000;
+            //= 50_000;
             //= 100_000;
             //=250_000;
             //= 500_000;
             //= 1_000_000;
-
     @Test
     public void testInsertFind() {
         int insertCount = 0;
@@ -98,7 +97,7 @@ public class KDTreeTest {
                 })
                 .collect(Collectors.toCollection(LinkedList::new));
 
-        assertEquals(expected.size(), found.size(), "Seed: " + seed);
-        assertTrue(found.containsAll(expected), "Seed: " + seed);
+        assertEquals(expected.size(), found.size(), "Seed: " + this.seed);
+        assertTrue(found.containsAll(expected), "Seed: " + this.seed);
     }
 }
