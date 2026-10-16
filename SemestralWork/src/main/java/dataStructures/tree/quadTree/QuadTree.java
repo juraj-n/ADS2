@@ -59,7 +59,39 @@ public class QuadTree<T> {
     public LinkedList<T> find(QuadKey xMinKey, QuadKey xMaxKey, QuadKey yMinKey, QuadKey yMaxKey) {
         LinkedList<T> found = new LinkedList<>();
 
-        
+        LinkedList<QuadNode<T>> nodeStack = new LinkedList<>();
+        nodeStack.push(this._root);
+        while (!nodeStack.isEmpty()) {
+            QuadNode<T> current = nodeStack.pop();
+
+            if (current.isLeaf() && current.hasData()) {
+                // Check for data to be added to found
+                for (var data : current.getData()) {
+                    if (data.xKey().compare(xMinKey) >= 0
+                            && data.xKey().compare(xMaxKey) <= 0
+                            && data.yKey().compare(yMinKey) >= 0
+                            && data.yKey().compare(yMaxKey) <= 0
+                    ) {
+                        found.add(data.getData());
+                    }
+                }
+                continue;
+            }
+
+            int[] indices = {
+                    current.getQuadrantIndex(xMinKey, yMinKey),
+                    current.getQuadrantIndex(xMaxKey, yMinKey),
+                    current.getQuadrantIndex(xMinKey, yMaxKey),
+                    current.getQuadrantIndex(xMaxKey, yMaxKey)
+            };
+            boolean[] sonsPushed = new boolean[4];
+            for (int index : indices) {
+                if (!sonsPushed[index]) {
+                    sonsPushed[index] = true;
+                    nodeStack.push(current.getSon(index));
+                }
+            }
+        }
 
         return found;
     }

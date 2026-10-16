@@ -20,6 +20,9 @@ public class QuadNode<T> {
         this._data = new LinkedList<>();
     }
 
+    public LinkedList<QuadItem<T>> getData() {
+        return this._data;
+    }
     public QuadNode<T> getSon(int index) {
         return this._sons.get(index);
     }
