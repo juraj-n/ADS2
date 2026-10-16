@@ -27,8 +27,8 @@ public class QuadNode<T> {
         QuadKey xHalf = this._xMax.subtract(this._xMax.subtract(this._xMin).half());
         QuadKey yHalf = this._yMax.subtract(this._yMax.subtract(this._yMin).half());
 
-        if (xKey.compare(xHalf) == -1) { // WEST
-            if (yKey.compare(yHalf) == -1) { // SOUTH
+        if (xKey.compare(xHalf) <= 0) { // WEST
+            if (yKey.compare(yHalf) <= 0) { // SOUTH
                 return 2;
             } else { // NORTH
                 return 0;
