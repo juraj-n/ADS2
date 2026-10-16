@@ -50,24 +50,6 @@ public class QuadNode<T> {
     public void setData(LinkedList<QuadItem<T>> data) {
         this._data = data;
     }
-    public void subdivide() {
-        QuadKey xHalf = this._xMax.subtract(this._xMax.subtract(this._xMin).half());
-        QuadKey yHalf = this._yMax.subtract(this._yMax.subtract(this._yMin).half());
-
-        this._sons.add(0, new QuadNode<>(this._xMin, xHalf, yHalf, this._yMax)); // 0-NW
-        this._sons.add(1, new QuadNode<>(xHalf, this._xMax, yHalf, this._yMax)); // 1-NE
-        this._sons.add(2, new QuadNode<>(this._xMin, xHalf, this._yMin, yHalf)); // 2-SW
-        this._sons.add(3, new QuadNode<>(xHalf, this._xMax, this._yMin, yHalf)); // 3-SE
-
-        this.redistributeData();
-    }
-    private void redistributeData() {
-        QuadItem<T> first = this._data.getFirst();
-        int childIndex = this.getQuadrantIndex(first.xKey(), first.yKey());
-
-        this._sons.get(childIndex).setData(this._data);
-        this._data = new LinkedList<>();
-    }
 
     public boolean equalKeys(QuadKey xKey, QuadKey yKey) {
         for (var data : this._data) {
@@ -87,5 +69,25 @@ public class QuadNode<T> {
     }
     public boolean hasData() {
         return !this._data.isEmpty();
+    }
+
+    public void subdivide() {
+        QuadKey xHalf = this._xMax.subtract(this._xMax.subtract(this._xMin).half());
+        QuadKey yHalf = this._yMax.subtract(this._yMax.subtract(this._yMin).half());
+
+        this._sons.add(0, new QuadNode<>(this._xMin, xHalf, yHalf, this._yMax)); // 0-NW
+        this._sons.add(1, new QuadNode<>(xHalf, this._xMax, yHalf, this._yMax)); // 1-NE
+        this._sons.add(2, new QuadNode<>(this._xMin, xHalf, this._yMin, yHalf)); // 2-SW
+        this._sons.add(3, new QuadNode<>(xHalf, this._xMax, this._yMin, yHalf)); // 3-SE
+
+        this.redistributeData();
+    }
+
+    private void redistributeData() {
+        QuadItem<T> first = this._data.getFirst();
+        int childIndex = this.getQuadrantIndex(first.xKey(), first.yKey());
+
+        this._sons.get(childIndex).setData(this._data);
+        this._data = new LinkedList<>();
     }
 }

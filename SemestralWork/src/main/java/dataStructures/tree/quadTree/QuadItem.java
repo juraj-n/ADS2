@@ -12,13 +12,13 @@ public class QuadItem<T> {
         this._data = data;
     }
 
-    public T getData() {
-        return this._data;
-    }
     public QuadKey xKey() {
         return this._xKey;
     }
     public QuadKey yKey() {
         return this._yKey;
+    }
+    public T getData() {
+        return this._data;
     }
 }
