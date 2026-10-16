@@ -51,14 +51,14 @@ public class KDTree<T> {
             }
         }
     }
-    public LinkedList<KDNode<T>> find(Comparable[] keys) {
+    public LinkedList<T> find(Comparable[] keys) {
         return find(keys, keys);
     }
     /**
      * Kód vytvorený pomocou AI, zdokumentované v kapitole Y.
      * */
     // TODO: doplniť kapitolu
-    public LinkedList<KDNode<T>> find(Comparable[] minKeys, Comparable[] maxKeys) {
+    public LinkedList<T> find(Comparable[] minKeys, Comparable[] maxKeys) {
         // Exchange keys if min > max || max < min
         for (int i = 0; i < this._k; i++) {
             if (minKeys[i].compare(maxKeys[i]) > 0) {
@@ -73,7 +73,7 @@ public class KDTree<T> {
             }
         }
 
-        LinkedList<KDNode<T>> found = new LinkedList<>();
+        LinkedList<T> found = new LinkedList<>();
         if(this._root == null) {
             return found;
         }
@@ -109,7 +109,7 @@ public class KDTree<T> {
             // Both Subtrees Key: <MIN, MAX>
             else {
                 if (this.nodeInInterval(current, minKeys, maxKeys)) {
-                    found.add(current);
+                    found.add(current.getData());
                 }
 
                 KDNode<T> rightSon = current.getRightSon();
