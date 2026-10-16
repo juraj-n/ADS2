@@ -57,6 +57,18 @@ public class QuadTree<T> {
         return find(xKey, xKey, yKey, yKey);
     }
     public LinkedList<T> find(QuadKey xMinKey, QuadKey xMaxKey, QuadKey yMinKey, QuadKey yMaxKey) {
+        // Exchange if min > max
+        if (xMinKey.compare(xMaxKey) > 0) {
+            QuadKey temp = xMaxKey;
+            xMaxKey = xMinKey;
+            xMinKey = temp;
+        }
+        if (yMinKey.compare(yMaxKey) > 0) {
+            QuadKey temp = yMaxKey;
+            yMaxKey = yMinKey;
+            yMinKey = temp;
+        }
+
         LinkedList<T> found = new LinkedList<>();
 
         LinkedList<QuadNode<T>> nodeStack = new LinkedList<>();

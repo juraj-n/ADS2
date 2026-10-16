@@ -59,6 +59,20 @@ public class KDTree<T> {
      * */
     // TODO: doplniť kapitolu
     public LinkedList<KDNode<T>> find(Comparable[] minKeys, Comparable[] maxKeys) {
+        // Exchange keys if min > max || max < min
+        for (int i = 0; i < this._k; i++) {
+            if (minKeys[i].compare(maxKeys[i]) > 0) {
+                Comparable temp = minKeys[i];
+                minKeys[i] = maxKeys[i];
+                maxKeys[i] = temp;
+            }
+            if (maxKeys[i].compare(minKeys[i]) < 0) {
+                Comparable temp = maxKeys[i];
+                maxKeys[i] = minKeys[i];
+                minKeys[i] = temp;
+            }
+        }
+
         LinkedList<KDNode<T>> found = new LinkedList<>();
         if(this._root == null) {
             return found;
