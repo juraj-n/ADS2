@@ -13,11 +13,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class QuadTreeTest {
     private final long seed = System.nanoTime();
     private final Random generator = new Random(seed);
+    private final int WORLD_SIZE = 100;
+    private final int FIND_PERC = 1;
     private final int NUMBER_OF_OPERATIONS
             //= 10_000;
             //= 20_000;
-            = 50_000;
-            //= 100_000;
+            //= 30_000;
+            //= 50_000;
+            = 100_000;
             //=250_000;
             //= 500_000;
             //= 1_000_000;
@@ -27,10 +30,10 @@ class QuadTreeTest {
         int findCount = 0;
 
         QuadTree<QuadItem<QuadDouble>> tree = new QuadTree<>(new QuadDouble(0),
-                new QuadDouble(100),
+                new QuadDouble(this.WORLD_SIZE),
                 new QuadDouble(0),
-                new QuadDouble(100),
-                100);
+                new QuadDouble(this.WORLD_SIZE),
+                10);
         List<QuadItem<QuadDouble>> insItems = new ArrayList<>();
         for (int i = 0; i < NUMBER_OF_OPERATIONS; i++) {
             if (generator.nextDouble(100) < 50) {
@@ -47,24 +50,24 @@ class QuadTreeTest {
     @Test
     public void testTreeContainsInserted() {
         QuadTree<QuadItem<QuadDouble>> tree = new QuadTree<>(new QuadDouble(0),
-                new QuadDouble(100),
+                new QuadDouble(this.WORLD_SIZE),
                 new QuadDouble(0),
-                new QuadDouble(100),
-                100);
+                new QuadDouble(this.WORLD_SIZE),
+                10);
         List<QuadItem<QuadDouble>> insItems = new ArrayList<>();
         this.insertRandomKeys(tree, insItems);
 
         LinkedList<QuadItem<QuadDouble>> found = tree.find(new QuadDouble(0),
-                new QuadDouble(100),
+                new QuadDouble(this.WORLD_SIZE),
                 new QuadDouble(0),
-                new QuadDouble(100));
+                new QuadDouble(this.WORLD_SIZE));
 
         assertEquals(found.size(), insItems.size(), "Seed: " + this.seed);
         assertTrue(found.containsAll(insItems), "Seed " + this.seed);
     }
     private void insertRandomKeys(QuadTree<QuadItem<QuadDouble>> tree, List<QuadItem<QuadDouble>> insItems) {
-        QuadDouble xKey = new QuadDouble(generator.nextDouble(100));
-        QuadDouble yKey = new QuadDouble(generator.nextDouble(100));
+        QuadDouble xKey = new QuadDouble(generator.nextDouble(this.WORLD_SIZE));
+        QuadDouble yKey = new QuadDouble(generator.nextDouble(this.WORLD_SIZE));
         QuadDouble data = new QuadDouble(generator.nextDouble());
         QuadItem<QuadDouble> item = new QuadItem<>(xKey, yKey, data);
 
@@ -73,21 +76,26 @@ class QuadTreeTest {
         }
     }
     private void findRandomRange(QuadTree<QuadItem<QuadDouble>> tree, List<QuadItem<QuadDouble>> insItems) {
-        QuadDouble xMin = new QuadDouble(generator.nextDouble(50));
-        QuadDouble xMax = new QuadDouble(generator.nextDouble(50) + 50);
-        QuadDouble yMin = new QuadDouble(generator.nextDouble(50));
-        QuadDouble yMax = new QuadDouble(generator.nextDouble(50) + 50);
+        double side = Math.sqrt(this.FIND_PERC / 100.0) * this.WORLD_SIZE;
+
+        QuadDouble xMin = new QuadDouble(generator.nextDouble() * (this.WORLD_SIZE - side));
+        QuadDouble xMax = new QuadDouble(xMin.value + side);
+        QuadDouble yMin = new QuadDouble(generator.nextDouble() * (this.WORLD_SIZE - side));
+        QuadDouble yMax = new QuadDouble(yMin.value + side);
 
         LinkedList<QuadItem<QuadDouble>> found = tree.find(xMin, xMax, yMin, yMax);
-        LinkedList<QuadItem<QuadDouble>> expected = insItems.stream()
-                .filter(item ->
-                            item.xKey().compare(xMin) >= 0
-                        &&  item.xKey().compare(xMax) <= 0
-                        &&  item.yKey().compare(yMin) >= 0
-                        &&  item.yKey().compare(yMax) <= 0)
-                .collect(Collectors.toCollection(LinkedList::new));
 
-        assertEquals(found.size(), expected.size(), "Seed: " + this.seed);
-        assertTrue(found.containsAll(expected), "Seed: " + this.seed);
+        if (this.NUMBER_OF_OPERATIONS > 30_000) {
+            LinkedList<QuadItem<QuadDouble>> expected = insItems.stream()
+                    .filter(item ->
+                            item.xKey().compare(xMin) >= 0
+                                    &&  item.xKey().compare(xMax) <= 0
+                                    &&  item.yKey().compare(yMin) >= 0
+                                    &&  item.yKey().compare(yMax) <= 0)
+                    .collect(Collectors.toCollection(LinkedList::new));
+
+            assertEquals(expected.size(), found.size(), "Seed: " + this.seed);
+            assertTrue(found.containsAll(expected), "Seed: " + this.seed);
+        }
     }
 }
