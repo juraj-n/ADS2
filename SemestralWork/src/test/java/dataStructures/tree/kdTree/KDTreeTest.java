@@ -4,7 +4,6 @@ import dataStructures.common.Comparable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,7 +19,7 @@ public class KDTreeTest {
     private final int K_DIM = 3;
     private final int WORLD_SIZE = 100;
     private final int FIND_PERC = 1;
-    private final int NUMBER_OF_OPERATIONS = 100000;
+    private final int NUMBER_OF_OPERATIONS = 100_000;
     @BeforeEach
     public void consolePrint() {
         System.out.println("************************");
@@ -40,7 +39,7 @@ public class KDTreeTest {
 
         KDTree<KDItem> tree = new KDTree<>(K_DIM);
         List<KDItem> insItems = new ArrayList<>();
-        for (int i = 0; i < NUMBER_OF_OPERATIONS; i++) {
+        for (int i = 0; i < this.NUMBER_OF_OPERATIONS; i++) {
             if (generator.nextDouble(100) < 50) {
                 insertCount++;
                 this.insertRandomKeys(tree, insItems);
@@ -56,7 +55,7 @@ public class KDTreeTest {
     public void testTreeContainsInserted() {
         KDTree<KDItem> tree = new KDTree<>(K_DIM);
         List<KDItem> insItems = new ArrayList<>();
-        for (int i = 0; i < NUMBER_OF_OPERATIONS; i++) {
+        for (int i = 0; i < this.NUMBER_OF_OPERATIONS; i++) {
             this.insertRandomKeys(tree, insItems);
         }
 
@@ -84,7 +83,7 @@ public class KDTreeTest {
         KDDouble[] maxKeys = new KDDouble[K_DIM];
 
         double side = Math.pow(this.FIND_PERC / 100.0, 1.0 / this.K_DIM) * this.WORLD_SIZE;
-        for (int index = 0; index < K_DIM; index++) {
+        for (int index = 0; index < this.K_DIM; index++) {
             double min = generator.nextDouble() * (this.WORLD_SIZE - side);
             double max = min + side;
 
@@ -94,7 +93,7 @@ public class KDTreeTest {
 
         LinkedList<KDItem> found = tree.find(minKeys, maxKeys);
 
-        if (this.FIND_PERC == 1) {
+        if (this.FIND_PERC <= 5) {
             LinkedList<KDItem> expected = insItems.stream()
                     .filter(item -> {
                         for (int keyIndex = 0; keyIndex < K_DIM; keyIndex++) {

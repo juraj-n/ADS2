@@ -30,7 +30,7 @@ public class KDTree<T> {
 
             if (keys[keyIndex].compare(parent.getKey(keyIndex)) <= 0) {
                 KDNode<T> leftSon = parent.getLeftSon();
-                if(leftSon == null) {
+                if (leftSon == null) {
                     parent.setLeftSon(keys, data);
 
                     return true;
@@ -40,7 +40,7 @@ public class KDTree<T> {
                 }
             } else {
                 KDNode<T> rightSon = parent.getRightSon();
-                if(rightSon == null) {
+                if (rightSon == null) {
                     parent.setRightSon(keys, data);
 
                     return true;
@@ -52,7 +52,7 @@ public class KDTree<T> {
         }
     }
     public LinkedList<T> find(Comparable[] keys) {
-        return find(keys, keys);
+        return this.find(keys, keys);
     }
     /**
      * Kód vytvorený pomocou AI, zdokumentované v kapitole Y.
@@ -74,7 +74,7 @@ public class KDTree<T> {
         }
 
         LinkedList<T> found = new LinkedList<>();
-        if(this._root == null) {
+        if (this._root == null) {
             return found;
         }
 
@@ -101,7 +101,7 @@ public class KDTree<T> {
             // Right Subtree MIN > Key
             else if (minKeys[keyIndex].compare(current.getKey(keyIndex)) == 1) {
                 KDNode<T> rightSon = current.getRightSon();
-                if(rightSon != null) {
+                if (rightSon != null) {
                     nodeStack.push(rightSon);
                     depthStack.push(depth + 1);
                 }

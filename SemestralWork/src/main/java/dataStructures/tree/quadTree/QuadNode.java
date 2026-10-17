@@ -82,7 +82,6 @@ public class QuadNode<T> {
 
         this.redistributeData();
     }
-
     private void redistributeData() {
         QuadItem<T> first = this._data.getFirst();
         int childIndex = this.getQuadrantIndex(first.xKey(), first.yKey());

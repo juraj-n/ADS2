@@ -59,7 +59,9 @@ class QuadTreeTest {
                 new QuadDouble(this.WORLD_SIZE),
                 10);
         List<QuadItem<QuadDouble>> insItems = new ArrayList<>();
-        this.insertRandomKeys(tree, insItems);
+        for (int i = 0; i < this.NUMBER_OF_OPERATIONS; i++) {
+            this.insertRandomKeys(tree, insItems);
+        }
 
         LinkedList<QuadItem<QuadDouble>> found = tree.find(new QuadDouble(0),
                 new QuadDouble(this.WORLD_SIZE),
@@ -89,7 +91,7 @@ class QuadTreeTest {
 
         LinkedList<QuadItem<QuadDouble>> found = tree.find(xMin, xMax, yMin, yMax);
 
-        if (this.FIND_PERC == 1) {
+        if (this.FIND_PERC <= 5) {
             LinkedList<QuadItem<QuadDouble>> expected = insItems.stream()
                     .filter(item ->
                             item.xKey().compare(xMin) >= 0
