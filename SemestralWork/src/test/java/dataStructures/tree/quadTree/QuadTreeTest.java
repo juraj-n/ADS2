@@ -15,15 +15,7 @@ class QuadTreeTest {
     private final Random generator = new Random(seed);
     private final int WORLD_SIZE = 100;
     private final int FIND_PERC = 1;
-    private final int NUMBER_OF_OPERATIONS
-            //= 10_000;
-            //= 20_000;
-            //= 30_000;
-            //= 50_000;
-            = 100_000;
-            //=250_000;
-            //= 500_000;
-            //= 1_000_000;
+    private final int NUMBER_OF_OPERATIONS = 100_000;
     @Test
     public void testInsertFind() {
         int insertCount = 0;
@@ -85,7 +77,7 @@ class QuadTreeTest {
 
         LinkedList<QuadItem<QuadDouble>> found = tree.find(xMin, xMax, yMin, yMax);
 
-        if (this.NUMBER_OF_OPERATIONS > 30_000) {
+        if (this.FIND_PERC <= 1) {
             LinkedList<QuadItem<QuadDouble>> expected = insItems.stream()
                     .filter(item ->
                             item.xKey().compare(xMin) >= 0
