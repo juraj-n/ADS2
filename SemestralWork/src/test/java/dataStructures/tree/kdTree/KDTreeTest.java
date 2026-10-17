@@ -1,6 +1,7 @@
 package dataStructures.tree.kdTree;
 
 import dataStructures.common.Comparable;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLOutput;
@@ -18,8 +19,20 @@ public class KDTreeTest {
     private final Random generator = new Random(seed);
     private final int K_DIM = 3;
     private final int WORLD_SIZE = 100;
-    private final int FIND_PERC = 5;
-    private final int NUMBER_OF_OPERATIONS = 100_000;
+    private final int FIND_PERC = 1;
+    private final int NUMBER_OF_OPERATIONS = 100000;
+    @BeforeEach
+    public void consolePrint() {
+        System.out.println("************************");
+        System.out.println(" [TEST]  KDTree  [TEST] ");
+        System.out.println("************************");
+        System.out.println("SEED:. . " + this.seed + "L");
+        System.out.println("OPERATION COUNT: " + this.NUMBER_OF_OPERATIONS);
+        System.out.println("DIMENSIONS:. . . . . ." + this.K_DIM);
+        System.out.println("WORLD SIZE:. . . . ." + this.WORLD_SIZE);
+        System.out.println("FIND [%]:. . . . . . " + this.FIND_PERC + "%");
+        System.out.println("************************");
+    }
     @Test
     public void testInsertFind() {
         int insertCount = 0;
@@ -36,8 +49,8 @@ public class KDTreeTest {
                 this.findRandomRange(tree, insItems);
             }
         }
-        System.out.println("[INSERT] " + insertCount);
-        System.out.println("[-FIND-] " + findCount);
+        System.out.println("[INSERT] . . . . . " + insertCount);
+        System.out.println("[ FIND ] . . . . . " + findCount);
     }
     @Test
     public void testTreeContainsInserted() {
@@ -81,7 +94,7 @@ public class KDTreeTest {
 
         LinkedList<KDItem> found = tree.find(minKeys, maxKeys);
 
-        if (this.FIND_PERC <= 1) {
+        if (this.FIND_PERC == 1) {
             LinkedList<KDItem> expected = insItems.stream()
                     .filter(item -> {
                         for (int keyIndex = 0; keyIndex < K_DIM; keyIndex++) {
