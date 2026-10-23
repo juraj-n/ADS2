@@ -55,9 +55,8 @@ public class KDTree<T> {
         return this.find(keys, keys);
     }
     /**
-     * Kód vytvorený pomocou AI, zdokumentované v kapitole Y.
+     * Kód vytvorený pomocou AI, zdokumentované v kapitole 1.
      * */
-    // TODO: doplniť kapitolu
     public LinkedList<T> find(Comparable[] minKeys, Comparable[] maxKeys) {
         // Exchange keys if min > max || max < min
         for (int i = 0; i < this._k; i++) {
