@@ -21,6 +21,19 @@
             <version>5.13.4</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>local</groupId>
+            <artifactId>kd-tree</artifactId>
+            <version>0.2</version>
+        </dependency>
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>project-repo</id>
+            <url>file://${project.basedir}/lib/repo</url>
+        </repository>
+    </repositories>
 
 </project>
