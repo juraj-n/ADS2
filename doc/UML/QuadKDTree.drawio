@@ -1,0 +1,65 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.6.6 Chrome/144.0.7559.236 Electron/40.8.4 Safari/537.36" version="29.6.6">
+  <diagram name="Page-1" id="XcJsw5jOsyZ0ExsYCVxV">
+    <mxGraphModel dx="1042" dy="626" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="_G8HN_2iFVPo2E0Pta_b-1" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="QuadKDTree&amp;lt;T&amp;gt;" vertex="1">
+          <mxGeometry height="170" width="430" x="30" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="_G8HN_2iFVPo2E0Pta_b-2" parent="_G8HN_2iFVPo2E0Pta_b-1" style="text;strokeColor=#d79b00;fillColor=#ffe6cc;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="- xMin, xMax, yMin, yMax: QuadKey&lt;div&gt;- MAX_DEPTH: final int&lt;/div&gt;&lt;div&gt;- root: QuadKDNote&amp;lt;T&amp;gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="54" width="430" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="_G8HN_2iFVPo2E0Pta_b-3" parent="_G8HN_2iFVPo2E0Pta_b-1" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
+          <mxGeometry height="8" width="430" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="_G8HN_2iFVPo2E0Pta_b-4" parent="_G8HN_2iFVPo2E0Pta_b-1" style="text;strokeColor=#d79b00;fillColor=#ffe6cc;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ QuadKDTree(QK xMin, QK xMax, QK yMin, QK yMax, maxDepth)&lt;div&gt;+ insert(QK xKey, QK yKey, T data): bool&lt;/div&gt;&lt;div&gt;+ find(QK xKey, QK yKey): LinkedList&amp;lt;T&amp;gt;&lt;/div&gt;&lt;div&gt;+ find(QK xMinKey, QK xMaxKey, QK yMinKey, QK yMaxKey): LinkedList&amp;lt;T&amp;gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="82" width="430" y="88" as="geometry" />
+        </mxCell>
+        <mxCell id="_G8HN_2iFVPo2E0Pta_b-5" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="QuadKDNode&amp;lt;T&amp;gt;" vertex="1">
+          <mxGeometry height="260" width="430" x="30" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="_G8HN_2iFVPo2E0Pta_b-6" parent="_G8HN_2iFVPo2E0Pta_b-5" style="text;strokeColor=#d79b00;fillColor=#ffe6cc;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="- xMin, xMax, yMin, yMax: QuadKey&lt;div&gt;- sons: ArrayList&amp;lt;QuadKDNote&amp;lt;T&amp;gt;&amp;gt;&lt;/div&gt;&lt;div&gt;- data: KDTree&amp;lt;T&amp;gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="54" width="430" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="_G8HN_2iFVPo2E0Pta_b-7" parent="_G8HN_2iFVPo2E0Pta_b-5" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
+          <mxGeometry height="8" width="430" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="_G8HN_2iFVPo2E0Pta_b-8" parent="_G8HN_2iFVPo2E0Pta_b-5" style="text;strokeColor=#d79b00;fillColor=#ffe6cc;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ QuadKDNode(QK xSubMin, QK xSubMax, QK ySubMin, QK ySubMax)&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;+ getData(): KDTree&amp;lt;T&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;+ getSon(int index): QuadKDNode&amp;lt;T&amp;gt;&lt;/div&gt;&lt;div&gt;+ getQuadrantIndex(): int&lt;/div&gt;&lt;div&gt;+ insertData(QK x, QK y, T data)&lt;/div&gt;&lt;div&gt;+ setData(KDTree&amp;lt;T&amp;gt; data)&lt;/div&gt;&lt;div&gt;+ subdivide()&lt;/div&gt;&lt;div&gt;+ isLeaf(): bool&lt;/div&gt;&lt;div&gt;+ hasData(): bool&lt;/div&gt;&lt;div&gt;+ equalKeys(QK x, QK y): bool&lt;/div&gt;&lt;div&gt;- redistributeData()&lt;/div&gt;" vertex="1">
+          <mxGeometry height="172" width="430" y="88" as="geometry" />
+        </mxCell>
+        <mxCell id="_G8HN_2iFVPo2E0Pta_b-9" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="&amp;lt;&amp;lt;Interface&amp;gt;&amp;gt;&lt;div&gt;QuadKey&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="220" x="590" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="_G8HN_2iFVPo2E0Pta_b-10" parent="_G8HN_2iFVPo2E0Pta_b-9" style="text;strokeColor=#82b366;fillColor=#d5e8d4;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;+ subtract(QuadKey other): QuadKey&lt;/span&gt;&lt;/div&gt;&lt;div&gt;+ half(): QuadKey&lt;/div&gt;" vertex="1">
+          <mxGeometry height="40" width="220" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="_G8HN_2iFVPo2E0Pta_b-11" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="&amp;lt;&amp;lt;Interface&amp;gt;&amp;gt;&lt;div&gt;Comparable&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="220" x="590" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="_G8HN_2iFVPo2E0Pta_b-12" parent="_G8HN_2iFVPo2E0Pta_b-11" style="text;strokeColor=#82b366;fillColor=#d5e8d4;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;+ compare(Comparable other): int&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="30" width="220" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="_G8HN_2iFVPo2E0Pta_b-13" edge="1" parent="1" source="_G8HN_2iFVPo2E0Pta_b-9" style="endArrow=block;endSize=16;endFill=0;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="_G8HN_2iFVPo2E0Pta_b-11" value="Extends">
+          <mxGeometry relative="1" width="160" x="-0.25" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="350" y="260" as="sourcePoint" />
+            <mxPoint x="510" y="260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="_G8HN_2iFVPo2E0Pta_b-14" edge="1" parent="1" source="_G8HN_2iFVPo2E0Pta_b-2" style="endArrow=open;endFill=1;endSize=12;html=1;rounded=0;entryX=0.004;entryY=-0.05;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.999;exitY=0.763;exitDx=0;exitDy=0;exitPerimeter=0;" target="_G8HN_2iFVPo2E0Pta_b-10" value="">
+          <mxGeometry relative="1" width="160" as="geometry">
+            <mxPoint x="350" y="260" as="sourcePoint" />
+            <mxPoint x="510" y="260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="_G8HN_2iFVPo2E0Pta_b-15" edge="1" parent="1" source="_G8HN_2iFVPo2E0Pta_b-4" style="endArrow=diamondThin;endFill=1;endSize=24;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.502;exitY=1.02;exitDx=0;exitDy=0;exitPerimeter=0;" target="_G8HN_2iFVPo2E0Pta_b-5" value="">
+          <mxGeometry relative="1" width="160" as="geometry">
+            <mxPoint x="320" y="270" as="sourcePoint" />
+            <mxPoint x="480" y="270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

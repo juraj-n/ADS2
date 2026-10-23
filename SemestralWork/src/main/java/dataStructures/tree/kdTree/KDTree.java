@@ -127,6 +127,12 @@ public class KDTree<T> {
 
         return found;
     }
+    public KDNode<T> getRoot() {
+        return this._root;
+    }
+    public boolean isEmpty() {
+        return this._root == null;
+    }
     private boolean nodeInInterval(KDNode<T> node, Comparable[] minKeys, Comparable[] maxKeys) {
         for (int i = 0; i < this._k; i++) {
             if (minKeys[i].compare(node.getKey(i)) == 1

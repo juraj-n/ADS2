@@ -1,7 +1,6 @@
 package dataStructures.common;
 
-public interface QuadKey {
+public interface QuadKey extends Comparable {
     QuadKey subtract(QuadKey other);
     QuadKey half();
-    int compare(QuadKey other);
 }

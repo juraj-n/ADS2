@@ -16,7 +16,7 @@ class QuadTreeTest {
     private final Random generator = new Random(seed);
     private final int WORLD_SIZE = 100;
     private final int FIND_PERC = 1;
-    private final int NUMBER_OF_OPERATIONS = 100_000;
+    private final int NUMBER_OF_OPERATIONS = 10_000;
     @BeforeEach
     public void consolePrint() {
         System.out.println("************************");

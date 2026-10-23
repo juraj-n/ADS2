@@ -1,5 +1,6 @@
 package dataStructures.tree.quadTree;
 
+import dataStructures.common.Comparable;
 import dataStructures.common.QuadKey;
 
 public class QuadDouble implements QuadKey {
@@ -16,7 +17,7 @@ public class QuadDouble implements QuadKey {
         return new QuadDouble(this.value / 2);
     }
     @Override
-    public int compare(QuadKey other) {
+    public int compare(Comparable other) {
         return Double.compare(this.value, ((QuadDouble)other).value);
     }
 }
