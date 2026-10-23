@@ -1,7 +1,6 @@
-package dataStructures.tree.QuadKDTree;
+package dataStructures.tree.quadKDTree;
 
 import dataStructures.common.QuadKey;
-import dataStructures.tree.quadTree.QuadNode;
 
 import java.util.LinkedList;
 

@@ -1,5 +1,6 @@
 package dataStructures.tree.quadTree;
 
+import dataStructures.tree.TestConstatns;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,12 +12,9 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class QuadTreeTest {
+class QuadTreeTest extends TestConstatns {
     private final long seed = System.nanoTime();
     private final Random generator = new Random(seed);
-    private final int WORLD_SIZE = 100;
-    private final int FIND_PERC = 1;
-    private final int NUMBER_OF_OPERATIONS = 10_000;
     @BeforeEach
     public void consolePrint() {
         System.out.println("************************");
@@ -53,7 +51,8 @@ class QuadTreeTest {
     }
     @Test
     public void testTreeContainsInserted() {
-        QuadTree<QuadItem<QuadDouble>> tree = new QuadTree<>(new QuadDouble(0),
+        QuadTree<QuadItem<QuadDouble>> tree = new QuadTree<>(
+                new QuadDouble(0),
                 new QuadDouble(this.WORLD_SIZE),
                 new QuadDouble(0),
                 new QuadDouble(this.WORLD_SIZE),

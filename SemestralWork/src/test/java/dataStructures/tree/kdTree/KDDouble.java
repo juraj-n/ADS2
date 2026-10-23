@@ -4,7 +4,7 @@ import dataStructures.common.Comparable;
 
 public class KDDouble implements Comparable {
     public final double value;
-    KDDouble(double value) {
+    public KDDouble(double value) {
         this.value = value;
     }
     @Override

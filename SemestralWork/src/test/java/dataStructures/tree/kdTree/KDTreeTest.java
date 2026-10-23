@@ -1,6 +1,7 @@
 package dataStructures.tree.kdTree;
 
 import dataStructures.common.Comparable;
+import dataStructures.tree.TestConstatns;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,13 +14,9 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class KDTreeTest {
+public class KDTreeTest extends TestConstatns {
     private final long seed = System.nanoTime();
     private final Random generator = new Random(seed);
-    private final int K_DIM = 3;
-    private final int WORLD_SIZE = 100;
-    private final int FIND_PERC = 1;
-    private final int NUMBER_OF_OPERATIONS = 10_000;
     @BeforeEach
     public void consolePrint() {
         System.out.println("************************");

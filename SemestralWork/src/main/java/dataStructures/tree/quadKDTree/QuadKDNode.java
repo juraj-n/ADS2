@@ -1,4 +1,4 @@
-package dataStructures.tree.QuadKDTree;
+package dataStructures.tree.quadKDTree;
 
 import dataStructures.common.QuadKey;
 import dataStructures.tree.kdTree.KDNode;
