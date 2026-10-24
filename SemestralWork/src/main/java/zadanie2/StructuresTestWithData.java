@@ -13,19 +13,54 @@ public class StructuresTestWithData {
         var nodes = SvkNodeReader.loadSvkNodes("data/S1/slovakia_nodes.csv");
         var areas = SvkNodeReader.loadSvkNodesAreas("data/S1/testovacie_oblasti.csv");
 
+        // Other QuadTrees
+        var varunpantQuad = varunpantQuadInsertNodes(nodes);
+        varunpantQuadFindAreas(varunpantQuad, areas);
+
+        //
+        //
+
+        //
+        //
+
+        // Other KDTrees
         var oschrenkKD = oschrenkKDInsertNodes(nodes);
         oschrenkKDFindAreas(oschrenkKD, areas);
 
+        //
+        //
+
+        //
+        //
+
+        // My QuadTree
         var quadTree = quadTreeInsertNodes(nodes);
         quadTreeFindAreas(quadTree, areas);
 
+        // My KDTree
         var kdTree = kDTreeInsertNodes(nodes);
         kDTreeFindAreas(kdTree, areas);
 
+        // My QuadKDTree
         var quadKDTree = quadKDTreeIsertNodes(nodes);
         quadKDTreeFindAreas(quadKDTree, areas);
     }
 
+    private static com.github.varunpant.quadtree.QuadTree<String> varunpantQuadInsertNodes(List<SvkNode> nodes) {
+        com.github.varunpant.quadtree.QuadTree<String> tree = new com.github.varunpant.quadtree.QuadTree<>(
+                47.0, 16.0, 50.0, 22.6);
+
+        for (var node : nodes) {
+            tree.set(node.getLatitude(), node.getLongitude(), node.getId());
+        }
+
+        return tree;
+    }
+    private static void varunpantQuadFindAreas(com.github.varunpant.quadtree.QuadTree<String> tree, List<SvkNodesArea> areas) {
+        for (var area : areas) {
+            tree.searchWithin(area.getMinLat(), area.getMinLon(), area.getMaxLat(), area.getMaxLon());
+        }
+    }
     private static edu.wlu.cs.levy.cg.KDTree<String> oschrenkKDInsertNodes(List<SvkNode> nodes) throws Exception{
         edu.wlu.cs.levy.cg.KDTree<String> tree = new edu.wlu.cs.levy.cg.KDTree<>(2);
 
@@ -48,8 +83,8 @@ public class StructuresTestWithData {
         QuadTree<String> tree = new QuadTree<>(
                 new SvkDouble(47.0),
                 new SvkDouble(50.0),
-                new SvkDouble(47.0),
-                new SvkDouble(50.0),
+                new SvkDouble(16.0),
+                new SvkDouble(22.6),
                 10);
 
         for (var node : nodes) {

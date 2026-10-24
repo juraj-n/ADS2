@@ -27,6 +27,12 @@
             <artifactId>kd-tree</artifactId>
             <version>0.2</version>
         </dependency>
+
+        <dependency>
+            <groupId>local</groupId>
+            <artifactId>quadtree</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 
     <repositories>
