@@ -1,4 +1,4 @@
-package zadanie2;
+package s1t2.loadData;
 
 import dataStructures.common.Comparable;
 import dataStructures.common.QuadKey;

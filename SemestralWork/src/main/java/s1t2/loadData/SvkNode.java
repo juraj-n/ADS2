@@ -1,4 +1,4 @@
-package zadanie2;
+package s1t2.loadData;
 
 public class SvkNode {
     private final String id;
