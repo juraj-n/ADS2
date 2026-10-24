@@ -8,7 +8,7 @@ import s1t2.otherTrees.kd.TesterOschrenkKD;
 import s1t2.otherTrees.qt.TesterVarunpantQT;
 
 public class StructuresTestWithData {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         var nodes = SvkNodeReader.loadSvkNodes("data/S1/slovakia_nodes.csv");
         var areas = SvkNodeReader.loadSvkNodesAreas("data/S1/testovacie_oblasti.csv");
 
