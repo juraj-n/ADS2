@@ -6,4 +6,4 @@ Implementation of data structures in Java
 - [varunpant](https://github.com/varunpant/Quadtree/tree/master)
 
 ## KD Trees
-- [KDTree_oschrenk](https://github.com/oschrenk/kd-tree)
+- [oschrenk](https://github.com/oschrenk/kd-tree)

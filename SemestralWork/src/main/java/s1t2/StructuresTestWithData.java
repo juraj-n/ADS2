@@ -16,21 +16,9 @@ public class StructuresTestWithData {
         TesterVarunpantQT.insertNodes(nodes);
         TesterVarunpantQT.findAreas(areas);
 
-        //
-        //
-
-        //
-        //
-
         // Other KDTrees
         TesterOschrenkKD.insertNodes(nodes);
         TesterOschrenkKD.findAreas(areas);
-
-        //
-        //
-
-        //
-        //
 
         // My QuadTree
         TesterQT.insertNodes(nodes);

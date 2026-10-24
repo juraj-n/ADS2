@@ -56,12 +56,16 @@ public class KDTreeTest extends TestConstatns {
             this.insertRandomKeys(tree, insItems);
         }
 
-        Comparable[] minKeys = {new KDDouble(0), new KDDouble(0), new KDDouble(0)};
-        Comparable[] maxKeys = {new KDDouble(100), new KDDouble(100), new KDDouble(100)};
+        Comparable[] minKeys = new Comparable[this.K_DIM];
+        Comparable[] maxKeys = new Comparable[this.K_DIM];
+        for (int i = 0; i < this.K_DIM; i++) {
+            minKeys[i] = new KDDouble(0);
+            maxKeys[i] = new KDDouble(this.WORLD_SIZE);
+        }
         LinkedList<KDItem> found = tree.find(minKeys, maxKeys);
 
-        assertEquals(insItems.size(), found.size(), "Seed: " + this.seed);
-        assertTrue(found.containsAll(insItems), "Seed: " + this.seed);
+        assertEquals(insItems.size(), found.size());
+        assertTrue(found.containsAll(insItems));
     }
     private void insertRandomKeys(KDTree<KDItem> tree, List<KDItem> insItems) {
         KDDouble[] keys = new KDDouble[K_DIM];
@@ -103,8 +107,8 @@ public class KDTreeTest extends TestConstatns {
                     })
                     .collect(Collectors.toCollection(LinkedList::new));
 
-            assertEquals(expected.size(), found.size(), "Seed: " + this.seed);
-            assertTrue(found.containsAll(expected), "Seed: " + this.seed);
+            assertEquals(expected.size(), found.size());
+            assertTrue(found.containsAll(expected));
         }
     }
 }
