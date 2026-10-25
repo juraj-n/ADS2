@@ -22,7 +22,7 @@ public class TesterOschrenkKD {
     public static void findAreas(List<SvkNodesArea> areas) {
         for (var area : areas) {
             try {
-                tree.range(new double[] {area.getMinLat(), area.getMaxLat()}, new double[] {area.getMaxLat(), area.getMaxLon()});
+                tree.range(new double[] {area.getMinLat(), area.getMinLon()}, new double[] {area.getMaxLat(), area.getMaxLon()});
             } catch (KeySizeException ksex) {
                 System.out.println("[ERROR] " + ksex.getMessage());
             }
