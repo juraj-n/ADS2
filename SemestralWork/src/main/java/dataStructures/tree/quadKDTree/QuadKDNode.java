@@ -55,7 +55,7 @@ public class QuadKDNode<T> {
     public boolean equalKeys(QuadKey xKey, QuadKey yKey) {
         var found = this._data.find(new QuadKey[] {xKey, yKey});
 
-        return found.isEmpty();
+        return !found.isEmpty();
     }
     public boolean isLeaf() {
         for (QuadKDNode<T> son : this._sons) {
