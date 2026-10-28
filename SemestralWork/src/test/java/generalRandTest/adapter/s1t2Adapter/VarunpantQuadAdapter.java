@@ -3,8 +3,6 @@ package generalRandTest.adapter.s1t2Adapter;
 import com.github.varunpant.quadtree.QuadTree;
 import generalRandTest.adapter.TreeAdapter;
 import generalRandTest.misc.TestConstants;
-import generalRandTest.misc.TestDouble;
-import generalRandTest.misc.TestItem;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -20,7 +18,7 @@ public class VarunpantQuadAdapter<T> implements TreeAdapter<T> {
     }
     @Override
     public List<T> find(double[] minKeys, double[] maxKeys) {
-        var points = tree.searchWithin(minKeys[0], minKeys[1], maxKeys[0], maxKeys[1]);
+        var points = tree.searchIntersect(minKeys[0], minKeys[1], maxKeys[0], maxKeys[1]);
         List<T> found = new LinkedList<>();
         for (var point : points) {
             found.add(point.getValue());
