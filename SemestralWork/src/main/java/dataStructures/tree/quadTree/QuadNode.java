@@ -53,9 +53,8 @@ public class QuadNode<T> {
 
     public boolean equalKeys(QuadKey xKey, QuadKey yKey) {
         for (var data : this._data) {
-            if (data.xKey() == xKey && data.yKey() == yKey) {
+            if (data.xKey().compare(xKey) == 0 && data.yKey().compare(yKey) == 0)
                 return true;
-            }
         }
         return false;
     }
