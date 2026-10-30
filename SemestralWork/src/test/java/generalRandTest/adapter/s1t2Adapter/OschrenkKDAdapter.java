@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class OschrenkKDAdapter<T> implements TreeAdapter<T> {
-    KDTree<T> tree = new KDTree<>(TestConstants.K_DIM);
+    KDTree<T> tree = new KDTree<>(TestConstants.DIM);
     @Override
     public boolean insert(double[] keys, T value) {
         try {

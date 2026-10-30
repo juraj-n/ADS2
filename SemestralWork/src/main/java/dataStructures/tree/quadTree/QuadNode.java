@@ -37,7 +37,7 @@ public class QuadNode<T> {
                 return 0;
             }
         } else { // EAST
-            if (yKey.compare(yHalf) == -1) { // SOUTH
+            if (yKey.compare(yHalf) <= 0) { // SOUTH
                 return 3;
             } else { // NORTH
                 return 1;

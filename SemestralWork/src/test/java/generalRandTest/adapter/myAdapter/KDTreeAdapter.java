@@ -8,11 +8,11 @@ import generalRandTest.misc.TestDouble;
 import java.util.List;
 
 public class KDTreeAdapter<T> implements TreeAdapter<T> {
-    private final KDTree<T> tree = new KDTree<>(TestConstants.K_DIM);
+    private final KDTree<T> tree = new KDTree<>(TestConstants.DIM);
     @Override
     public boolean insert(double[] keys, T value) {
-        TestDouble[] kdKeys = new TestDouble[TestConstants.K_DIM];
-        for (int i = 0; i < TestConstants.K_DIM; i++) {
+        TestDouble[] kdKeys = new TestDouble[TestConstants.DIM];
+        for (int i = 0; i < TestConstants.DIM; i++) {
             kdKeys[i] = new TestDouble(keys[i]);
         }
 
@@ -20,9 +20,9 @@ public class KDTreeAdapter<T> implements TreeAdapter<T> {
     }
     @Override
     public List<T> find(double[] minKeys, double[] maxKeys) {
-        TestDouble[] kdMinKeys = new TestDouble[TestConstants.K_DIM];
-        TestDouble[] kdMaxKeys = new TestDouble[TestConstants.K_DIM];
-        for (int i = 0; i < TestConstants.K_DIM; i++) {
+        TestDouble[] kdMinKeys = new TestDouble[TestConstants.DIM];
+        TestDouble[] kdMaxKeys = new TestDouble[TestConstants.DIM];
+        for (int i = 0; i < TestConstants.DIM; i++) {
             kdMinKeys[i] = new TestDouble(minKeys[i]);
             kdMaxKeys[i] = new TestDouble(maxKeys[i]);
         }
