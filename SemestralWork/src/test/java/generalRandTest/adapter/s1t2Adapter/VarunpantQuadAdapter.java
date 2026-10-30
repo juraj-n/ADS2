@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class VarunpantQuadAdapter<T> implements TreeAdapter<T> {
-    QuadTree<T> tree = new QuadTree<>(0, 0, TestConstants.WORLD_SIZE, TestConstants.WORLD_SIZE);
+    private final QuadTree<T> tree = new QuadTree<>(0, 0, TestConstants.WORLD_SIZE, TestConstants.WORLD_SIZE);
     @Override
     public boolean insert(double[] keys, T value) {
         int sizeBefore = tree.getCount();

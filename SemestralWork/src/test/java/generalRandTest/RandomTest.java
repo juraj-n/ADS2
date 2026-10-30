@@ -2,6 +2,7 @@ package generalRandTest;
 
 import generalRandTest.adapter.myAdapter.QuadTreeAdapter;
 import generalRandTest.adapter.TreeAdapter;
+import generalRandTest.adapter.s1t2Adapter.TzaeschkeKDAdapter;
 import generalRandTest.misc.TestConstants;
 import generalRandTest.misc.TestItem;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,10 +22,11 @@ public class RandomTest {
     private final Random generator = new Random(this.seed);
 
     // private final KDTreeAdapter<TestiItem> tree = new KDTreeAdapter<>();
-     private final QuadTreeAdapter<TestItem> tree = new QuadTreeAdapter<>();
+    // private final QuadTreeAdapter<TestItem> tree = new QuadTreeAdapter<>();
     // private final QuadKDTreeAdapter<TestItem> tree = new QuadKDTreeAdapter<>();
 
     // private final OschrenkKDAdapter<TestItem> tree = new OschrenkKDAdapter<>();
+    private final TzaeschkeKDAdapter<TestItem> tree = new TzaeschkeKDAdapter<>();
     // private final VarunpantQuadAdapter<TestItem> tree = new VarunpantQuadAdapter<>();
 
     @BeforeEach

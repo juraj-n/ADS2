@@ -7,3 +7,4 @@ Implementation of data structures in Java
 
 ## KD Trees
 - [oschrenk](https://github.com/oschrenk/kd-tree)
+- [Tzaeschke](https://github.com/tzaeschke/tinspin-indexes/tree/master)

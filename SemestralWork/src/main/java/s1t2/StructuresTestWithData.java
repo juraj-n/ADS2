@@ -5,6 +5,7 @@ import s1t2.myTrees.TesterKDT;
 import s1t2.myTrees.TesterQKDT;
 import s1t2.myTrees.TesterQT;
 import s1t2.otherTrees.kd.TesterOschrenkKD;
+import s1t2.otherTrees.kd.TesterTzaeschkeKD;
 import s1t2.otherTrees.qt.TesterVarunpantQT;
 
 public class StructuresTestWithData {
@@ -13,23 +14,26 @@ public class StructuresTestWithData {
         var areas = SvkNodeReader.loadSvkNodesAreas("data/S1/testovacie_oblasti.csv");
 
         // Other QuadTrees
-        TesterVarunpantQT.insertNodes(nodes);
-        TesterVarunpantQT.findAreas(areas);
+        //TesterVarunpantQT.insertNodes(nodes);
+        //TesterVarunpantQT.findAreas(areas);
 
         // Other KDTrees
-        TesterOschrenkKD.insertNodes(nodes);
-        TesterOschrenkKD.findAreas(areas);
+        //TesterOschrenkKD.insertNodes(nodes);
+        //TesterOschrenkKD.findAreas(areas);
+
+        TesterTzaeschkeKD.insertNodes(nodes);
+        TesterTzaeschkeKD.findAreas(areas);
 
         // My QuadTree
-        TesterQT.insertNodes(nodes);
-        TesterQT.findAreas(areas);
+        //TesterQT.insertNodes(nodes);
+        //TesterQT.findAreas(areas);
 
         // My KDTree
-        TesterKDT.insertNodes(nodes);
-        TesterKDT.findAreas(areas);
+        //TesterKDT.insertNodes(nodes);
+        //TesterKDT.findAreas(areas);
 
         // My QuadKDTree
-        TesterQKDT.insertNodes(nodes);
-        TesterQKDT.findAreas(areas);
+        //TesterQKDT.insertNodes(nodes);
+        //TesterQKDT.findAreas(areas);
     }
 }

@@ -8,7 +8,7 @@ import generalRandTest.misc.TestDouble;
 import java.util.List;
 
 public class QuadKDTreeAdapter<T> implements TreeAdapter<T> {
-    QuadKDTree<T> tree = new QuadKDTree<>(
+    private final QuadKDTree<T> tree = new QuadKDTree<>(
             new TestDouble(0),
             new TestDouble(TestConstants.WORLD_SIZE),
             new TestDouble(0),
