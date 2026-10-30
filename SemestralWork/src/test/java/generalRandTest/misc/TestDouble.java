@@ -18,6 +18,11 @@ public class TestDouble implements QuadKey {
     }
     @Override
     public int compare(Comparable other) {
-        return Double.compare(this.value, ((TestDouble)other).value);
+        if (this.value < ((TestDouble)other).value)
+            return -1;
+        else if (this.value > ((TestDouble)other).value)
+            return 1;
+        else
+            return 0;
     }
 }
