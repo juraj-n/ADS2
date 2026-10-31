@@ -21,8 +21,8 @@ public class StructuresTestWithData {
         //TesterOschrenkKD.insertNodes(nodes);
         //TesterOschrenkKD.findAreas(areas);
 
-        TesterTzaeschkeKD.insertNodes(nodes);
-        TesterTzaeschkeKD.findAreas(areas);
+        //TesterTzaeschkeKD.insertNodes(nodes);
+        //TesterTzaeschkeKD.findAreas(areas);
 
         // My QuadTree
         //TesterQT.insertNodes(nodes);

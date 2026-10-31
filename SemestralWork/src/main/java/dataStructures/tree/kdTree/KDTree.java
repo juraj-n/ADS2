@@ -55,7 +55,7 @@ public class KDTree<T> {
         return this.find(keys, keys);
     }
     /**
-     * Kód vytvorený pomocou AI, zdokumentované v kapitole 1.
+     * Kód vytvorený pomocou AI, zdokumentované v kapitole 1 a kapitole 4.
      * */
     public LinkedList<T> find(Comparable[] minKeys, Comparable[] maxKeys) {
         // Exchange keys if min > max
@@ -84,16 +84,19 @@ public class KDTree<T> {
             int depth = depthStack.pop();
             int keyIndex = depth % this._k;
 
-            // Left Subtree MAX < Key
-            if (maxKeys[keyIndex].compare(current.getKey(keyIndex)) == -1) {
+            // Accepting whole subtree: lies completely inside
+            Comparable currentKey = current.getKey(keyIndex);
+
+            // Left Subtree MAX < Key - Reject right subtree
+            if (maxKeys[keyIndex].compare(currentKey) == -1) {
                 KDNode<T> leftSon = current.getLeftSon();
                 if (leftSon != null) {
                     nodeStack.push(leftSon);
                     depthStack.push(depth + 1);
                 }
             }
-            // Right Subtree MIN > Key
-            else if (minKeys[keyIndex].compare(current.getKey(keyIndex)) == 1) {
+            // Right Subtree MIN > Key - Reject left subtree
+            else if (minKeys[keyIndex].compare(currentKey) == 1) {
                 KDNode<T> rightSon = current.getRightSon();
                 if (rightSon != null) {
                     nodeStack.push(rightSon);
