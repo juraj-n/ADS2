@@ -1,10 +1,12 @@
 package generalRandTest;
 
+import generalRandTest.adapter.myAdapter.KDTreeAdapter;
 import generalRandTest.adapter.myAdapter.QuadKDTreeAdapter;
 import generalRandTest.adapter.myAdapter.QuadTreeAdapter;
 import generalRandTest.adapter.TreeAdapter;
 import generalRandTest.adapter.s1t2Adapter.OschrenkKDAdapter;
 import generalRandTest.adapter.s1t2Adapter.TzaeschkeKDAdapter;
+import generalRandTest.adapter.s1t2Adapter.VarunpantQuadAdapter;
 import generalRandTest.misc.TestConstants;
 import generalRandTest.misc.TestItem;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,13 +24,13 @@ public class RandomTest {
     private final long seed = System.nanoTime();
     private final Random generator = new Random(this.seed);
 
-    // private final KDTreeAdapter<TestiItem> tree = new KDTreeAdapter<>();
-    // private final QuadTreeAdapter<TestItem> tree = new QuadTreeAdapter<>();
-    // private final QuadKDTreeAdapter<TestItem> tree = new QuadKDTreeAdapter<>();
+    //private final KDTreeAdapter<TestItem> tree = new KDTreeAdapter<>();
+    //private final QuadTreeAdapter<TestItem> tree = new QuadTreeAdapter<>();
+    //private final QuadKDTreeAdapter<TestItem> tree = new QuadKDTreeAdapter<>();
 
-    private final OschrenkKDAdapter<TestItem> tree = new OschrenkKDAdapter<>();
-    // private final TzaeschkeKDAdapter<TestItem> tree = new TzaeschkeKDAdapter<>();
-    // private final VarunpantQuadAdapter<TestItem> tree = new VarunpantQuadAdapter<>();
+    //private final OschrenkKDAdapter<TestItem> tree = new OschrenkKDAdapter<>();
+    //private final TzaeschkeKDAdapter<TestItem> tree = new TzaeschkeKDAdapter<>();
+    private final VarunpantQuadAdapter<TestItem> tree = new VarunpantQuadAdapter<>();
 
     @BeforeEach
     public void consolePrint() {
@@ -110,7 +112,7 @@ public class RandomTest {
     private void insertRandomKeys(TreeAdapter<TestItem> tree, List<TestItem> inserted) {
         double[] keys = new double[TestConstants.DIM];
         for (int i = 0; i < TestConstants.DIM; i++) {
-            keys[i] = // generator.nextInt(TestConstants.WORLD_SIZE);
+            keys[i] = //generator.nextInt(TestConstants.WORLD_SIZE);
                 generator.nextDouble(TestConstants.WORLD_SIZE);
         }
         TestItem data = new TestItem(keys, generator.nextDouble(TestConstants.WORLD_SIZE));
