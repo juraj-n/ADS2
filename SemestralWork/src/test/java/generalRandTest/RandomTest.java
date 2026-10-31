@@ -4,6 +4,7 @@ import generalRandTest.adapter.myAdapter.KDTreeAdapter;
 import generalRandTest.adapter.myAdapter.QuadKDTreeAdapter;
 import generalRandTest.adapter.myAdapter.QuadTreeAdapter;
 import generalRandTest.adapter.TreeAdapter;
+import generalRandTest.adapter.s1t2Adapter.GeoassistKDAdapter;
 import generalRandTest.adapter.s1t2Adapter.OschrenkKDAdapter;
 import generalRandTest.adapter.s1t2Adapter.TzaeschkeKDAdapter;
 import generalRandTest.adapter.s1t2Adapter.VarunpantQuadAdapter;
@@ -24,13 +25,14 @@ public class RandomTest {
     private final long seed = System.nanoTime();
     private final Random generator = new Random(this.seed);
 
-    //private final KDTreeAdapter<TestItem> tree = new KDTreeAdapter<>();
+    private final KDTreeAdapter<TestItem> tree = new KDTreeAdapter<>();
     //private final QuadTreeAdapter<TestItem> tree = new QuadTreeAdapter<>();
     //private final QuadKDTreeAdapter<TestItem> tree = new QuadKDTreeAdapter<>();
 
     //private final OschrenkKDAdapter<TestItem> tree = new OschrenkKDAdapter<>();
     //private final TzaeschkeKDAdapter<TestItem> tree = new TzaeschkeKDAdapter<>();
-    private final VarunpantQuadAdapter<TestItem> tree = new VarunpantQuadAdapter<>();
+    //private final GeoassistKDAdapter<TestItem> tree = new GeoassistKDAdapter<>(); // CHANGE WORLD SIZE TO AT MOST 79
+    //private final VarunpantQuadAdapter<TestItem> tree = new VarunpantQuadAdapter<>();
 
     @BeforeEach
     public void consolePrint() {

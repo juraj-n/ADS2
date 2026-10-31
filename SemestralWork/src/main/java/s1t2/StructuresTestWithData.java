@@ -4,6 +4,7 @@ import s1t2.loadData.SvkNodeReader;
 import s1t2.myTrees.TesterKDT;
 import s1t2.myTrees.TesterQKDT;
 import s1t2.myTrees.TesterQT;
+import s1t2.otherTrees.kd.TesterGeoassistKD;
 import s1t2.otherTrees.kd.TesterOschrenkKD;
 import s1t2.otherTrees.kd.TesterTzaeschkeKD;
 import s1t2.otherTrees.qt.TesterVarunpantQT;
@@ -23,6 +24,9 @@ public class StructuresTestWithData {
 
         //TesterTzaeschkeKD.insertNodes(nodes);
         //TesterTzaeschkeKD.findAreas(areas);
+
+        TesterGeoassistKD.insertNodes(nodes);
+        TesterGeoassistKD.findAreas(areas);
 
         // My QuadTree
         //TesterQT.insertNodes(nodes);
