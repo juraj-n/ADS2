@@ -31,4 +31,8 @@ public class QuadKDTreeAdapter<T> implements TreeAdapter<T> {
 
         return tree.find(xMin, xMax, yMin, yMax);
     }
+    @Override
+    public void delete(double[] keys) {
+
+    }
 }

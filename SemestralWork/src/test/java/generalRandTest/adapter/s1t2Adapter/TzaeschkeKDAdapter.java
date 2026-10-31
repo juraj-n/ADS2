@@ -16,7 +16,6 @@ public class TzaeschkeKDAdapter<T> implements TreeAdapter<T> {
 
         return tree.size() > sizeBefore;
     }
-
     @Override
     public List<T> find(double[] minKeys, double[] maxKeys) {
         List<T> found = new LinkedList<>();
@@ -26,5 +25,9 @@ public class TzaeschkeKDAdapter<T> implements TreeAdapter<T> {
         }
 
         return found;
+    }
+    @Override
+    public void delete(double[] keys) {
+        tree.remove(keys);
     }
 }

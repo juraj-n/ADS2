@@ -13,8 +13,7 @@ public class OschrenkKDAdapter<T> implements TreeAdapter<T> {
     public boolean insert(double[] keys, T value) {
         try {
             tree.insert(keys, value);
-        } catch (Exception ex) {
-            return false;
+        } catch (Exception ignored) {
         }
 
         return true;
@@ -25,6 +24,14 @@ public class OschrenkKDAdapter<T> implements TreeAdapter<T> {
             return tree.range(minKeys, maxKeys);
         } catch (Exception ex) {
             return new LinkedList<>();
+        }
+    }
+    @Override
+    public void delete(double[] keys) {
+        try {
+            tree.delete(keys);
+        } catch (Exception ex) {
+            System.out.println("[ERROR] " + ex.getMessage());
         }
     }
 }

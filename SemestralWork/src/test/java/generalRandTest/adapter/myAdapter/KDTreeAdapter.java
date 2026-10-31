@@ -29,4 +29,8 @@ public class KDTreeAdapter<T> implements TreeAdapter<T> {
 
         return tree.find(kdMinKeys, kdMaxKeys);
     }
+    @Override
+    public void delete(double[] keys) {
+
+    }
 }

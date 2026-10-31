@@ -9,6 +9,7 @@ import java.util.List;
 
 public class VarunpantQuadAdapter<T> implements TreeAdapter<T> {
     private final QuadTree<T> tree = new QuadTree<>(0, 0, TestConstants.WORLD_SIZE, TestConstants.WORLD_SIZE);
+
     @Override
     public boolean insert(double[] keys, T value) {
         int sizeBefore = tree.getCount();
@@ -25,5 +26,9 @@ public class VarunpantQuadAdapter<T> implements TreeAdapter<T> {
         }
 
         return found;
+    }
+    @Override
+    public void delete(double[] keys) {
+        tree.remove(keys[0], keys[1]);
     }
 }

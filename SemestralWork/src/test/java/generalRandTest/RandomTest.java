@@ -1,7 +1,9 @@
 package generalRandTest;
 
+import generalRandTest.adapter.myAdapter.QuadKDTreeAdapter;
 import generalRandTest.adapter.myAdapter.QuadTreeAdapter;
 import generalRandTest.adapter.TreeAdapter;
+import generalRandTest.adapter.s1t2Adapter.OschrenkKDAdapter;
 import generalRandTest.adapter.s1t2Adapter.TzaeschkeKDAdapter;
 import generalRandTest.misc.TestConstants;
 import generalRandTest.misc.TestItem;
@@ -14,8 +16,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RandomTest {
     private final long seed = System.nanoTime();
@@ -25,8 +26,8 @@ public class RandomTest {
     // private final QuadTreeAdapter<TestItem> tree = new QuadTreeAdapter<>();
     // private final QuadKDTreeAdapter<TestItem> tree = new QuadKDTreeAdapter<>();
 
-    // private final OschrenkKDAdapter<TestItem> tree = new OschrenkKDAdapter<>();
-    private final TzaeschkeKDAdapter<TestItem> tree = new TzaeschkeKDAdapter<>();
+    private final OschrenkKDAdapter<TestItem> tree = new OschrenkKDAdapter<>();
+    // private final TzaeschkeKDAdapter<TestItem> tree = new TzaeschkeKDAdapter<>();
     // private final VarunpantQuadAdapter<TestItem> tree = new VarunpantQuadAdapter<>();
 
     @BeforeEach
@@ -73,14 +74,44 @@ public class RandomTest {
             maxKeys[i] = TestConstants.WORLD_SIZE;
         }
         var found = tree.find(minKeys, maxKeys);
-        assertEquals(inserted.size(), found.size(), "[" + tree.getClass().getSimpleName() + "] expected size does not match found size!");
-        assertTrue(found.containsAll(inserted), "[" + tree.getClass().getSimpleName() + "] found does not contain expected!");
+        assertEquals(inserted.size(), found.size(), "Expected size does not match found size!");
+        assertTrue(found.containsAll(inserted), "Found does not contain expected!");
+    }
+    @Test
+    public void testDelete() {
+        // Insert random items into tree
+        List<TestItem> inserted = new ArrayList<>(TestConstants.NUMBER_OF_OPERATIONS);
+        for (int i = 0; i < TestConstants.NUMBER_OF_OPERATIONS; i++) {
+            insertRandomKeys(tree, inserted);
+        }
+        // Delete items from tree
+        List<TestItem> deleted = new ArrayList<>(TestConstants.NUMBER_OF_DELETES);
+        for (int i = 0; i < TestConstants.NUMBER_OF_DELETES; i++) {
+            TestItem toDelete = inserted.remove(generator.nextInt(inserted.size()));
+
+            tree.delete(toDelete.keys);
+            deleted.add(toDelete);
+        }
+        // Find remaining items in tree
+        double[] minKeys = new double[TestConstants.DIM];
+        double[] maxKeys = new double[TestConstants.DIM];
+        for (int i = 0; i < TestConstants.DIM; i++) {
+            minKeys[i] = 0;
+            maxKeys[i] = TestConstants.WORLD_SIZE;
+        }
+        var found = tree.find(minKeys, maxKeys);
+
+        assertEquals(inserted.size(), found.size(), "Size of tree doesn't match expected!");
+        assertTrue(found.containsAll(inserted), "Found does not contain expected!");
+        for (var item : deleted)
+            assertFalse(found.contains(item), "Found countains deleted item: " + item);
     }
 
     private void insertRandomKeys(TreeAdapter<TestItem> tree, List<TestItem> inserted) {
         double[] keys = new double[TestConstants.DIM];
         for (int i = 0; i < TestConstants.DIM; i++) {
-            keys[i] = generator.nextInt(TestConstants.WORLD_SIZE); // nextDouble for no duplicate keys
+            keys[i] = // generator.nextInt(TestConstants.WORLD_SIZE);
+                generator.nextDouble(TestConstants.WORLD_SIZE);
         }
         TestItem data = new TestItem(keys, generator.nextDouble(TestConstants.WORLD_SIZE));
 
@@ -108,8 +139,8 @@ public class RandomTest {
                     return true;
                 })
                 .collect(Collectors.toCollection(LinkedList::new));
-        // Asserts
-        assertEquals(expected.size(), found.size(), "[" + tree.getClass().getSimpleName() + "] expected size does not match found size!");
-        assertTrue(found.containsAll(expected), "[" + tree.getClass().getSimpleName() + "] found does not contain expected!");
+
+        assertEquals(expected.size(), found.size(), "Expected size does not match found size!");
+        assertTrue(found.containsAll(expected), "Found does not contain expected!");
     }
 }
