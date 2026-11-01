@@ -19,8 +19,8 @@ public class StructuresTestWithData {
         //TesterVarunpantQT.insertNodes(nodes);
         //TesterVarunpantQT.findAreas(areas);
 
-        TesterJotschiQT.insertNodes(nodes);
-        TesterJotschiQT.additionalTest(nodes);
+        //TesterJotschiQT.insertNodes(nodes);
+        //TesterJotschiQT.additionalTest(nodes);
 
         // Other KDTrees
         //TesterOschrenkKD.insertNodes(nodes);
