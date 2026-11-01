@@ -4,10 +4,7 @@ import generalRandTest.adapter.myAdapter.KDTreeAdapter;
 import generalRandTest.adapter.myAdapter.QuadKDTreeAdapter;
 import generalRandTest.adapter.myAdapter.QuadTreeAdapter;
 import generalRandTest.adapter.TreeAdapter;
-import generalRandTest.adapter.s1t2Adapter.GeoassistKDAdapter;
-import generalRandTest.adapter.s1t2Adapter.OschrenkKDAdapter;
-import generalRandTest.adapter.s1t2Adapter.TzaeschkeKDAdapter;
-import generalRandTest.adapter.s1t2Adapter.VarunpantQuadAdapter;
+import generalRandTest.adapter.s1t2Adapter.*;
 import generalRandTest.misc.TestConstants;
 import generalRandTest.misc.TestItem;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,6 +30,7 @@ public class RandomTest {
     //private final TzaeschkeKDAdapter<TestItem> tree = new TzaeschkeKDAdapter<>();
     //private final GeoassistKDAdapter<TestItem> tree = new GeoassistKDAdapter<>(); // CHANGE WORLD SIZE TO AT MOST 79
     //private final VarunpantQuadAdapter<TestItem> tree = new VarunpantQuadAdapter<>();
+    //private final TzaeschkeQuadAdapter<TestItem> tree = new TzaeschkeQuadAdapter<>();
 
     @BeforeEach
     public void consolePrint() {
@@ -114,8 +112,8 @@ public class RandomTest {
     private void insertRandomKeys(TreeAdapter<TestItem> tree, List<TestItem> inserted) {
         double[] keys = new double[TestConstants.DIM];
         for (int i = 0; i < TestConstants.DIM; i++) {
-            keys[i] = //generator.nextInt(TestConstants.WORLD_SIZE);
-                generator.nextDouble(TestConstants.WORLD_SIZE);
+            keys[i] = generator.nextInt(TestConstants.WORLD_SIZE);
+                //generator.nextDouble(TestConstants.WORLD_SIZE);
         }
         TestItem data = new TestItem(keys, generator.nextDouble(TestConstants.WORLD_SIZE));
 

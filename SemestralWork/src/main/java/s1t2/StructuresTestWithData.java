@@ -8,6 +8,7 @@ import s1t2.otherTrees.kd.TesterGeoassistKD;
 import s1t2.otherTrees.kd.TesterOschrenkKD;
 import s1t2.otherTrees.kd.TesterTzaeschkeKD;
 import s1t2.otherTrees.qt.TesterJotschiQT;
+import s1t2.otherTrees.qt.TesterTzaeschkeQT;
 import s1t2.otherTrees.qt.TesterVarunpantQT;
 
 public class StructuresTestWithData {
@@ -21,6 +22,9 @@ public class StructuresTestWithData {
 
         //TesterJotschiQT.insertNodes(nodes);
         //TesterJotschiQT.additionalTest(nodes);
+
+        //TesterTzaeschkeQT.insertNodes(nodes);
+        //TesterTzaeschkeQT.findAreas(areas);
 
         // Other KDTrees
         //TesterOschrenkKD.insertNodes(nodes);

@@ -5,6 +5,7 @@ Implementation of data structures in Java
 ## Quad Trees
 - [varunpant](https://github.com/varunpant/Quadtree/tree/master)
 - [Jotschi](https://github.com/metaloom/JavaQuadTree/tree/master)
+- [Tzaeschke](https://github.com/tzaeschke/tinspin-indexes/tree/master)
 
 ## KD Trees
 - [oschrenk](https://github.com/oschrenk/kd-tree)
