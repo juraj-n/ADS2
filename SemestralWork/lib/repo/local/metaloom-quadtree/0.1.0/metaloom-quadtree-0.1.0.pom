@@ -1,0 +1,64 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>io.metaloom.quadtree</groupId>
+	<artifactId>quadtree</artifactId>
+	<version>0.1.0</version>
+	<packaging>jar</packaging>
+
+	<parent>
+		<groupId>io.metaloom</groupId>
+		<artifactId>maven-parent</artifactId>
+		<version>1.0.0</version>
+	</parent>
+
+	<name>quadtree</name>
+	<url>https://github.com/metaloom/JavaQuadTree</url>
+	<description>A very basic quad tree implementation</description>
+	<inceptionYear>2011</inceptionYear>
+
+	<scm>
+		<connection>scm:git:git@github.com:metaloom/JavaQuadTree.git</connection>
+		<developerConnection>scm:git:git@github.com:metaloom/JavaQuadTree.git</developerConnection>
+		<url>https://github.com/metaloom/JavaQuadTree</url>
+		<tag>HEAD</tag>
+	</scm>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.github.repository>metaloom/JavaQuadTree</project.github.repository>
+	</properties>
+
+	<dependencies>
+		<!-- Logging -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<release>11</release>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

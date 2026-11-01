@@ -7,6 +7,7 @@ import s1t2.myTrees.TesterQT;
 import s1t2.otherTrees.kd.TesterGeoassistKD;
 import s1t2.otherTrees.kd.TesterOschrenkKD;
 import s1t2.otherTrees.kd.TesterTzaeschkeKD;
+import s1t2.otherTrees.qt.TesterJotschiQT;
 import s1t2.otherTrees.qt.TesterVarunpantQT;
 
 public class StructuresTestWithData {
@@ -18,6 +19,9 @@ public class StructuresTestWithData {
         //TesterVarunpantQT.insertNodes(nodes);
         //TesterVarunpantQT.findAreas(areas);
 
+        TesterJotschiQT.insertNodes(nodes);
+        TesterJotschiQT.additionalTest(nodes);
+
         // Other KDTrees
         //TesterOschrenkKD.insertNodes(nodes);
         //TesterOschrenkKD.findAreas(areas);
@@ -25,8 +29,8 @@ public class StructuresTestWithData {
         //TesterTzaeschkeKD.insertNodes(nodes);
         //TesterTzaeschkeKD.findAreas(areas);
 
-        TesterGeoassistKD.insertNodes(nodes);
-        TesterGeoassistKD.findAreas(areas);
+        //TesterGeoassistKD.insertNodes(nodes);
+        //TesterGeoassistKD.findAreas(areas);
 
         // My QuadTree
         //TesterQT.insertNodes(nodes);
