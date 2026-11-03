@@ -9,6 +9,9 @@ public class KDTree<T> {
     private KDNode<T> _root;
 
     public KDTree(int k) {
+        if (k < 2)
+            throw new IllegalArgumentException("K must be at least 2!");
+        
         this._k = k;
         this._root = null;
     }
