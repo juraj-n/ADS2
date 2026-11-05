@@ -8,23 +8,21 @@ import poiApp.model.adapter.QuadKDTreeAdapter;
 import poiApp.model.adapter.QuadTreeAdapter;
 import poiApp.model.adapter.TreeAdapter;
 import poiApp.view.dialogs.CreatePoiDialog;
+import poiApp.view.dialogs.SaveDialog;
 import poiApp.view.views.MainView;
 import poiApp.view.views.SelectFileView;
 import poiApp.view.views.SelectTreeView;
 import poiApp.view.PoiAppWindow;
 
 import javax.swing.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -71,7 +69,52 @@ public class PoiAppPresenter {
         this.showMainView(dtos);
     }
     private void onSaveSelected() {
+        SaveDialog dialog = new SaveDialog(this.window.getFrame());
+        dialog.getSubmitBtn().addActionListener(e -> this.onSaveFormSubmitted(dialog, dialog.getName()));
+        dialog.show();
+    }
+    private void onSaveFormSubmitted(SaveDialog dialog, String fileName) {
+        String dateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy_HH-mm-ss"));
+        if (fileName == null || fileName.isBlank()) {
+            dialog.showError("Názov súboru nesmie byť prázdny!");
+            return;
+        }
+        if (fileName.length() > 30) {
+            dialog.showError("Názov nesmie obsahovať viac ako 30 znakov!");
+            return;
+        }
+        fileName = fileName + "-" + dateTime;
+
         List<Poi> all = model.findAll();
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("data/S1T3/" + fileName + ".csv"))) {
+            bw.write("id;name;description;lat;lon;address;created_at;updated_at");
+            bw.newLine();
+            for (var poi : all) {
+                if (!poi.isDeleted()) {
+                    bw.write(poi.getId() != null ? poi.getId() : "");
+                    bw.write(";");
+                    bw.write(poi.getName() != null ? poi.getName() : "");
+                    bw.write(";");
+                    bw.write(poi.getDescription() != null ? poi.getDescription() : "");
+                    bw.write(";");
+                    bw.write(String.valueOf(poi.getLatitude()));
+                    bw.write(";");
+                    bw.write(String.valueOf(poi.getLongitude()));
+                    bw.write(";");
+                    bw.write(poi.getAddress() != null ? poi.getAddress() : "");
+                    bw.write(";");
+                    bw.write(poi.getCreatedAt() != null ? poi.getCreatedAt().toString() : "");
+                    bw.write(";");
+                    bw.write(poi.getUpdatedAt() != null ? poi.getUpdatedAt().toString() : "");
+
+                    bw.newLine();
+                }
+            }
+        } catch (IOException ioex) {
+            System.out.println(ioex.getMessage());
+        }
+
+        dialog.close();
     }
 
     private void onCreatePoiSelected() {
@@ -82,7 +125,7 @@ public class PoiAppPresenter {
                 dialog.getDescription(),
                 dialog.getAddress(),
                 dialog.getLatitude(),
-                dialog.getLongidute()));
+                dialog.getLongitude()));
         dialog.show();
     }
     private void onCreateFromSubmitted(CreatePoiDialog dialog, String name, String description, String address, String lat, String lon) {
@@ -124,7 +167,9 @@ public class PoiAppPresenter {
                 .setDescription(description)
                 .setAddress(address)
                 .setLatitude(latitude)
-                .setLongitude(longitude);
+                .setLongitude(longitude)
+                .setCreatedAt(LocalDateTime.now())
+                .setUpdatedAt(LocalDateTime.now());
 
         model.insert(poi);
 

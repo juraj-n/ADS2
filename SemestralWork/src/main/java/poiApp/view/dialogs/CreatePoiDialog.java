@@ -13,21 +13,21 @@ public class CreatePoiDialog extends FormDialog {
     public CreatePoiDialog(JFrame frame) {
         super(frame, "Vytvoriť Nový POI");
 
-        JPanel formFields = new JPanel(new GridLayout(0, 2, 5, 5));
-        formFields.add(new JLabel("Názov: "));
-        formFields.add(this.nameField);
-        formFields.add(new JLabel("Popis: "));
-        formFields.add(this.descField);
-        formFields.add(new JLabel("Adresa: "));
-        formFields.add(this.addressField);
-        formFields.add(new JLabel("Geo. Šírka: "));
-        formFields.add(this.latField);
-        formFields.add(new JLabel("Geo. Dĺžka: "));
-        formFields.add(this.lonField);
-        formFields.add(this.getCancelBtn());
-        formFields.add(this.getSubmitBtn());
+        JPanel form = new JPanel(new GridLayout(0, 2, 5, 5));
+        form.add(new JLabel("Názov: "));
+        form.add(this.nameField);
+        form.add(new JLabel("Popis: "));
+        form.add(this.descField);
+        form.add(new JLabel("Adresa: "));
+        form.add(this.addressField);
+        form.add(new JLabel("Geo. Šírka: "));
+        form.add(this.latField);
+        form.add(new JLabel("Geo. Dĺžka: "));
+        form.add(this.lonField);
+        form.add(this.getCancelBtn());
+        form.add(this.getSubmitBtn());
 
-        this.addForm(formFields);
+        this.addForm(form);
     }
 
     public String getName() {
@@ -42,7 +42,7 @@ public class CreatePoiDialog extends FormDialog {
     public String getLatitude() {
         return this.latField.getText();
     }
-    public String getLongidute() {
+    public String getLongitude() {
         return this.lonField.getText();
     }
 }
