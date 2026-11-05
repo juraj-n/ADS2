@@ -149,6 +149,7 @@ public class PoiAppPresenter {
             address = "N/A";
         if (address.length() > 20) {
             dialog.showError("Adresa nesmie obsahovať viac ako 20 znakov!");
+            return;
         }
         double latitude, longitude;
         try {
