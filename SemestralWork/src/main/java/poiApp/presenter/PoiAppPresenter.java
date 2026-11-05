@@ -1,23 +1,33 @@
 package poiApp.presenter;
 
 import poiApp.model.Poi;
+import poiApp.model.PoiDto;
 import poiApp.model.PoiModel;
 import poiApp.model.adapter.KDTreeAdapter;
 import poiApp.model.adapter.QuadKDTreeAdapter;
 import poiApp.model.adapter.QuadTreeAdapter;
 import poiApp.model.adapter.TreeAdapter;
-import poiApp.view.MainView;
-import poiApp.view.SelectFileView;
-import poiApp.view.SelectTreeView;
+import poiApp.view.dialogs.CreatePoiDialog;
+import poiApp.view.views.MainView;
+import poiApp.view.views.SelectFileView;
+import poiApp.view.views.SelectTreeView;
 import poiApp.view.PoiAppWindow;
 
 import javax.swing.*;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
 public class PoiAppPresenter {
     private PoiModel model;
@@ -27,13 +37,92 @@ public class PoiAppPresenter {
         this.showSelectTreeView();
     }
 
+    // Other
     private void setView(JPanel panel) {
         this.window.setContent(panel);
     }
-    private void showMainView() {
+
+
+
+    // Main View
+    private void showMainView(List<PoiDto> dtos) {
         MainView view = new MainView();
         this.setView(view.getView());
+
+        view.setPois(dtos, this::onDeleteDtoSelected, this::onEditDtoSelected);
+        // Sidebar action listeners
+        view.getGenerateButton().addActionListener(e -> {});
+        view.getShowAllButton().addActionListener(e -> this.onShowAllSelected());
+        view.getSaveButton().addActionListener(e -> this.onSaveSelected());
+
+        view.getSeachPosButton().addActionListener(e -> {});
+        view.getSearchRadiusButton().addActionListener(e -> {});
+        view.getCreateNewButton().addActionListener(e -> this.onCreatePoiSelected());
+        view.getSearchNameButton().addActionListener(e -> {});
     }
+    private void onDeleteDtoSelected(PoiDto dto) {
+
+    }
+    private void onEditDtoSelected(PoiDto dto) {
+
+    }
+    private void onShowAllSelected() {
+        List<PoiDto> dtos = model.findDtos(new double[]{-90.0, -180.0}, new double[]{90.0, 180.0});
+        this.showMainView(dtos);
+    }
+    private void onSaveSelected() {
+        List<Poi> all = model.findAll();
+    }
+
+    private void onCreatePoiSelected() {
+        CreatePoiDialog dialog = new CreatePoiDialog(window.getFrame());
+        dialog.getSubmitBtn().addActionListener(e -> this.onCreateFromSubmitted(
+                dialog,
+                dialog.getName(),
+                dialog.getDescription(),
+                dialog.getAddress(),
+                dialog.getLatitude(),
+                dialog.getLongidute()));
+        dialog.show();
+    }
+    private void onCreateFromSubmitted(CreatePoiDialog dialog, String name, String description, String address, String lat, String lon) {
+        if (name == null || name.isBlank()) {
+            dialog.showError("Názov nesmie byť prázdny!");
+            return;
+        }
+        if (description == null || description.isBlank()) {
+            dialog.showError("Popis nesmie byť prázdny");
+            return;
+        }
+        if (address == null || address.isBlank())
+            address = "N/A";
+        double latitude, longitude;
+        try {
+            latitude = Double.parseDouble(lat);
+            longitude = Double.parseDouble(lon);
+        } catch (NumberFormatException nfex) {
+            dialog.showError("Nesprávny formát [000.000000]");
+            return;
+        }
+
+        String uuid = String.valueOf(UUID.randomUUID());
+
+        Poi poi = new Poi()
+                .setId(uuid)
+                .setName(name)
+                .setDescription(description)
+                .setAddress(address)
+                .setLatitude(latitude)
+                .setLongitude(longitude);
+
+        model.insert(poi);
+
+        dialog.close();
+    }
+
+
+
+    // Select Tree View
     private void showSelectTreeView() {
         SelectTreeView view = new SelectTreeView();
         this.setView(view.getView());
@@ -42,13 +131,6 @@ public class PoiAppPresenter {
         view.getQuadButton().addActionListener(e -> this.onTreeSelected(new QuadTreeAdapter()));
         view.getQuadKDButton().addActionListener(e -> this.onTreeSelected(new QuadKDTreeAdapter()));
     }
-    private void showSelectFileView() {
-        SelectFileView view = new SelectFileView();
-        this.setView(view.getView());
-
-        view.getButton().addActionListener(e -> this.onFileSelected(null));
-    }
-
     /**
      * Kód vytvorený pomocou AI, zdokumentované v kapitole 3.
      * */
@@ -61,16 +143,69 @@ public class PoiAppPresenter {
         } catch (IOException ignored) {}
 
         if (emptyDataFolder) {
-            this.showMainView();
+            this.showMainView(List.of());
         } else {
             this.showSelectFileView();
         }
     }
-    private void onFileSelected(File fileToLead) {
-        if (fileToLead != null) {
-            // TODO: load data from file
-        } else {
-            this.showMainView();
+
+
+
+    // Select File View
+    private void showSelectFileView() {
+        SelectFileView view = new SelectFileView();
+        this.setView(view.getView());
+
+        view.setFiles(this.loadCsvFiles(), this::onFileSelected);
+        view.getNewButton().addActionListener(e -> this.onFileSelected(null));
+    }
+    private void onFileSelected(String fileToLoad) {
+        if (fileToLoad != null) {
+            // id;name;description;lat;lon;address;created_at;updated_at
+            try (BufferedReader br = new BufferedReader(new FileReader("data/S1T3/" + fileToLoad))) {
+                String line;
+                br.readLine(); // Skips header
+                while ((line = br.readLine()) != null) {
+                    String[] split = line.split(";", -1);
+                    if (split.length != 8)
+                        continue;
+
+                    String id = split[0];
+                    String name = split[1];
+                    String description = split[2];
+                    double lat = Double.parseDouble(split[3]);
+                    double lon = Double.parseDouble(split[4]);
+                    String address = split[5];
+                    LocalDateTime createdAt = LocalDateTime.parse(split[6], DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"));
+                    LocalDateTime updatedAt = LocalDateTime.parse(split[7], DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"));
+
+                    String uuid = String.valueOf(UUID.randomUUID());
+
+                    Poi poi = new Poi()
+                        .setId(uuid)
+                        .setName(name)
+                        .setDescription(description)
+                        .setLatitude(lat)
+                        .setLongitude(lon)
+                        .setAddress(address)
+                        .setCreatedAt(createdAt)
+                        .setUpdatedAt(updatedAt);
+
+                    model.insert(poi);
+                }
+            } catch (IOException ioex) {
+                System.out.println(ioex.getMessage());
+            }
         }
+        this.showMainView(List.of());
+    }
+    /**
+     * Kód vytvorený pomocou AI, zdokumentované v kapitole 4.
+     * */
+    private List<String> loadCsvFiles() {
+        File folder = new File("data/S1T3");
+        String[] names = folder.list((dir, name) -> name.endsWith(".csv"));
+
+        return names == null ? List.of() : Arrays.asList(names);
     }
 }

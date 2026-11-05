@@ -19,7 +19,7 @@ public class QuadKDTreeAdapter implements TreeAdapter<Poi> {
         return false;
     }
     @Override
-    public List<Poi> fint(double[] keys) {
+    public List<Poi> find(double[] keys) {
         return null;
     }
     @Override

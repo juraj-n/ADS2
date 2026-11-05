@@ -2,6 +2,7 @@ package poiApp.model.adapter;
 
 import dataStructures.tree.kdTree.KDTree;
 import poiApp.model.Poi;
+import poiApp.model.PoiCoordinate;
 
 import java.util.List;
 
@@ -10,14 +11,18 @@ public class KDTreeAdapter implements TreeAdapter<Poi> {
 
     @Override
     public boolean insert(double[] keys, Poi value) {
-        return false;
+        PoiCoordinate[] poiKeys = new PoiCoordinate[] {new PoiCoordinate(keys[0]), new PoiCoordinate(keys[1])};
+        return tree.insert(poiKeys, value);
     }
     @Override
-    public List<Poi> fint(double[] keys) {
-        return null;
+    public List<Poi> find(double[] keys) {
+        return List.of();
     }
     @Override
     public List<Poi> find(double[] minKeys, double[] maxKeys) {
-        return null;
+        PoiCoordinate[] minPoiKeys = new PoiCoordinate[]{new PoiCoordinate(minKeys[0]), new PoiCoordinate(minKeys[1])};
+        PoiCoordinate[] maxPoiKeys = new PoiCoordinate[]{new PoiCoordinate(maxKeys[0]), new PoiCoordinate(maxKeys[1])};
+
+        return tree.find(minPoiKeys, maxPoiKeys);
     }
 }

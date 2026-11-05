@@ -1,4 +1,4 @@
-package poiApp.view;
+package poiApp.view.views;
 
 import javax.swing.*;
 import java.awt.*;
