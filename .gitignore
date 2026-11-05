@@ -7,3 +7,6 @@ SemestralWork/*.iml
 
 # UML
 doc/UML/*.bkp
+
+# Other
+SemestralWork/data/S1T3/

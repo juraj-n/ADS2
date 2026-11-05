@@ -8,6 +8,7 @@ import poiApp.model.adapter.QuadKDTreeAdapter;
 import poiApp.model.adapter.QuadTreeAdapter;
 import poiApp.model.adapter.TreeAdapter;
 import poiApp.view.dialogs.CreatePoiDialog;
+import poiApp.view.dialogs.GenerateDialog;
 import poiApp.view.dialogs.SaveDialog;
 import poiApp.view.views.MainView;
 import poiApp.view.views.SelectFileView;
@@ -25,6 +26,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 public class PoiAppPresenter {
@@ -49,7 +51,7 @@ public class PoiAppPresenter {
 
         view.setPois(dtos, this::onDeleteDtoSelected, this::onEditDtoSelected);
         // Sidebar action listeners
-        view.getGenerateButton().addActionListener(e -> {});
+        view.getGenerateButton().addActionListener(e -> this.onGenerateSelected());
         view.getShowAllButton().addActionListener(e -> this.onShowAllSelected());
         view.getSaveButton().addActionListener(e -> this.onSaveSelected());
 
@@ -63,6 +65,45 @@ public class PoiAppPresenter {
     }
     private void onEditDtoSelected(PoiDto dto) {
 
+    }
+    private void onGenerateSelected() {
+        GenerateDialog dialog = new GenerateDialog(this.window.getFrame());
+        dialog.getSubmitBtn().addActionListener(e -> this.onGenerateFormSubmitted(dialog, dialog.getCount()));
+        // TODO: register cancel buttons
+        dialog.show();
+    }
+    private void onGenerateFormSubmitted(GenerateDialog dialog, String count) {
+        try {
+            int num = Integer.parseInt(count);
+            String[] descs = {"Prameň", "Národný park", "Vodné dielo", "Pohorie", "Gejzír"};
+            String[] adds = {"Veľká Fatra", "Malá Fatra", "Vysoké Tatry", "Nízke Tatry", "Nedá sa určiť"};
+            Random generator = new Random();
+            for (int i = 0; i < num; i++) {
+                String id = String.valueOf(UUID.randomUUID());
+                String name = i + ".Úkaz";
+                String description = descs[generator.nextInt(descs.length)];
+                double latitude = generator.nextDouble(-90.0, 90.0);
+                double longitude = generator.nextDouble(-180.0, 180.0);
+                String address = adds[generator.nextInt(adds.length)];
+                LocalDateTime createdAt = LocalDateTime.now();
+                LocalDateTime updatedAt = LocalDateTime.now();
+
+                Poi poi = new Poi()
+                        .setId(id)
+                        .setName(name)
+                        .setDescription(description)
+                        .setLatitude(latitude)
+                        .setLongitude(longitude)
+                        .setAddress(address)
+                        .setCreatedAt(createdAt)
+                        .setUpdatedAt(updatedAt);
+
+                model.insert(poi);
+            }
+        } catch (NumberFormatException nfex) {
+            dialog.showError("Počet hodnôt musí byť číslo!");
+        }
+        dialog.close();
     }
     private void onShowAllSelected() {
         List<PoiDto> dtos = model.findDtos(new double[]{-90.0, -180.0}, new double[]{90.0, 180.0});
