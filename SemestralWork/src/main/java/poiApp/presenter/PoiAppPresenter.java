@@ -69,7 +69,7 @@ public class PoiAppPresenter {
     private void onGenerateSelected() {
         GenerateDialog dialog = new GenerateDialog(this.window.getFrame());
         dialog.getSubmitBtn().addActionListener(e -> this.onGenerateFormSubmitted(dialog, dialog.getCount()));
-        // TODO: register cancel buttons
+        dialog.getCancelBtn().addActionListener(e -> dialog.close());
         dialog.show();
     }
     private void onGenerateFormSubmitted(GenerateDialog dialog, String count) {
@@ -112,6 +112,7 @@ public class PoiAppPresenter {
     private void onSaveSelected() {
         SaveDialog dialog = new SaveDialog(this.window.getFrame());
         dialog.getSubmitBtn().addActionListener(e -> this.onSaveFormSubmitted(dialog, dialog.getName()));
+        dialog.getCancelBtn().addActionListener(e -> dialog.close());
         dialog.show();
     }
     private void onSaveFormSubmitted(SaveDialog dialog, String fileName) {
@@ -167,6 +168,7 @@ public class PoiAppPresenter {
                 dialog.getAddress(),
                 dialog.getLatitude(),
                 dialog.getLongitude()));
+        dialog.getCancelBtn().addActionListener(e -> dialog.close());
         dialog.show();
     }
     private void onCreateFromSubmitted(CreatePoiDialog dialog, String name, String description, String address, String lat, String lon) {
@@ -274,8 +276,8 @@ public class PoiAppPresenter {
                     double lat = Double.parseDouble(split[3]);
                     double lon = Double.parseDouble(split[4]);
                     String address = split[5];
-                    LocalDateTime createdAt = LocalDateTime.parse(split[6], DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"));
-                    LocalDateTime updatedAt = LocalDateTime.parse(split[7], DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"));
+                    LocalDateTime createdAt = LocalDateTime.parse(split[6]);
+                    LocalDateTime updatedAt = LocalDateTime.parse(split[7]);
 
                     String uuid = String.valueOf(UUID.randomUUID());
 
