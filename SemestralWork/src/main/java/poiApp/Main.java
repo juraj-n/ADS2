@@ -1,10 +1,9 @@
 package poiApp;
 
-import poiApp.controller.PoiController;
+import poiApp.presenter.PoiAppPresenter;
 
 public class Main {
     public static void main(String[] args) {
-        PoiController controller = new PoiController();
-
+        PoiAppPresenter presenter = new PoiAppPresenter();
     }
 }

@@ -13,8 +13,8 @@ import s1t2.otherTrees.qt.TesterVarunpantQT;
 
 public class StructuresTestWithData {
     public static void main(String[] args) {
-        var nodes = SvkNodeReader.loadSvkNodes("data/S1/slovakia_nodes.csv");
-        var areas = SvkNodeReader.loadSvkNodesAreas("data/S1/testovacie_oblasti.csv");
+        var nodes = SvkNodeReader.loadSvkNodes("data/S1T2/slovakia_nodes.csv");
+        var areas = SvkNodeReader.loadSvkNodesAreas("data/S1T2/testovacie_oblasti.csv");
 
         // Other QuadTrees
         //TesterVarunpantQT.insertNodes(nodes);
