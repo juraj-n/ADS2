@@ -90,12 +90,23 @@ public class PoiAppPresenter {
             dialog.showError("Názov nesmie byť prázdny!");
             return;
         }
+        if (name.length() > 15) {
+            dialog.showError("Názov nesmie obsahovať viac ako 15 znakov!");
+            return;
+        }
         if (description == null || description.isBlank()) {
             dialog.showError("Popis nesmie byť prázdny");
             return;
         }
+        if (description.length() > 50) {
+            dialog.showError("Popis nesmie obsahovať viac ako 15 znakov!");
+            return;
+        }
         if (address == null || address.isBlank())
             address = "N/A";
+        if (address.length() > 20) {
+            dialog.showError("Adresa nesmie obsahovať viac ako 20 znakov!");
+        }
         double latitude, longitude;
         try {
             latitude = Double.parseDouble(lat);
