@@ -16,14 +16,25 @@ public class QuadTreeAdapter implements TreeAdapter<Poi> {
 
     @Override
     public boolean insert(double[] keys, Poi value) {
-        return false;
+        PoiCoordinate xPoi = new PoiCoordinate(keys[0]);
+        PoiCoordinate yPoi = new PoiCoordinate(keys[1]);
+
+        return tree.insert(xPoi, yPoi, value);
     }
     @Override
     public List<Poi> find(double[] keys) {
-        return null;
+        PoiCoordinate xPoi = new PoiCoordinate(keys[0]);
+        PoiCoordinate yPoi = new PoiCoordinate(keys[1]);
+
+        return tree.find(xPoi, yPoi);
     }
     @Override
     public List<Poi> find(double[] minKeys, double[] maxKeys) {
-        return null;
+        PoiCoordinate xMinPoi = new PoiCoordinate(minKeys[0]);
+        PoiCoordinate xMaxPoi = new PoiCoordinate(maxKeys[0]);
+        PoiCoordinate yMinPoi = new PoiCoordinate(minKeys[1]);
+        PoiCoordinate yMaxPoi = new PoiCoordinate(maxKeys[1]);
+
+        return tree.find(xMinPoi, xMaxPoi, yMinPoi, yMaxPoi);
     }
 }
