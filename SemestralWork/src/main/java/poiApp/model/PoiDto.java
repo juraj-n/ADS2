@@ -3,6 +3,7 @@ package poiApp.model;
 import javax.lang.model.util.Elements;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 public class PoiDto {
     private final String id;
@@ -33,8 +34,8 @@ public class PoiDto {
         String desc = this.centerString(this.description != null ? this.description : placeholder, 50);
         String address = this.centerString(this.address != null ? this.address : placeholder, 20);
 
-        String lat = String.format("%10.6f", this.latitude);
-        String lon = String.format("%10.6f", this.longitude);
+        String lat = String.format(Locale.US, "%10.6f", this.latitude);
+        String lon = String.format(Locale.US, "%10.6f", this.longitude);
 
         String createdStr = this.createdAt != null ? this.createdAt.format(formatter) : placeholder;
         String updatedStr = this.updatedAt != null ? this.updatedAt.format(formatter) : placeholder;
