@@ -26,6 +26,12 @@ public class PoiDto {
         this.updatedAt = updatedAt;
     }
 
+    public double getLatitude() {
+        return this.latitude;
+    }
+    public double getLongitude() {
+        return this.longitude;
+    }
     public String getInfo() {
         String placeholder = "N/A";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");

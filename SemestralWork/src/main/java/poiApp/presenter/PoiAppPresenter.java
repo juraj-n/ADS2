@@ -7,10 +7,7 @@ import poiApp.model.adapter.KDTreeAdapter;
 import poiApp.model.adapter.QuadKDTreeAdapter;
 import poiApp.model.adapter.QuadTreeAdapter;
 import poiApp.model.adapter.TreeAdapter;
-import poiApp.view.dialogs.CreatePoiDialog;
-import poiApp.view.dialogs.GenerateDialog;
-import poiApp.view.dialogs.SaveDialog;
-import poiApp.view.dialogs.SearchPosDialog;
+import poiApp.view.dialogs.*;
 import poiApp.view.views.MainView;
 import poiApp.view.views.SelectFileView;
 import poiApp.view.views.SelectTreeView;
@@ -24,10 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 public class PoiAppPresenter {
     private PoiModel model;
@@ -41,7 +35,20 @@ public class PoiAppPresenter {
     private void setView(JPanel panel) {
         this.window.setContent(panel);
     }
+    /**
+     * Kód vytvorený pomocou AI, zdokumentované v kapitole 5.
+     * */
+    private double haversine(double latEntered, double lonEntered, double latPoi, double lonPoi) {
+        double EARTH_RADIUS_M = 6_371_000.0;
 
+        double dLat = Math.toRadians(latEntered - latPoi);
+        double dLon = Math.toRadians(lonEntered - lonPoi);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+                + Math.cos(Math.toRadians(latEntered)) * Math.cos(Math.toRadians(latPoi))
+                * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+        return 2 * EARTH_RADIUS_M * Math.asin(Math.sqrt(a));
+    }
 
 
     // Main View
@@ -56,7 +63,7 @@ public class PoiAppPresenter {
         view.getSaveButton().addActionListener(e -> this.onSaveSelected());
 
         view.getSeachPosButton().addActionListener(e -> this.onSearchPosSelected());
-        view.getSearchRadiusButton().addActionListener(e -> {});
+        view.getSearchRadiusButton().addActionListener(e -> this.onSearchRadiusSelected());
         view.getCreateNewButton().addActionListener(e -> this.onCreatePoiSelected());
         view.getSearchNameButton().addActionListener(e -> {});
     }
@@ -184,10 +191,67 @@ public class PoiAppPresenter {
         }
     }
     private void onSearchRadiusSelected() {
-
+        SearchRadiusDialog dialog = new SearchRadiusDialog(this.window.getFrame());
+        dialog.getSubmitBtn().addActionListener(e -> this.onSearchRadiusFormSubmitted(
+                dialog,
+                dialog.getLatitude(),
+                dialog.getLongitude(),
+                dialog.getRadius()
+        ));
+        dialog.getCancelBtn().addActionListener(e -> dialog.close());
+        dialog.show();
     }
-    private void onSearchRadiusFormSubmitted() {
+    /**
+     * Kód vytvorený pomocou AI, zdokumentované v kapitole 5.
+     * */
+    private void onSearchRadiusFormSubmitted(SearchRadiusDialog dialog, String lat, String lon, String radius) {
+        try {
+            double latitude = Double.parseDouble(lat);
+            double longitude = Double.parseDouble(lon);
+            double r = Double.parseDouble(radius);
 
+            double deltaLat = Math.toDegrees(r / 6_371_000.0);
+            double deltaLon = Math.toDegrees(r / (6_371_000.0 * Math.cos(Math.toRadians(latitude))));
+
+            double latMin = latitude - deltaLat;
+            double latMax = latitude + deltaLat;
+            double lonMin = longitude - deltaLon;
+            double lonMax = longitude + deltaLon;
+
+            boolean pole = latMax >= 90 || latMin <= -90;
+            latMin = Math.max(latMin, -90);
+            latMax = Math.min(latMax, 90);
+            if (pole) {
+                lonMin = -180;
+                lonMax = 180;
+            }
+
+            List<PoiDto> poisInSquare = new ArrayList<>();
+            if (lonMin < -180) {
+                poisInSquare.addAll(model.findDtos(new double[]{latMin, lonMin + 360}, new double[]{latMax, 180}));
+                poisInSquare.addAll(model.findDtos(new double[]{latMin, -180}, new double[]{latMax, lonMax}));
+            } else if (lonMax > 180) {
+                poisInSquare.addAll(model.findDtos(new double[]{latMin, lonMin}, new double[]{latMax, 180}));
+                poisInSquare.addAll(model.findDtos(new double[]{latMin, -180}, new double[]{latMax, lonMax - 360}));
+            } else {
+                poisInSquare.addAll(model.findDtos(new double[]{latMin, lonMin}, new double[]{latMax, lonMax}));
+            }
+
+            double[] min = {latitude - deltaLat, longitude - deltaLon};
+            double[] max = {latitude + deltaLat, longitude + deltaLon};
+
+            List<PoiDto> poisInRadius = new ArrayList<>();
+            for (var poi : poisInSquare) {
+                if (haversine(latitude, longitude, poi.getLatitude(), poi.getLongitude()) <= r) {
+                    poisInRadius.add(poi);
+                }
+            }
+
+            dialog.close();
+            showMainView(poisInRadius);
+        } catch (NumberFormatException nfex) {
+            dialog.showError("Nesprávny formát [123.456789]!");
+        }
     }
     private void onCreatePoiSelected() {
         CreatePoiDialog dialog = new CreatePoiDialog(window.getFrame());
