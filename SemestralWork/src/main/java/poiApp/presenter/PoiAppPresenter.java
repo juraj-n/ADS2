@@ -137,22 +137,21 @@ public class PoiAppPresenter {
             return;
         }
 
-        if (latitude != dto.getLatitude() || longitude != dto.getLongitude()) {
-            model.softDelete(dto);
-            Poi updated = new Poi()
-                    .setId(dto.getId())
-                    .setName(name)
-                    .setDescription(description)
-                    .setAddress(address)
-                    .setLatitude(latitude)
-                    .setLongitude(longitude)
-                    .setCreatedAt(dto.getCreatedAt())
-                    .setUpdatedAt(LocalDateTime.now());
-            model.insert(updated);
-        }
-        PoiDto updated = new PoiDto(dto.getId(), name, description, address, latitude, longitude, dto.getCreatedAt(), LocalDateTime.now());
+        model.softDelete(dto);
+        Poi updatePoi = new Poi()
+                .setId(dto.getId())
+                .setName(name)
+                .setDescription(description)
+                .setAddress(address)
+                .setLatitude(latitude)
+                .setLongitude(longitude)
+                .setCreatedAt(dto.getCreatedAt())
+                .setUpdatedAt(LocalDateTime.now());
+        model.insert(updatePoi);
+
+        PoiDto updatedDto = new PoiDto(dto.getId(), name, description, address, latitude, longitude, dto.getCreatedAt(), LocalDateTime.now());
         int index = this.currentDtos.indexOf(dto);
-        this.currentDtos.set(index, updated);
+        this.currentDtos.set(index, updatedDto);
 
         dialog.close();
         this.showMainView();

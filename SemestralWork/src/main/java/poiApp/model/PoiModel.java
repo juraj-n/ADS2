@@ -67,9 +67,8 @@ public class PoiModel {
         double[] keys = {dto.getLatitude(), dto.getLongitude()};
         List<Poi> pois = tree.find(keys);
         for (var p : pois) {
-            if (p.getId().equals(dto.getId())) {
+            if (p.getId().equals(dto.getId()) && !p.isDeleted()) {
                 p.setDeleted(true);
-                break;
             }
         }
     }
