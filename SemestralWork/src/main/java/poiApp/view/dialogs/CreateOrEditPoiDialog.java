@@ -1,17 +1,27 @@
 package poiApp.view.dialogs;
 
+import poiApp.model.PoiDto;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class CreatePoiDialog extends FormDialog {
+public class CreateOrEditPoiDialog extends FormDialog {
     private final JTextField nameField = new JTextField(20);
     private final JTextField descField = new JTextField(50);
     private final JTextField addressField = new JTextField(20);
     private final JTextField latField = new JTextField(10);
     private final JTextField lonField = new JTextField(10);
 
-    public CreatePoiDialog(JFrame frame) {
-        super(frame, "Vytvoriť Nový POI");
+    public CreateOrEditPoiDialog(JFrame frame, String title, PoiDto poi) {
+        super(frame, title);
+
+        if (poi != null) {
+            this.nameField.setText(poi.getName());
+            this.descField.setText(poi.getDescription());
+            this.addressField.setText(poi.getAddress());
+            this.latField.setText(String.valueOf(poi.getLatitude()));
+            this.lonField.setText(String.valueOf(poi.getLongitude()));
+        }
 
         JPanel form = new JPanel(new GridLayout(0, 2, 5, 5));
         form.add(new JLabel("Názov: "));

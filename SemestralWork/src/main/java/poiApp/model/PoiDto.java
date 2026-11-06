@@ -29,11 +29,23 @@ public class PoiDto {
     public String getId() {
         return this.id;
     }
+    public String getName() {
+        return this.name;
+    }
+    public String getDescription() {
+        return this.description;
+    }
+    public String getAddress() {
+        return this.address;
+    }
     public double getLatitude() {
         return this.latitude;
     }
     public double getLongitude() {
         return this.longitude;
+    }
+    public LocalDateTime getCreatedAt() {
+        return this.createdAt;
     }
     public String getInfo() {
         String placeholder = "N/A";

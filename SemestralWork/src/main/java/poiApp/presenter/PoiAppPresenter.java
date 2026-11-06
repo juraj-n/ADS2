@@ -77,7 +77,85 @@ public class PoiAppPresenter {
         this.showMainView();
     }
     private void onEditDtoSelected(PoiDto dto) {
+        CreateOrEditPoiDialog dialog = new CreateOrEditPoiDialog(this.window.getFrame(), "Upraviť POI",dto);
+        dialog.getSubmitBtn().addActionListener(e -> this.onEditFormSubmitted(
+                dialog,
+                dto,
+                dialog.getName(),
+                dialog.getDescription(),
+                dialog.getAddress(),
+                dialog.getLatitude(),
+                dialog.getLongitude()
+        ));
+        dialog.getCancelBtn().addActionListener(e -> dialog.close());
+        dialog.show();
+    }
+    private void onEditFormSubmitted(CreateOrEditPoiDialog dialog, PoiDto dto, String name, String description, String address, String lat, String lon) {
+        if (name == null || name.isBlank()) {
+            dialog.showError("Názov nesmie byť prázdny!");
+            return;
+        }
+        if (name.length() > 15) {
+            dialog.showError("Názov nesmie obsahovať viac ako 15 znakov!");
+            return;
+        }
+        if (description == null || description.isBlank()) {
+            dialog.showError("Popis nesmie byť prázdny");
+            return;
+        }
+        if (description.length() > 50) {
+            dialog.showError("Popis nesmie obsahovať viac ako 50 znakov!");
+            return;
+        }
+        if (address == null || address.isBlank()) address = "N/A";
+        if (address.length() > 20) {
+            dialog.showError("Adresa nesmie obsahovať viac ako 20 znakov!");
+            return;
+        }
+        if ((lat.length() - lat.indexOf(".") - 1) > 6){
+            dialog.showError("Maximálny počet desatinných miest je 6!");
+            return;
+        }
+        if ((lon.length() - lon.indexOf(".") - 1) > 6) {
+            dialog.showError("Maximálny počet desatinných miest je 6!");
+            return;
+        }
+        double latitude, longitude;
+        try {
+            latitude = Double.parseDouble(lat);
+            longitude = Double.parseDouble(lon);
+        } catch (NumberFormatException nfex) {
+            dialog.showError("Nesprávny formát [123.456789]!");
+            return;
+        }
+        if (latitude < -90 || latitude > 90) {
+            dialog.showError("Geo. šírka musí byť v rozmedzí <-90, 90>!");
+            return;
+        }
+        if (longitude < -180 || longitude > 180) {
+            dialog.showError("Geo. dĺžka musí byť v rozmedzí <-180, 180>!");
+            return;
+        }
 
+        if (latitude != dto.getLatitude() || longitude != dto.getLongitude()) {
+            model.softDelete(dto);
+            Poi updated = new Poi()
+                    .setId(dto.getId())
+                    .setName(name)
+                    .setDescription(description)
+                    .setAddress(address)
+                    .setLatitude(latitude)
+                    .setLongitude(longitude)
+                    .setCreatedAt(dto.getCreatedAt())
+                    .setUpdatedAt(LocalDateTime.now());
+            model.insert(updated);
+        }
+        PoiDto updated = new PoiDto(dto.getId(), name, description, address, latitude, longitude, dto.getCreatedAt(), LocalDateTime.now());
+        int index = this.currentDtos.indexOf(dto);
+        this.currentDtos.set(index, updated);
+
+        dialog.close();
+        this.showMainView();
     }
     private void onGenerateSelected() {
         GenerateDialog dialog = new GenerateDialog(this.window.getFrame());
@@ -257,7 +335,7 @@ public class PoiAppPresenter {
         }
     }
     private void onCreatePoiSelected() {
-        CreatePoiDialog dialog = new CreatePoiDialog(window.getFrame());
+        CreateOrEditPoiDialog dialog = new CreateOrEditPoiDialog(window.getFrame(), "Vytvoriť Nový POI",null);
         dialog.getSubmitBtn().addActionListener(e -> this.onCreateFromSubmitted(
                 dialog,
                 dialog.getName(),
@@ -268,7 +346,7 @@ public class PoiAppPresenter {
         dialog.getCancelBtn().addActionListener(e -> dialog.close());
         dialog.show();
     }
-    private void onCreateFromSubmitted(CreatePoiDialog dialog, String name, String description, String address, String lat, String lon) {
+    private void onCreateFromSubmitted(CreateOrEditPoiDialog dialog, String name, String description, String address, String lat, String lon) {
         if (name == null || name.isBlank()) {
             dialog.showError("Názov nesmie byť prázdny!");
             return;
@@ -282,7 +360,7 @@ public class PoiAppPresenter {
             return;
         }
         if (description.length() > 50) {
-            dialog.showError("Popis nesmie obsahovať viac ako 15 znakov!");
+            dialog.showError("Popis nesmie obsahovať viac ako 50 znakov!");
             return;
         }
         if (address == null || address.isBlank()) address = "N/A";
