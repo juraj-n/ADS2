@@ -56,7 +56,7 @@ public class MainView {
         JPanel content = new JPanel(new BorderLayout(0, 10));
 
         content.add(topButtons, BorderLayout.NORTH);
-        content.add(bottomButtons, BorderLayout.CENTER);
+        content.add(bottomButtons, BorderLayout.SOUTH);
 
         this.sidebar.add(content);
     }
