@@ -26,6 +26,7 @@ import java.util.*;
 public class PoiAppPresenter {
     private PoiModel model;
     private final PoiAppWindow window;
+    private List<PoiDto> currentDtos;
     public PoiAppPresenter() {
         this.window = new PoiAppWindow();
         this.showSelectTreeView();
@@ -52,11 +53,13 @@ public class PoiAppPresenter {
 
 
     // Main View
-    private void showMainView(List<PoiDto> dtos) {
+    private void showMainView() {
         MainView view = new MainView();
         this.setView(view.getView());
 
-        view.setPois(dtos, this::onDeleteDtoSelected, this::onEditDtoSelected);
+        if (this.currentDtos != null)
+            view.setPois(this.currentDtos, this::onDeleteDtoSelected, this::onEditDtoSelected);
+
         // Sidebar action listeners
         view.getGenerateButton().addActionListener(e -> this.onGenerateSelected());
         view.getShowAllButton().addActionListener(e -> this.onShowAllSelected());
@@ -117,8 +120,8 @@ public class PoiAppPresenter {
         dialog.close();
     }
     private void onShowAllSelected() {
-        List<PoiDto> dtos = model.findDtos(new double[]{-90.0, -180.0}, new double[]{90.0, 180.0});
-        this.showMainView(dtos);
+        this.currentDtos = model.findDtos(new double[]{-90.0, -180.0}, new double[]{90.0, 180.0});
+        this.showMainView();
     }
     private void onSaveSelected() {
         SaveDialog dialog = new SaveDialog(this.window.getFrame());
@@ -183,9 +186,9 @@ public class PoiAppPresenter {
             double lat = Double.parseDouble(latitude);
             double lon = Double.parseDouble(longitude);
 
-            List<PoiDto> pois = model.findDto(new double[]{lat, lon});
+            this.currentDtos = model.findDto(new double[]{lat, lon});
             dialog.close();
-            this.showMainView(pois);
+            this.showMainView();
         } catch (NumberFormatException nfex) {
             dialog.showError("Nesprávny formát [123.456789]");
         }
@@ -237,15 +240,15 @@ public class PoiAppPresenter {
                 poisInSquare.addAll(model.findDtos(new double[]{latMin, lonMin}, new double[]{latMax, lonMax}));
             }
 
-            List<PoiDto> poisInRadius = new ArrayList<>();
+            this.currentDtos = new ArrayList<>();
             for (var poi : poisInSquare) {
                 if (haversine(latitude, longitude, poi.getLatitude(), poi.getLongitude()) <= r) {
-                    poisInRadius.add(poi);
+                    this.currentDtos.add(poi);
                 }
             }
 
             dialog.close();
-            showMainView(poisInRadius);
+            this.showMainView();
         } catch (NumberFormatException nfex) {
             dialog.showError("Nesprávny formát [123.456789]!");
         }
@@ -357,9 +360,9 @@ public class PoiAppPresenter {
 
         double[] minKeys = {minLatitude, minLongitude};
         double[] maxKeys = {maxLatitude, maxLongitude};
-        List<PoiDto> pois = model.findName(minKeys, maxKeys, name.trim());
+        this.currentDtos = model.findName(minKeys, maxKeys, name.trim());
         dialog.close();
-        this.showMainView(pois);
+        this.showMainView();
     }
 
 
@@ -384,7 +387,7 @@ public class PoiAppPresenter {
         } catch (IOException ignored) {}
 
         if (emptyDataFolder) {
-            this.showMainView(List.of());
+            this.showMainView();
         } else {
             this.showSelectFileView();
         }
@@ -438,7 +441,7 @@ public class PoiAppPresenter {
                 System.out.println(ioex.getMessage());
             }
         }
-        this.showMainView(List.of());
+        this.showMainView();
     }
     /**
      * Kód vytvorený pomocou AI, zdokumentované v kapitole 4.
