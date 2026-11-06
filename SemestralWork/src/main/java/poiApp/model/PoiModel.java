@@ -2,6 +2,7 @@ package poiApp.model;
 
 import poiApp.model.adapter.TreeAdapter;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,7 +13,7 @@ public class PoiModel {
         this.tree = tree;
     }
 
-    private PoiDto getPoiDtos(Poi poi) {
+    private PoiDto convertToDto(Poi poi) {
         return new PoiDto(
                 poi.getId(),
                 poi.getName(),
@@ -24,6 +25,12 @@ public class PoiModel {
                 poi.getUpdatedAt()
         );
     }
+    private String removeDiacritics(String s) {
+        if (s == null)
+            return null;
+
+        return Normalizer.normalize(s, Normalizer.Form.NFD).replaceAll("\\p{M}", "");
+    }
 
     public boolean insert(Poi value) {
         double[] keys = new double[]{value.getLatitude(), value.getLongitude()};
@@ -31,18 +38,18 @@ public class PoiModel {
     }
     public List<PoiDto> findName(double[] minKeys, double[] maxKeys, String name) {
         return tree.find(minKeys, maxKeys).stream()
-                .filter(e -> e.getName().equals(name))
-                .map(this::getPoiDtos)
+                .filter(e -> removeDiacritics(e.getName()).equalsIgnoreCase(removeDiacritics(name)))
+                .map(this::convertToDto)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
     public List<PoiDto> findDtos(double[] minKeys, double[] maxKeys) {
         return tree.find(minKeys, maxKeys).stream()
-                .map(this::getPoiDtos)
+                .map(this::convertToDto)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
     public List<PoiDto> findDto(double[] keys) {
         return tree.find(keys).stream()
-                .map(this::getPoiDtos)
+                .map(this::convertToDto)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
     public List<Poi> findAll() {
