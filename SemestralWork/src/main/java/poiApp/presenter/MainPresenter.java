@@ -137,24 +137,55 @@ public class MainPresenter {
     // Sidebar Buttons
     private void onGenerateBtn() {
         GenerateDialog dialog = new GenerateDialog(this.navigator.getFrame());
-        dialog.getSubmitBtn().addActionListener(e -> this.onGenerateForm(dialog, dialog.getCount()));
+        dialog.getSubmitBtn().addActionListener(e -> this.onGenerateForm(
+                dialog,
+                dialog.getCount(),
+                dialog.getMinLatField(),
+                dialog.getMaxLatField(),
+                dialog.getMinLonField(),
+                dialog.getMaxLonField()
+                ));
         dialog.getCancelBtn().addActionListener(e -> dialog.close());
         dialog.show();
     }
-    private void onGenerateForm(GenerateDialog dialog, String count) {
+    private void onGenerateForm(GenerateDialog dialog, String count, String minLat, String maxLat, String minLon, String maxLon) {
+        double minLatitude, maxLatitude, minLongitude, maxLongitude;
+        try {
+            minLatitude = Double.parseDouble(minLat);
+            maxLatitude = Double.parseDouble(maxLat);
+            minLongitude = Double.parseDouble(minLon);
+            maxLongitude = Double.parseDouble(maxLon);
+        } catch (NumberFormatException nfex) {
+            dialog.showError("Nesprávny formát oblasti! [123.456789]");
+            return;
+        }
+        if (minLatitude < -90 || maxLatitude > 90) {
+            dialog.showError("Geo. Šírka musí byť v rozmedzí <-90, 90>");
+            return;
+        }
+        if (minLongitude < -180 || maxLongitude > 180) {
+            dialog.showError("Geo. Dĺžka musí byť v rozmedzí <-180, 180>");
+            return;
+        }
+
+        long minLatLong = Math.round(minLatitude * 1_000_000.0);
+        long maxLatLong = Math.round(maxLatitude * 1_000_000.0);
+        long minLonLong = Math.round(minLongitude * 1_000_000.0);
+        long maxLonLong = Math.round(maxLongitude * 1_000_000.0);
+
         try {
             int num = Integer.parseInt(count);
             String[] descs = {"Prameň", "Národný park", "Vodné dielo", "Pohorie", "Gejzír"};
             String[] adds = {"Veľká Fatra", "Malá Fatra", "Vysoké Tatry", "Nízke Tatry", "Nedá sa určiť"};
             Random generator = new Random();
+
             for (int i = 0; i < num; i++) {
                 String id = String.valueOf(UUID.randomUUID());
                 String name = "Úkaz";
                 String description = descs[generator.nextInt(descs.length)];
-
-                long lat = generator.nextLong(-90_000_000L, 90_000_000L);
+                long lat = generator.nextLong(minLatLong, maxLatLong);
                 double latitude = lat / 1_000_000.0;
-                long lon = generator.nextLong(-180_000_000L, 180_000_000L);
+                long lon = generator.nextLong(minLonLong, maxLonLong);
                 double longitude = lon / 1_000_000.0;
 
                 String address = adds[generator.nextInt(adds.length)];
@@ -174,7 +205,7 @@ public class MainPresenter {
                 model.insert(poi);
             }
         } catch (NumberFormatException nfex) {
-            dialog.showError("Počet hodnôt musí byť číslo!");
+            dialog.showError("Nesprávny formát čísla!");
             return;
         }
         dialog.close();
