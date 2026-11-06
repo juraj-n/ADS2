@@ -3,82 +3,58 @@ package poiApp.presenter;
 import poiApp.model.Poi;
 import poiApp.model.PoiDto;
 import poiApp.model.PoiModel;
-import poiApp.model.adapter.KDTreeAdapter;
-import poiApp.model.adapter.QuadKDTreeAdapter;
-import poiApp.model.adapter.QuadTreeAdapter;
-import poiApp.model.adapter.TreeAdapter;
 import poiApp.view.dialogs.*;
 import poiApp.view.views.MainView;
-import poiApp.view.views.SelectFileView;
-import poiApp.view.views.SelectTreeView;
-import poiApp.view.PoiAppWindow;
 
 import javax.swing.*;
-import java.io.*;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
-public class PoiAppPresenter {
-    private PoiModel model;
-    private final PoiAppWindow window;
+
+public class MainPresenter {
+    private final PoiAppNavigator navigator;
+    private final MainView view = new MainView();
+    private final PoiModel model;
     private List<PoiDto> currentDtos;
-    public PoiAppPresenter() {
-        this.window = new PoiAppWindow();
-        this.showSelectTreeView();
+
+    public MainPresenter(PoiModel model, PoiAppNavigator navigator) {
+        this.navigator = navigator;
+        this.model = model;
+
+        this.view.getGenerateBtn().addActionListener(e -> this.onGenerateBtn());
+        this.view.getShowAllBtn().addActionListener(e -> this.onShowAllBtn());
+        this.view.getSaveBtn().addActionListener(e -> this.onSaveBtn());
+
+        this.view.getSearchPosBtn().addActionListener(e -> this.onSearchPosBtn());
+        this.view.getSearchRadiusBtn().addActionListener(e -> this.onSearchRadiusBtn());
+        this.view.getCreateBtn().addActionListener(e -> this.onCreateBtn());
+        this.view.getSearchNameBtn().addActionListener(e -> this.onSearchNameBtn());
     }
 
-    // Other
-    private void setView(JPanel panel) {
-        this.window.setContent(panel);
+    public JPanel getView() {
+        return this.view.getView();
     }
-    /**
-     * Kód vytvorený pomocou AI, zdokumentované v kapitole 5.
-     * */
-    private double haversine(double latEntered, double lonEntered, double latPoi, double lonPoi) {
-        double EARTH_RADIUS_M = 6_371_000.0;
-
-        double dLat = Math.toRadians(latEntered - latPoi);
-        double dLon = Math.toRadians(lonEntered - lonPoi);
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
-                + Math.cos(Math.toRadians(latEntered)) * Math.cos(Math.toRadians(latPoi))
-                * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-
-        return 2 * EARTH_RADIUS_M * Math.asin(Math.sqrt(a));
+    private void updateMainbar() {
+        this.view.setPois(this.currentDtos, this::onDeleteDtoBtn, this::onEditDtoBtn);
     }
 
-
-    // Main View
-    private void showMainView() {
-        MainView view = new MainView();
-        this.setView(view.getView());
-
-        if (this.currentDtos != null)
-            view.setPois(this.currentDtos, this::onDeleteDtoSelected, this::onEditDtoSelected);
-
-        // Sidebar action listeners
-        view.getGenerateButton().addActionListener(e -> this.onGenerateSelected());
-        view.getShowAllButton().addActionListener(e -> this.onShowAllSelected());
-        view.getSaveButton().addActionListener(e -> this.onSaveSelected());
-
-        view.getSearchPosButton().addActionListener(e -> this.onSearchPosSelected());
-        view.getSearchRadiusButton().addActionListener(e -> this.onSearchRadiusSelected());
-        view.getCreateNewButton().addActionListener(e -> this.onCreatePoiSelected());
-        view.getSearchNameButton().addActionListener(e -> this.onSearchNameSelected());
-    }
-    private void onDeleteDtoSelected(PoiDto dto) {
+    // Mainbar Delete / Edit
+    private void onDeleteDtoBtn(PoiDto dto) {
         this.currentDtos.remove(dto);
 
-        model.softDelete(dto);
-        this.showMainView();
+        this.model.softDelete(dto);
+        this.updateMainbar();
     }
-    private void onEditDtoSelected(PoiDto dto) {
-        CreateOrEditPoiDialog dialog = new CreateOrEditPoiDialog(this.window.getFrame(), "Upraviť POI",dto);
-        dialog.getSubmitBtn().addActionListener(e -> this.onEditFormSubmitted(
+    private void onEditDtoBtn(PoiDto dto) {
+        CreateOrEditPoiDialog dialog = new CreateOrEditPoiDialog(this.navigator.getFrame(), "Upraviť POI", dto);
+        dialog.getSubmitBtn().addActionListener(e -> this.onEditForm(
                 dialog,
                 dto,
                 dialog.getName(),
@@ -90,7 +66,7 @@ public class PoiAppPresenter {
         dialog.getCancelBtn().addActionListener(e -> dialog.close());
         dialog.show();
     }
-    private void onEditFormSubmitted(CreateOrEditPoiDialog dialog, PoiDto dto, String name, String description, String address, String lat, String lon) {
+    private void onEditForm(CreateOrEditPoiDialog dialog, PoiDto dto, String name, String description, String address, String lat, String lon) {
         if (name == null || name.isBlank()) {
             dialog.showError("Názov nesmie byť prázdny!");
             return;
@@ -137,7 +113,7 @@ public class PoiAppPresenter {
             return;
         }
 
-        model.softDelete(dto);
+        this.model.softDelete(dto);
         Poi updatePoi = new Poi()
                 .setId(dto.getId())
                 .setName(name)
@@ -147,22 +123,25 @@ public class PoiAppPresenter {
                 .setLongitude(longitude)
                 .setCreatedAt(dto.getCreatedAt())
                 .setUpdatedAt(LocalDateTime.now());
-        model.insert(updatePoi);
+        this.model.insert(updatePoi);
 
         PoiDto updatedDto = new PoiDto(dto.getId(), name, description, address, latitude, longitude, dto.getCreatedAt(), LocalDateTime.now());
         int index = this.currentDtos.indexOf(dto);
         this.currentDtos.set(index, updatedDto);
 
         dialog.close();
-        this.showMainView();
+        this.updateMainbar();
     }
-    private void onGenerateSelected() {
-        GenerateDialog dialog = new GenerateDialog(this.window.getFrame());
-        dialog.getSubmitBtn().addActionListener(e -> this.onGenerateFormSubmitted(dialog, dialog.getCount()));
+
+
+    // Sidebar Buttons
+    private void onGenerateBtn() {
+        GenerateDialog dialog = new GenerateDialog(this.navigator.getFrame());
+        dialog.getSubmitBtn().addActionListener(e -> this.onGenerateForm(dialog, dialog.getCount()));
         dialog.getCancelBtn().addActionListener(e -> dialog.close());
         dialog.show();
     }
-    private void onGenerateFormSubmitted(GenerateDialog dialog, String count) {
+    private void onGenerateForm(GenerateDialog dialog, String count) {
         try {
             int num = Integer.parseInt(count);
             String[] descs = {"Prameň", "Národný park", "Vodné dielo", "Pohorie", "Gejzír"};
@@ -170,7 +149,7 @@ public class PoiAppPresenter {
             Random generator = new Random();
             for (int i = 0; i < num; i++) {
                 String id = String.valueOf(UUID.randomUUID());
-                String name = i + ".Úkaz";
+                String name = "Úkaz";
                 String description = descs[generator.nextInt(descs.length)];
 
                 long lat = generator.nextLong(-90_000_000L, 90_000_000L);
@@ -200,17 +179,21 @@ public class PoiAppPresenter {
         }
         dialog.close();
     }
-    private void onShowAllSelected() {
+
+
+    private void onShowAllBtn() {
         this.currentDtos = model.findDtos(new double[]{-90.0, -180.0}, new double[]{90.0, 180.0});
-        this.showMainView();
+        this.updateMainbar();
     }
-    private void onSaveSelected() {
-        SaveDialog dialog = new SaveDialog(this.window.getFrame());
-        dialog.getSubmitBtn().addActionListener(e -> this.onSaveFormSubmitted(dialog, dialog.getName()));
+
+
+    private void onSaveBtn() {
+        SaveDialog dialog = new SaveDialog(this.navigator.getFrame());
+        dialog.getSubmitBtn().addActionListener(e -> this.onSaveForm(dialog, dialog.getName()));
         dialog.getCancelBtn().addActionListener(e -> dialog.close());
         dialog.show();
     }
-    private void onSaveFormSubmitted(SaveDialog dialog, String fileName) {
+    private void onSaveForm(SaveDialog dialog, String fileName) {
         String dateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy_HH-mm-ss"));
         if (fileName == null || fileName.isBlank()) {
             dialog.showError("Názov súboru nesmie byť prázdny!");
@@ -253,30 +236,34 @@ public class PoiAppPresenter {
 
         dialog.close();
     }
-    private void onSearchPosSelected() {
-        SearchPosDialog dialog = new SearchPosDialog(this.window.getFrame());
-        dialog.getSubmitBtn().addActionListener(e -> this.onSearchPosFormSubmitted(
+
+
+    private void onSearchPosBtn() {
+        SearchPosDialog dialog = new SearchPosDialog(this.navigator.getFrame());
+        dialog.getSubmitBtn().addActionListener(e -> this.onSearchPosForm(
                 dialog,
                 dialog.getLatitude(),
                 dialog.getLongitude()));
         dialog.getCancelBtn().addActionListener(e -> dialog.close());
         dialog.show();
     }
-    private void onSearchPosFormSubmitted(SearchPosDialog dialog, String latitude, String longitude) {
+    private void onSearchPosForm(SearchPosDialog dialog, String latitude, String longitude) {
         try {
             double lat = Double.parseDouble(latitude);
             double lon = Double.parseDouble(longitude);
 
             this.currentDtos = model.findDto(new double[]{lat, lon});
             dialog.close();
-            this.showMainView();
+            this.updateMainbar();
         } catch (NumberFormatException nfex) {
             dialog.showError("Nesprávny formát [123.456789]");
         }
     }
-    private void onSearchRadiusSelected() {
-        SearchRadiusDialog dialog = new SearchRadiusDialog(this.window.getFrame());
-        dialog.getSubmitBtn().addActionListener(e -> this.onSearchRadiusFormSubmitted(
+
+
+    private void onSearchRadiusBtn() {
+        SearchRadiusDialog dialog = new SearchRadiusDialog(this.navigator.getFrame());
+        dialog.getSubmitBtn().addActionListener(e -> this.onSearchRadiusForm(
                 dialog,
                 dialog.getLatitude(),
                 dialog.getLongitude(),
@@ -288,7 +275,7 @@ public class PoiAppPresenter {
     /**
      * Kód vytvorený pomocou AI, zdokumentované v kapitole 5.
      * */
-    private void onSearchRadiusFormSubmitted(SearchRadiusDialog dialog, String lat, String lon, String radius) {
+    private void onSearchRadiusForm(SearchRadiusDialog dialog, String lat, String lon, String radius) {
         try {
             double latitude = Double.parseDouble(lat);
             double longitude = Double.parseDouble(lon);
@@ -323,20 +310,22 @@ public class PoiAppPresenter {
 
             this.currentDtos = new ArrayList<>();
             for (var poi : poisInSquare) {
-                if (haversine(latitude, longitude, poi.getLatitude(), poi.getLongitude()) <= r) {
+                if (PoiMiscMethods.haversine(latitude, longitude, poi.getLatitude(), poi.getLongitude()) <= r) {
                     this.currentDtos.add(poi);
                 }
             }
 
             dialog.close();
-            this.showMainView();
+            this.updateMainbar();
         } catch (NumberFormatException nfex) {
             dialog.showError("Nesprávny formát [123.456789]!");
         }
     }
-    private void onCreatePoiSelected() {
-        CreateOrEditPoiDialog dialog = new CreateOrEditPoiDialog(window.getFrame(), "Vytvoriť Nový POI",null);
-        dialog.getSubmitBtn().addActionListener(e -> this.onCreateFormSubmitted(
+
+
+    private void onCreateBtn() {
+        CreateOrEditPoiDialog dialog = new CreateOrEditPoiDialog(this.navigator.getFrame(), "Vytvoriť POI", null);
+        dialog.getSubmitBtn().addActionListener(e -> this.onCreateForm(
                 dialog,
                 dialog.getName(),
                 dialog.getDescription(),
@@ -346,7 +335,7 @@ public class PoiAppPresenter {
         dialog.getCancelBtn().addActionListener(e -> dialog.close());
         dialog.show();
     }
-    private void onCreateFormSubmitted(CreateOrEditPoiDialog dialog, String name, String description, String address, String lat, String lon) {
+    private void onCreateForm(CreateOrEditPoiDialog dialog, String name, String description, String address, String lat, String lon) {
         if (name == null || name.isBlank()) {
             dialog.showError("Názov nesmie byť prázdny!");
             return;
@@ -410,9 +399,11 @@ public class PoiAppPresenter {
 
         dialog.close();
     }
-    private void onSearchNameSelected() {
-        SearchNameDialog dialog = new SearchNameDialog(this.window.getFrame());
-        dialog.getSubmitBtn().addActionListener(e -> this.onSearchNameFormSubmitted(
+
+
+    private void onSearchNameBtn() {
+        SearchNameDialog dialog = new SearchNameDialog(this.navigator.getFrame());
+        dialog.getSubmitBtn().addActionListener(e -> this.onSearchNameForm(
                 dialog,
                 dialog.getName(),
                 dialog.getMinLatitude(),
@@ -423,7 +414,7 @@ public class PoiAppPresenter {
         dialog.getCancelBtn().addActionListener(e -> dialog.close());
         dialog.show();
     }
-    private void onSearchNameFormSubmitted(SearchNameDialog dialog, String name, String minLat, String maxLat, String minLon, String maxLon) {
+    private void onSearchNameForm(SearchNameDialog dialog, String name, String minLat, String maxLat, String minLon, String maxLon) {
         if (name == null || name.isBlank()) {
             dialog.showError("Názov nesmie byť prázdny!");
             return;
@@ -443,92 +434,6 @@ public class PoiAppPresenter {
         double[] maxKeys = {maxLatitude, maxLongitude};
         this.currentDtos = model.findName(minKeys, maxKeys, name.trim());
         dialog.close();
-        this.showMainView();
-    }
-
-
-    // Select Tree View
-    private void showSelectTreeView() {
-        SelectTreeView view = new SelectTreeView();
-        this.setView(view.getView());
-
-        view.getKdButton().addActionListener(e -> this.onTreeSelected(new KDTreeAdapter()));
-        view.getQuadButton().addActionListener(e -> this.onTreeSelected(new QuadTreeAdapter()));
-        view.getQuadKDButton().addActionListener(e -> this.onTreeSelected(new QuadKDTreeAdapter()));
-    }
-    /**
-     * Kód vytvorený pomocou AI, zdokumentované v kapitole 3.
-     * */
-    private void onTreeSelected(TreeAdapter<Poi> tree) {
-        this.model = new PoiModel(tree);
-        boolean emptyDataFolder = true;
-
-        try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get("data/S1T3/"), "*.csv")) {
-            emptyDataFolder = !stream.iterator().hasNext();
-        } catch (IOException ignored) {}
-
-        if (emptyDataFolder) {
-            this.showMainView();
-        } else {
-            this.showSelectFileView();
-        }
-    }
-
-
-
-    // Select File View
-    private void showSelectFileView() {
-        SelectFileView view = new SelectFileView();
-        this.setView(view.getView());
-
-        view.setFiles(this.loadCsvFiles(), this::onFileSelected);
-        view.getNewButton().addActionListener(e -> this.onFileSelected(null));
-    }
-    private void onFileSelected(String fileToLoad) {
-        if (fileToLoad != null) {
-            // id;name;description;lat;lon;address;created_at;updated_at
-            try (BufferedReader br = new BufferedReader(new FileReader("data/S1T3/" + fileToLoad))) {
-                String line;
-                br.readLine(); // Skips header
-                while ((line = br.readLine()) != null) {
-                    String[] split = line.split(";", -1);
-                    if (split.length != 8)
-                        continue;
-
-                    String uuid = split[0];
-                    String name = split[1];
-                    String description = split[2];
-                    double lat = Double.parseDouble(split[3]);
-                    double lon = Double.parseDouble(split[4]);
-                    String address = split[5];
-                    LocalDateTime createdAt = LocalDateTime.parse(split[6]);
-                    LocalDateTime updatedAt = LocalDateTime.parse(split[7]);
-
-                    Poi poi = new Poi()
-                        .setId(uuid)
-                        .setName(name)
-                        .setDescription(description)
-                        .setLatitude(lat)
-                        .setLongitude(lon)
-                        .setAddress(address)
-                        .setCreatedAt(createdAt)
-                        .setUpdatedAt(updatedAt);
-
-                    model.insert(poi);
-                }
-            } catch (IOException ioex) {
-                System.out.println(ioex.getMessage());
-            }
-        }
-        this.showMainView();
-    }
-    /**
-     * Kód vytvorený pomocou AI, zdokumentované v kapitole 4.
-     * */
-    private List<String> loadCsvFiles() {
-        File folder = new File("data/S1T3");
-        String[] names = folder.list((dir, name) -> name.endsWith(".csv"));
-
-        return names == null ? List.of() : Arrays.asList(names);
+        this.updateMainbar();
     }
 }

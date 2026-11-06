@@ -69,6 +69,7 @@ public class MainView {
         this.mainbar.add(scrollPane);
     }
     public void setPois(List<PoiDto> pois, Consumer<PoiDto> onDelSelected, Consumer<PoiDto> onEdtSelected) {
+        this.poiPanel.removeAll();
         for (var p : pois) {
             JPanel row = new JPanel(new BorderLayout());
 
@@ -89,27 +90,30 @@ public class MainView {
 
             this.poiPanel.add(row);
         }
+
+        this.view.revalidate();
+        this.view.repaint();
     }
 
-    public JButton getGenerateButton() {
+    public JButton getGenerateBtn() {
         return this.generate;
     }
-    public JButton getShowAllButton() {
+    public JButton getShowAllBtn() {
         return this.showAll;
     }
-    public JButton getSaveButton() {
+    public JButton getSaveBtn() {
         return this.save;
     }
-    public JButton getSearchPosButton() {
+    public JButton getSearchPosBtn() {
         return this.searchPos;
     }
-    public JButton getSearchRadiusButton() {
+    public JButton getSearchRadiusBtn() {
         return this.searchRadius;
     }
-    public JButton getCreateNewButton() {
+    public JButton getCreateBtn() {
         return this.createNew;
     }
-    public JButton getSearchNameButton() {
+    public JButton getSearchNameBtn() {
         return this.searchName;
     }
 }
