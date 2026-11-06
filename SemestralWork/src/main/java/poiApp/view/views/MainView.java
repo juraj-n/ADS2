@@ -2,6 +2,7 @@ package poiApp.view.views;
 
 import poiApp.model.PoiDto;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.swing.*;
 import java.awt.*;
@@ -15,10 +16,10 @@ public class MainView {
     private JButton searchPos, searchRadius, createNew, searchName;
 
     public MainView() {
-        this.mainbar = new JPanel();
+        this.mainbar = new JPanel(new BorderLayout());
         this.sidebar = new JPanel(new GridBagLayout());
 
-        this.poiPanel = new JPanel(new BorderLayout());
+        this.poiPanel = new JPanel();
         this.poiPanel.setLayout(new BoxLayout(this.poiPanel, BoxLayout.Y_AXIS));
 
         this.view.add(this.mainbar, BorderLayout.CENTER);
@@ -32,8 +33,6 @@ public class MainView {
         return this.view;
     }
     private void sidebarSetUp() {
-        this.sidebar.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Color.LIGHT_GRAY));
-
         this.generate = new JButton("Generovať");
         this.showAll = new JButton("Všetky");
         this.save = new JButton("Save");
@@ -64,36 +63,63 @@ public class MainView {
     private void mainbarSetUp() {
         // TODO: add header
         JScrollPane scrollPane = new JScrollPane(this.poiPanel);
-        scrollPane.setPreferredSize(new Dimension(1200, 800));
 
         this.mainbar.add(scrollPane);
     }
-    public void setPois(List<PoiDto> pois, Consumer<PoiDto> onDelSelected, Consumer<PoiDto> onEdtSelected) {
+    public void setPois(List<PoiDto> pois, Consumer<PoiDto> onDeleteBtn, Consumer<PoiDto> onEditBtn) {
         this.poiPanel.removeAll();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
         for (var p : pois) {
-            JPanel row = new JPanel(new BorderLayout());
-
-            JLabel info = new JLabel(p.getInfo());
-            info.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 10));
-
-            JButton deleteBtn = new JButton("Vymazať");
-            deleteBtn.addActionListener(e -> onDelSelected.accept(p));
-            JButton editBtn = new JButton("Upraviť");
-            editBtn.addActionListener(e -> onEdtSelected.accept(p));
-
-            JPanel buttons = new JPanel();
-            buttons.add(deleteBtn);
-            buttons.add(editBtn);
-
-            row.add(info, BorderLayout.CENTER);
-            row.add(buttons, BorderLayout.EAST);
-
+            String[] values = {
+                    p.getName(),
+                    p.getDescription(),
+                    p.getAddress(),
+                    String.valueOf(p.getLatitude()),
+                    String.valueOf(p.getLongitude()),
+                    p.getCreatedAt().format(format),
+                    p.getUpdatedAt().format(format)
+            };
+            JPanel row = this.createRow(values, createButtons(p, onDeleteBtn, onEditBtn));
+            row.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
             this.poiPanel.add(row);
         }
 
-        this.view.revalidate();
-        this.view.repaint();
+        this.poiPanel.revalidate();
+        this.poiPanel.repaint();
     }
+    private JPanel createRow(String[] values, JComponent btns) {
+        JPanel row = new JPanel(new BorderLayout());
+
+        JPanel cells = new JPanel(new GridLayout(1, values.length, 0, 0));
+        for (String v : values) {
+            cells.add(this.cell(v));
+        }
+
+        row.add(cells, BorderLayout.CENTER);
+        row.add(btns, BorderLayout.EAST);
+
+        return row;
+    }
+    private JPanel createButtons(PoiDto poi, Consumer<PoiDto> onDelelte, Consumer<PoiDto> onEdit) {
+        JButton deleteBtn = new JButton("✕");
+        deleteBtn.addActionListener(e -> onDelelte.accept(poi));
+
+        JButton editBtn = new JButton("✎");
+        editBtn.addActionListener(e -> onEdit.accept(poi));
+
+        JPanel buttons = new JPanel(new GridLayout(2, 0));
+        buttons.add(deleteBtn);
+        buttons.add(editBtn);
+
+        return buttons;
+    }
+    private JLabel cell(String text) {
+        JLabel label = new JLabel(text, SwingConstants.CENTER);
+        label.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 10));
+        label.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+        return label;
+    }
+
 
     public JButton getGenerateBtn() {
         return this.generate;

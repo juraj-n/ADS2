@@ -47,29 +47,7 @@ public class PoiDto {
     public LocalDateTime getCreatedAt() {
         return this.createdAt;
     }
-    public String getInfo() {
-        String placeholder = "N/A";
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
-
-        String name = this.centerString(this.name != null ? this.name : placeholder, 15);
-        String desc = this.centerString(this.description != null ? this.description : placeholder, 50);
-        String address = this.centerString(this.address != null ? this.address : placeholder, 20);
-
-        String lat = String.format(Locale.US, "%10.6f", this.latitude);
-        String lon = String.format(Locale.US, "%10.6f", this.longitude);
-
-        String createdStr = this.createdAt != null ? this.createdAt.format(formatter) : placeholder;
-        String updatedStr = this.updatedAt != null ? this.updatedAt.format(formatter) : placeholder;
-        String created = this.centerString(createdStr, 19);
-        String updated = this.centerString(updatedStr, 19);
-
-        return String.format("%s | %s | %s | %s | %s | %s | %s", name, desc, address, lat, lon, created, updated);
-    }
-    private String centerString(String text, int width) {
-        int totalPadding = width - text.length();
-        int leftPadding = totalPadding / 2;
-        int rightPadding = totalPadding - leftPadding;
-
-        return " ".repeat(leftPadding) + text + " ".repeat(rightPadding);
+    public LocalDateTime getUpdatedAt() {
+        return this.updatedAt;
     }
 }
