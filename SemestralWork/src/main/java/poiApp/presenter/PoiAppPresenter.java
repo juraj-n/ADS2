@@ -10,6 +10,7 @@ import poiApp.model.adapter.TreeAdapter;
 import poiApp.view.dialogs.CreatePoiDialog;
 import poiApp.view.dialogs.GenerateDialog;
 import poiApp.view.dialogs.SaveDialog;
+import poiApp.view.dialogs.SearchPosDialog;
 import poiApp.view.views.MainView;
 import poiApp.view.views.SelectFileView;
 import poiApp.view.views.SelectTreeView;
@@ -21,7 +22,6 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -55,7 +55,7 @@ public class PoiAppPresenter {
         view.getShowAllButton().addActionListener(e -> this.onShowAllSelected());
         view.getSaveButton().addActionListener(e -> this.onSaveSelected());
 
-        view.getSeachPosButton().addActionListener(e -> {});
+        view.getSeachPosButton().addActionListener(e -> this.onSearchPosSelected());
         view.getSearchRadiusButton().addActionListener(e -> {});
         view.getCreateNewButton().addActionListener(e -> this.onCreatePoiSelected());
         view.getSearchNameButton().addActionListener(e -> {});
@@ -158,7 +158,33 @@ public class PoiAppPresenter {
 
         dialog.close();
     }
+    private void onSearchPosSelected() {
+        SearchPosDialog dialog = new SearchPosDialog(this.window.getFrame());
+        dialog.getSubmitBtn().addActionListener(e -> this.onSearchPosFormSubmitted(
+                dialog,
+                dialog.getLatitude(),
+                dialog.getLongitude()));
+        dialog.getCancelBtn().addActionListener(e -> dialog.close());
+        dialog.show();
+    }
+    private void onSearchPosFormSubmitted(SearchPosDialog dialog, String latitude, String longitude) {
+        try {
+            double lat = Double.parseDouble(latitude);
+            double lon = Double.parseDouble(longitude);
 
+            List<PoiDto> pois = model.findDto(new double[]{lat, lon});
+            dialog.close();
+            this.showMainView(pois);
+        } catch (NumberFormatException nfex) {
+            dialog.showError("Nesprávny formát [xxx.xxxxxx]");
+        }
+    }
+    private void onSearchRadiusSelected() {
+
+    }
+    private void onSearchRadiusFormSubmitted() {
+
+    }
     private void onCreatePoiSelected() {
         CreatePoiDialog dialog = new CreatePoiDialog(window.getFrame());
         dialog.getSubmitBtn().addActionListener(e -> this.onCreateFromSubmitted(
@@ -200,6 +226,14 @@ public class PoiAppPresenter {
             longitude = Double.parseDouble(lon);
         } catch (NumberFormatException nfex) {
             dialog.showError("Nesprávny formát [000.000000]");
+            return;
+        }
+        if (latitude < -90 || latitude > 90) {
+            dialog.showError("Geo. šírka musí byť v rozmedzí <-90, 90>!");
+            return;
+        }
+        if (longitude < -180 || longitude > 180) {
+            dialog.showError("Geo. dĺžka musí byť v rozmedzí <-180, 180>!");
             return;
         }
 

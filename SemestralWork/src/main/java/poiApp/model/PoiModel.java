@@ -26,11 +26,16 @@ public class PoiModel {
     }
 
     public boolean insert(Poi value) {
-        double[] keys = new double[]{value.getLatitude(), value.getLatitude()};
+        double[] keys = new double[]{value.getLatitude(), value.getLongitude()};
         return tree.insert(keys, value);
     }
     public List<PoiDto> findDtos(double[] minKeys, double[] maxKeys) {
         return tree.find(minKeys, maxKeys).stream()
+                .map(this::getPoiDtos)
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+    public List<PoiDto> findDto(double[] keys) {
+        return tree.find(keys).stream()
                 .map(this::getPoiDtos)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
