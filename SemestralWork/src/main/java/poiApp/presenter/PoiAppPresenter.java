@@ -495,7 +495,7 @@ public class PoiAppPresenter {
                     if (split.length != 8)
                         continue;
 
-                    String id = split[0];
+                    String uuid = split[0];
                     String name = split[1];
                     String description = split[2];
                     double lat = Double.parseDouble(split[3]);
@@ -503,8 +503,6 @@ public class PoiAppPresenter {
                     String address = split[5];
                     LocalDateTime createdAt = LocalDateTime.parse(split[6]);
                     LocalDateTime updatedAt = LocalDateTime.parse(split[7]);
-
-                    String uuid = String.valueOf(UUID.randomUUID());
 
                     Poi poi = new Poi()
                         .setId(uuid)
