@@ -4,13 +4,15 @@ import javax.swing.*;
 import java.awt.*;
 
 public class FormDialog {
+    private final JFrame owner;
     private final JDialog dialog;
     private final JButton submitBtn = new JButton("Odoslať");
     private final JButton cancelBtn = new JButton("Zrušiť");
     private final JLabel error = new JLabel(" ");
 
     public FormDialog(JFrame frame, String title) {
-        this.dialog = new JDialog(frame, title, true);
+        this.owner = frame;
+        this.dialog = new JDialog(this.owner, title, true);
     }
 
     public JButton getSubmitBtn() {
@@ -26,6 +28,7 @@ public class FormDialog {
         this.dialog.pack();
     }
     public void show() {
+        this.dialog.setLocationRelativeTo(this.owner);
         this.dialog.setVisible(true);
     }
     public void close() {
