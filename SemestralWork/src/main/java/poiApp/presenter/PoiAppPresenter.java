@@ -71,7 +71,10 @@ public class PoiAppPresenter {
         view.getSearchNameButton().addActionListener(e -> this.onSearchNameSelected());
     }
     private void onDeleteDtoSelected(PoiDto dto) {
+        this.currentDtos.remove(dto);
 
+        model.softDelete(dto);
+        this.showMainView();
     }
     private void onEditDtoSelected(PoiDto dto) {
 

@@ -26,6 +26,9 @@ public class PoiDto {
         this.updatedAt = updatedAt;
     }
 
+    public String getId() {
+        return this.id;
+    }
     public double getLatitude() {
         return this.latitude;
     }

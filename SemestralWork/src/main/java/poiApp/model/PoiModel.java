@@ -58,4 +58,14 @@ public class PoiModel {
 
         return tree.find(minKeys, maxKeys);
     }
+    public void softDelete(PoiDto dto) {
+        double[] keys = {dto.getLatitude(), dto.getLongitude()};
+        List<Poi> pois = tree.find(keys);
+        for (var p : pois) {
+            if (p.getId().equals(dto.getId())) {
+                p.setDeleted(true);
+                break;
+            }
+        }
+    }
 }
