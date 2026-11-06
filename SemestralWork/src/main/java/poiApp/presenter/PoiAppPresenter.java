@@ -197,6 +197,7 @@ public class PoiAppPresenter {
             }
         } catch (NumberFormatException nfex) {
             dialog.showError("Počet hodnôt musí byť číslo!");
+            return;
         }
         dialog.close();
     }
