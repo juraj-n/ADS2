@@ -65,7 +65,7 @@ public class PoiAppPresenter {
         view.getShowAllButton().addActionListener(e -> this.onShowAllSelected());
         view.getSaveButton().addActionListener(e -> this.onSaveSelected());
 
-        view.getSeachPosButton().addActionListener(e -> this.onSearchPosSelected());
+        view.getSearchPosButton().addActionListener(e -> this.onSearchPosSelected());
         view.getSearchRadiusButton().addActionListener(e -> this.onSearchRadiusSelected());
         view.getCreateNewButton().addActionListener(e -> this.onCreatePoiSelected());
         view.getSearchNameButton().addActionListener(e -> this.onSearchNameSelected());
@@ -336,7 +336,7 @@ public class PoiAppPresenter {
     }
     private void onCreatePoiSelected() {
         CreateOrEditPoiDialog dialog = new CreateOrEditPoiDialog(window.getFrame(), "Vytvoriť Nový POI",null);
-        dialog.getSubmitBtn().addActionListener(e -> this.onCreateFromSubmitted(
+        dialog.getSubmitBtn().addActionListener(e -> this.onCreateFormSubmitted(
                 dialog,
                 dialog.getName(),
                 dialog.getDescription(),
@@ -346,7 +346,7 @@ public class PoiAppPresenter {
         dialog.getCancelBtn().addActionListener(e -> dialog.close());
         dialog.show();
     }
-    private void onCreateFromSubmitted(CreateOrEditPoiDialog dialog, String name, String description, String address, String lat, String lon) {
+    private void onCreateFormSubmitted(CreateOrEditPoiDialog dialog, String name, String description, String address, String lat, String lon) {
         if (name == null || name.isBlank()) {
             dialog.showError("Názov nesmie byť prázdny!");
             return;

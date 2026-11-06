@@ -1,14 +1,10 @@
 package poiApp.view.views;
 
-import poiApp.model.Poi;
 import poiApp.model.PoiDto;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.text.DateFormatter;
 import java.awt.*;
-import java.util.Locale;
 import java.util.function.Consumer;
 
 public class MainView {
@@ -104,7 +100,7 @@ public class MainView {
     public JButton getSaveButton() {
         return this.save;
     }
-    public JButton getSeachPosButton() {
+    public JButton getSearchPosButton() {
         return this.searchPos;
     }
     public JButton getSearchRadiusButton() {
