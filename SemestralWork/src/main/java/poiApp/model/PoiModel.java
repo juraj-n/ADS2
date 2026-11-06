@@ -38,17 +38,22 @@ public class PoiModel {
     }
     public List<PoiDto> findName(double[] minKeys, double[] maxKeys, String name) {
         return tree.find(minKeys, maxKeys).stream()
-                .filter(e -> removeDiacritics(e.getName()).equalsIgnoreCase(removeDiacritics(name)))
+                .filter(e ->
+                    !e.isDeleted() &&
+                    removeDiacritics(e.getName()).equalsIgnoreCase(removeDiacritics(name))
+                )
                 .map(this::convertToDto)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
     public List<PoiDto> findDtos(double[] minKeys, double[] maxKeys) {
         return tree.find(minKeys, maxKeys).stream()
+                .filter(e -> !e.isDeleted())
                 .map(this::convertToDto)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
     public List<PoiDto> findDto(double[] keys) {
         return tree.find(keys).stream()
+                .filter(e -> !e.isDeleted())
                 .map(this::convertToDto)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
