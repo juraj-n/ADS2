@@ -82,8 +82,12 @@ public class PoiAppPresenter {
                 String id = String.valueOf(UUID.randomUUID());
                 String name = i + ".Úkaz";
                 String description = descs[generator.nextInt(descs.length)];
-                double latitude = generator.nextDouble(-90.0, 90.0);
-                double longitude = generator.nextDouble(-180.0, 180.0);
+
+                long lat = generator.nextLong(-90_000_000L, 90_000_000L);
+                double latitude = lat / 1_000_000.0;
+                long lon = generator.nextLong(-180_000_000L, 180_000_000L);
+                double longitude = lon / 1_000_000.0;
+
                 String address = adds[generator.nextInt(adds.length)];
                 LocalDateTime createdAt = LocalDateTime.now();
                 LocalDateTime updatedAt = LocalDateTime.now();
@@ -176,7 +180,7 @@ public class PoiAppPresenter {
             dialog.close();
             this.showMainView(pois);
         } catch (NumberFormatException nfex) {
-            dialog.showError("Nesprávny formát [xxx.xxxxxx]");
+            dialog.showError("Nesprávny formát [123.456789]");
         }
     }
     private void onSearchRadiusSelected() {
@@ -214,10 +218,17 @@ public class PoiAppPresenter {
             dialog.showError("Popis nesmie obsahovať viac ako 15 znakov!");
             return;
         }
-        if (address == null || address.isBlank())
-            address = "N/A";
+        if (address == null || address.isBlank()) address = "N/A";
         if (address.length() > 20) {
             dialog.showError("Adresa nesmie obsahovať viac ako 20 znakov!");
+            return;
+        }
+        if ((lat.length() - lat.indexOf(".") - 1) > 6){
+            dialog.showError("Maximálny počet desatinných miest je 6!");
+            return;
+        }
+        if ((lon.length() - lon.indexOf(".") - 1) > 6) {
+            dialog.showError("Maximálny počet desatinných miest je 6!");
             return;
         }
         double latitude, longitude;
@@ -225,7 +236,7 @@ public class PoiAppPresenter {
             latitude = Double.parseDouble(lat);
             longitude = Double.parseDouble(lon);
         } catch (NumberFormatException nfex) {
-            dialog.showError("Nesprávny formát [000.000000]");
+            dialog.showError("Nesprávny formát [123.456789]!");
             return;
         }
         if (latitude < -90 || latitude > 90) {
@@ -236,6 +247,7 @@ public class PoiAppPresenter {
             dialog.showError("Geo. dĺžka musí byť v rozmedzí <-180, 180>!");
             return;
         }
+
 
         String uuid = String.valueOf(UUID.randomUUID());
 
