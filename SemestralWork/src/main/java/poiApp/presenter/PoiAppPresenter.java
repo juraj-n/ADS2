@@ -65,7 +65,7 @@ public class PoiAppPresenter {
         view.getSeachPosButton().addActionListener(e -> this.onSearchPosSelected());
         view.getSearchRadiusButton().addActionListener(e -> this.onSearchRadiusSelected());
         view.getCreateNewButton().addActionListener(e -> this.onCreatePoiSelected());
-        view.getSearchNameButton().addActionListener(e -> {});
+        view.getSearchNameButton().addActionListener(e -> this.onSearchNameSelected());
     }
     private void onDeleteDtoSelected(PoiDto dto) {
 
@@ -326,7 +326,41 @@ public class PoiAppPresenter {
 
         dialog.close();
     }
+    private void onSearchNameSelected() {
+        SearchNameDialog dialog = new SearchNameDialog(this.window.getFrame());
+        dialog.getSubmitBtn().addActionListener(e -> this.onSearchNameFormSubmitted(
+                dialog,
+                dialog.getName(),
+                dialog.getMinLatitude(),
+                dialog.getMaxLatitude(),
+                dialog.getMinLongitude(),
+                dialog.getMaxLongitude()
+        ));
+        dialog.getCancelBtn().addActionListener(e -> dialog.close());
+        dialog.show();
+    }
+    private void onSearchNameFormSubmitted(SearchNameDialog dialog, String name, String minLat, String maxLat, String minLon, String maxLon) {
+        if (name == null || name.isBlank()) {
+            dialog.showError("Názov nesmie byť prázdny!");
+            return;
+        }
+        double minLatitude, maxLatitude, minLongitude, maxLongitude;
+        try {
+            minLatitude = Double.parseDouble(minLat);
+            maxLatitude = Double.parseDouble(maxLat);
+            minLongitude = Double.parseDouble(minLon);
+            maxLongitude = Double.parseDouble(maxLon);
+        } catch (NumberFormatException nfex) {
+            dialog.showError("Nesprávny formát [123.456789]!");
+            return;
+        }
 
+        double[] minKeys = {minLatitude, minLongitude};
+        double[] maxKeys = {maxLatitude, maxLongitude};
+        List<PoiDto> pois = model.findName(minKeys, maxKeys, name.trim());
+        dialog.close();
+        this.showMainView(pois);
+    }
 
 
     // Select Tree View

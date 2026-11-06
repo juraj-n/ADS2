@@ -29,6 +29,12 @@ public class PoiModel {
         double[] keys = new double[]{value.getLatitude(), value.getLongitude()};
         return tree.insert(keys, value);
     }
+    public List<PoiDto> findName(double[] minKeys, double[] maxKeys, String name) {
+        return tree.find(minKeys, maxKeys).stream()
+                .filter(e -> e.getName().equals(name))
+                .map(this::getPoiDtos)
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
     public List<PoiDto> findDtos(double[] minKeys, double[] maxKeys) {
         return tree.find(minKeys, maxKeys).stream()
                 .map(this::getPoiDtos)
