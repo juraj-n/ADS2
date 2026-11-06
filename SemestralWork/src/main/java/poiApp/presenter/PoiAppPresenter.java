@@ -237,9 +237,6 @@ public class PoiAppPresenter {
                 poisInSquare.addAll(model.findDtos(new double[]{latMin, lonMin}, new double[]{latMax, lonMax}));
             }
 
-            double[] min = {latitude - deltaLat, longitude - deltaLon};
-            double[] max = {latitude + deltaLat, longitude + deltaLon};
-
             List<PoiDto> poisInRadius = new ArrayList<>();
             for (var poi : poisInSquare) {
                 if (haversine(latitude, longitude, poi.getLatitude(), poi.getLongitude()) <= r) {
