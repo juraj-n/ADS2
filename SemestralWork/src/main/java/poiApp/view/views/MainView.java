@@ -1,6 +1,7 @@
 package poiApp.view.views;
 
 import poiApp.model.PoiDto;
+import poiApp.view.dialogs.FormDialog;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -10,20 +11,23 @@ import java.util.function.Consumer;
 
 public class MainView {
     private final JPanel view = new JPanel(new BorderLayout());
-    private JPanel mainbar, sidebar;
+    private JPanel mainbar, topbar;
     private JPanel poiPanel;
     private JButton generate, showAll, save;
     private JButton searchPos, searchRadius, createNew, searchName;
 
     public MainView() {
         this.mainbar = new JPanel(new BorderLayout());
-        this.sidebar = new JPanel(new GridBagLayout());
+        this.topbar = new JPanel(new BorderLayout());
+
+        this.mainbar.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+        this.topbar.setBorder(BorderFactory.createEmptyBorder(5,5,10,5));
 
         this.poiPanel = new JPanel();
         this.poiPanel.setLayout(new BoxLayout(this.poiPanel, BoxLayout.Y_AXIS));
 
         this.view.add(this.mainbar, BorderLayout.CENTER);
-        this.view.add(this.sidebar, BorderLayout.EAST);
+        this.view.add(this.topbar, BorderLayout.NORTH);
 
         this.mainbarSetUp();
         this.sidebarSetUp();
@@ -35,33 +39,26 @@ public class MainView {
     private void sidebarSetUp() {
         this.generate = new JButton("Generovať");
         this.showAll = new JButton("Všetky");
-        this.save = new JButton("Save");
+        this.save = new JButton("Uložiť");
 
-        this.searchPos = new JButton("Vyhľadať Pozíciu");
-        this.searchRadius = new JButton("Vyhľadať Okolie");
+        this.searchPos = new JButton("Hľadať Pozíciu");
+        this.searchRadius = new JButton("Hľadať Okolie");
         this.createNew = new JButton("Vytvoriť POI");
-        this.searchName = new JButton("Vyhľadať Názov");
+        this.searchName = new JButton("Hľadať Názov");
 
-        JPanel topButtons = new JPanel(new GridLayout(1, 3, 5, 5));
-        topButtons.add(this.generate);
-        topButtons.add(this.showAll);
-        topButtons.add(this.save);
+        JPanel btns = new JPanel(new GridLayout(1, 7, 5, 5));
+        btns.add(this.searchPos);
+        btns.add(this.searchRadius);
+        btns.add(this.createNew);
+        btns.add(this.searchName);
+        btns.add(this.showAll);
+        btns.add(this.generate);
+        btns.add(this.save);
+        btns.setPreferredSize(new Dimension(Integer.MAX_VALUE, 50));
 
-        JPanel bottomButtons = new JPanel(new GridLayout(4, 1, 5, 5));
-        bottomButtons.add(this.searchPos);
-        bottomButtons.add(this.searchRadius);
-        bottomButtons.add(this.createNew);
-        bottomButtons.add(this.searchName);
-
-        JPanel content = new JPanel(new BorderLayout(0, 10));
-
-        content.add(topButtons, BorderLayout.NORTH);
-        content.add(bottomButtons, BorderLayout.SOUTH);
-
-        this.sidebar.add(content);
+        this.topbar.add(btns);
     }
     private void mainbarSetUp() {
-        // TODO: add header
         JScrollPane scrollPane = new JScrollPane(this.poiPanel);
 
         this.mainbar.add(scrollPane);
@@ -69,6 +66,7 @@ public class MainView {
     public void setPois(List<PoiDto> pois, Consumer<PoiDto> onDeleteBtn, Consumer<PoiDto> onEditBtn) {
         this.poiPanel.removeAll();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+
         for (var p : pois) {
             String[] values = {
                     p.getName(),
@@ -89,10 +87,25 @@ public class MainView {
     }
     private JPanel createRow(String[] values, JComponent btns) {
         JPanel row = new JPanel(new BorderLayout());
+        String[] headerValues = new String[]{"Názov", "Popis", "Adresa", "Geo. Šírka", "Geo. Dĺžka", "Vytvorené", "Upravené"};
 
         JPanel cells = new JPanel(new GridLayout(1, values.length, 0, 0));
-        for (String v : values) {
-            cells.add(this.cell(v));
+        for (int i = 0; i < values.length; i++) {
+            JPanel cell = new JPanel(new BorderLayout());
+
+            JLabel head = new JLabel(headerValues[i]);
+            head.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 10));
+            head.setHorizontalAlignment(SwingConstants.CENTER);
+
+            JLabel val = new JLabel(values[i], SwingConstants.CENTER);
+            val.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 15));
+
+
+            cell.add(head, BorderLayout.NORTH);
+            cell.add(val, BorderLayout.CENTER);
+            cell.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+
+            cells.add(cell);
         }
 
         row.add(cells, BorderLayout.CENTER);
@@ -112,12 +125,6 @@ public class MainView {
         buttons.add(editBtn);
 
         return buttons;
-    }
-    private JLabel cell(String text) {
-        JLabel label = new JLabel(text, SwingConstants.CENTER);
-        label.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 10));
-        label.setBorder(BorderFactory.createLineBorder(Color.BLUE));
-        return label;
     }
 
 
