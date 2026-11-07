@@ -19,6 +19,7 @@
             <plugin>
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
+                    <outputDirectory>${project.basedir}</outputDirectory>
                     <excludes>
                         <exclude>s1t2/**</exclude>
                     </excludes>

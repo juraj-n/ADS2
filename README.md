@@ -1,6 +1,16 @@
 # ADS2
 Implementation of data structures in Java
 
+----
+
+# Executing JAR file
+```bash
+cd JAR/
+java -jar gg-ds-1.0.jar
+```
+
+----
+
 # Used data structures from GitHub
 ## Quad Trees
 - [varunpant](https://github.com/varunpant/Quadtree/tree/master)
