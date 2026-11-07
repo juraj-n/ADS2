@@ -8,8 +8,11 @@ import poiApp.view.views.MainView;
 
 import javax.swing.*;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -243,32 +246,37 @@ public class MainPresenter {
         fileName = fileName + "-" + dateTime;
 
         List<Poi> all = model.findAll();
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("data/S1T3/" + fileName + ".csv"))) {
-            bw.write("id;name;description;lat;lon;address;created_at;updated_at");
-            bw.newLine();
-            for (var poi : all) {
-                if (!poi.isDeleted()) {
-                    bw.write(poi.getId() != null ? poi.getId() : "");
-                    bw.write(";");
-                    bw.write(poi.getName() != null ? poi.getName() : "");
-                    bw.write(";");
-                    bw.write(poi.getDescription() != null ? poi.getDescription() : "");
-                    bw.write(";");
-                    bw.write(String.valueOf(poi.getLatitude()));
-                    bw.write(";");
-                    bw.write(String.valueOf(poi.getLongitude()));
-                    bw.write(";");
-                    bw.write(poi.getAddress() != null ? poi.getAddress() : "");
-                    bw.write(";");
-                    bw.write(poi.getCreatedAt() != null ? poi.getCreatedAt().toString() : "");
-                    bw.write(";");
-                    bw.write(poi.getUpdatedAt() != null ? poi.getUpdatedAt().toString() : "");
+        try {
+            Files.createDirectories(Path.of("saved_pois"));
 
-                    bw.newLine();
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter("saved_pois/" + fileName + ".csv"))) {
+                bw.write("id;name;description;lat;lon;address;created_at;updated_at");
+                bw.newLine();
+                for (var poi : all) {
+                    if (!poi.isDeleted()) {
+                        bw.write(poi.getId() != null ? poi.getId() : "");
+                        bw.write(";");
+                        bw.write(poi.getName() != null ? poi.getName() : "");
+                        bw.write(";");
+                        bw.write(poi.getDescription() != null ? poi.getDescription() : "");
+                        bw.write(";");
+                        bw.write(String.valueOf(poi.getLatitude()));
+                        bw.write(";");
+                        bw.write(String.valueOf(poi.getLongitude()));
+                        bw.write(";");
+                        bw.write(poi.getAddress() != null ? poi.getAddress() : "");
+                        bw.write(";");
+                        bw.write(poi.getCreatedAt() != null ? poi.getCreatedAt().toString() : "");
+                        bw.write(";");
+                        bw.write(poi.getUpdatedAt() != null ? poi.getUpdatedAt().toString() : "");
+
+                        bw.newLine();
+                    }
                 }
             }
         } catch (IOException ioex) {
-            System.out.println(ioex.getMessage());
+            dialog.showError("Súbor sa nepodarilo uložiť!");
+            return;
         }
 
         dialog.close();
