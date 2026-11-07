@@ -87,7 +87,6 @@ public class KDTree<T> {
             int depth = depthStack.pop();
             int keyIndex = depth % this._k;
 
-            // Accepting whole subtree: lies completely inside
             Comparable currentKey = current.getKey(keyIndex);
 
             // Left Subtree MAX < Key - Reject right subtree
