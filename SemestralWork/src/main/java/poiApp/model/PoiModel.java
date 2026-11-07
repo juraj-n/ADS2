@@ -25,11 +25,11 @@ public class PoiModel {
                 poi.getUpdatedAt()
         );
     }
-    private String removeDiacritics(String s) {
+    private String removeDiacriticsAndLowerCase(String s) {
         if (s == null)
             return null;
 
-        return Normalizer.normalize(s, Normalizer.Form.NFD).replaceAll("\\p{M}", "");
+        return Normalizer.normalize(s, Normalizer.Form.NFD).replaceAll("\\p{M}", "").toLowerCase();
     }
 
     public boolean insert(Poi value) {
@@ -40,7 +40,7 @@ public class PoiModel {
         return tree.find(minKeys, maxKeys).stream()
                 .filter(e ->
                     !e.isDeleted() &&
-                    removeDiacritics(e.getName()).equalsIgnoreCase(removeDiacritics(name))
+                    removeDiacriticsAndLowerCase(e.getName()).contains(removeDiacriticsAndLowerCase(name))
                 )
                 .map(this::convertToDto)
                 .collect(Collectors.toCollection(ArrayList::new));
