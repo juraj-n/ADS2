@@ -3,6 +3,11 @@ package poiApp.view.dialogs;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Dialog that asks user for name of the file to save stored data into.
+ *
+ * @author Juraj Nižnanský
+ * */
 public class SaveDialog extends FormDialog {
     private final JTextField nameField = new JTextField(30);
     public SaveDialog(JFrame frame) {

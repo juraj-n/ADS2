@@ -7,6 +7,11 @@ import poiApp.view.views.SelectTreeView;
 
 import javax.swing.*;
 
+/**
+ * Class represents Presenter layer of the application that connects GUI to model. Used by PoiAppNavigator.
+ *
+ * @author Juraj Nižnanský.
+ * */
 public class SelectTreePresenter {
     private final SelectTreeView view = new SelectTreeView();
     public SelectTreePresenter(PoiAppNavigator navigator) {

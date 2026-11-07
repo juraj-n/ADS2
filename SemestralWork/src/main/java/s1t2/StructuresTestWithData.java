@@ -11,6 +11,11 @@ import s1t2.otherTrees.qt.TesterJotschiQT;
 import s1t2.otherTrees.qt.TesterTzaeschkeQT;
 import s1t2.otherTrees.qt.TesterVarunpantQT;
 
+/**
+ * Class was used when testing the speed of insert and find operation on various trees in S1Z2.
+ *
+ * @author Juraj Nižnanský
+ * */
 public class StructuresTestWithData {
     public static void main(String[] args) {
         var nodes = SvkNodeReader.loadSvkNodes("data/S1T2/slovakia_nodes.csv");

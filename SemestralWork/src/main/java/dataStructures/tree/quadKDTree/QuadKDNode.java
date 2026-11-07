@@ -6,6 +6,11 @@ import dataStructures.tree.kdTree.KDTree;
 
 import java.util.ArrayList;
 
+/**
+ * Class represents the node of QuadKDTree.
+ *
+ * @author Juraj Nižnanský
+ * */
 public class QuadKDNode<T> {
     private final QuadKey _xMin, _xMax, _yMin, _yMax;
     private final ArrayList<QuadKDNode<T>> _sons;
@@ -27,6 +32,13 @@ public class QuadKDNode<T> {
     public QuadKDNode<T> getSon(int index) {
         return this._sons.get(index);
     }
+    /**
+     * Determines in which subregion the keys belong to.
+     *
+     * @param xKey the position along x-axis.
+     * @param yKey the position along y-axis.
+     * @return integer that represents the NW, NE, SW, SE quadrant.
+     * */
     public int getQuadrantIndex(QuadKey xKey, QuadKey yKey) {
         QuadKey xHalf = this._xMax.subtract(this._xMax.subtract(this._xMin).half());
         QuadKey yHalf = this._yMax.subtract(this._yMax.subtract(this._yMin).half());
@@ -52,6 +64,13 @@ public class QuadKDNode<T> {
         this._data = data;
     }
 
+    /**
+     * Check if this node contains equal keys.
+     *
+     * @param xKey xKey to check.
+     * @param yKey yKey to check.
+     * @return true if this node contains keys from arguments.
+     * */
     public boolean equalKeys(QuadKey xKey, QuadKey yKey) {
         var found = this._data.find(new QuadKey[] {xKey, yKey});
 
@@ -69,6 +88,9 @@ public class QuadKDNode<T> {
         return !this._data.isEmpty();
     }
 
+    /**
+     * Subdivides this node into four quadrants and redistributes its data into correct quadrant.
+     * */
     public void subdivide() {
         QuadKey xHalf = this._xMax.subtract(this._xMax.subtract(this._xMin).half());
         QuadKey yHalf = this._yMax.subtract(this._yMax.subtract(this._yMin).half());
@@ -80,6 +102,9 @@ public class QuadKDNode<T> {
 
         this.redistributeData();
     }
+    /**
+     * Redistributes the data from this node into correct subquadrant.
+     * */
     private void redistributeData() {
         KDNode<T> root = this._data.getRoot();
         int childIndex = this.getQuadrantIndex((QuadKey)root.getKey(0), (QuadKey)root.getKey(1));

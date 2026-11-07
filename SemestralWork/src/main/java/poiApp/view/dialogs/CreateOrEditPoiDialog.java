@@ -5,6 +5,11 @@ import poiApp.model.PoiDto;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Dialog that asks user for name, description, address, latitude and longitude of the Poi to be created or eddited.
+ *
+ * @author Juraj Nižnanský
+ * */
 public class CreateOrEditPoiDialog extends FormDialog {
     private final JTextField nameField = new JTextField(20);
     private final JTextField descField = new JTextField(50);

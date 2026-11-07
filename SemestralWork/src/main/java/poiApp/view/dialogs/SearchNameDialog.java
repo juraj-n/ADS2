@@ -3,6 +3,11 @@ package poiApp.view.dialogs;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Dialog that asks user for area and name of the Pois to be found.
+ *
+ * @author Juraj Nižnanský
+ * */
 public class SearchNameDialog extends FormDialog {
     private final JTextField nameField = new JTextField(20);
     private final JTextField minLatField = new JTextField(10);

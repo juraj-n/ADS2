@@ -11,7 +11,21 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Class represents various helper methods used in presenter layer.
+ *
+ * @author Juraj Nižnanský
+ * */
 public class PoiMiscMethods {
+    /**
+     * Calculates the circle distance between two geograpich points using Haversine formula.
+     *
+     * @param latEntered latitude of the first point.
+     * @param lonEntered longitude of the first point.
+     * @param latPoi latitude of the second point (Poi).
+     * @param lonPoi longitude of the second point (Poi).
+     * @return the distance between the two points in meters.
+     * */
     public static double haversine(double latEntered, double lonEntered, double latPoi, double lonPoi) {
         double EARTH_RADIUS_M = 6_371_000.0;
 
@@ -26,6 +40,8 @@ public class PoiMiscMethods {
 
     /**
      * Kód vytvorený pomocou AI, zdokumentované v kapitole 4.
+     *
+     * @return List<String> of CSV file names inside data/S1T3 folder.
      * */
     public List<String> listCsvFiles() {
         File folder = new File("data/S1T3");
@@ -33,6 +49,12 @@ public class PoiMiscMethods {
 
         return names == null ? List.of() : Arrays.asList(names);
     }
+    /**
+     * Loads CSV file into model. The file must be inside data/S1T3 folder.
+     *
+     * @param fileName the name of the file to be loaded.
+     * @param model the model for data to be loaded into.
+     * */
     public void loadFileToModel(String fileName, PoiModel model) {
         if (fileName != null) {
             // id;name;description;lat;lon;address;created_at;updated_at

@@ -3,6 +3,11 @@ package poiApp.view.views;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Class represents tree selection view of the application with 3 buttons where user can choose which data structure to use.
+ *
+ * @author Juraj Nižnanský
+ * */
 public class SelectTreeView {
     private final JPanel view;
     private final JButton kdButton;

@@ -2,14 +2,19 @@ package poiApp.model;
 
 import java.time.LocalDateTime;
 
+/**
+ * Class represents the POI with its location and other data.
+ *
+ * <p> Setters return this for chaining the calls.
+ *
+ * @author Juraj Nižnanský
+ * */
 public class Poi {
     private String id;
     private String name, description, address;
     private double latitude, longitude;
     private LocalDateTime createdAt, updatedAt;
     private boolean isDeleted;
-
-    public Poi() {}
 
     public String getId() {
         return id;

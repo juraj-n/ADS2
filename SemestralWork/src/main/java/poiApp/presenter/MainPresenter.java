@@ -17,7 +17,13 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-
+/**
+ * Class represents Presenter layer of application that connects GUI to model. Used by PoiAppNavigator.
+ *
+ * <p> Presenter tells model which operation to execute and validates the forms.
+ *
+ * @author Juraj Nižnanský
+ * */
 public class MainPresenter {
     private final PoiAppNavigator navigator;
     private final MainView view = new MainView();
@@ -134,7 +140,7 @@ public class MainPresenter {
     }
 
 
-    // Sidebar Buttons
+    // Topbar Buttons
     private void onGenerateBtn() {
         GenerateDialog dialog = new GenerateDialog(this.navigator.getFrame());
         dialog.getSubmitBtn().addActionListener(e -> this.onGenerateForm(

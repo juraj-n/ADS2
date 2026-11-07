@@ -1,5 +1,10 @@
 package s1t2.loadData;
 
+/**
+ * Class represents one slovakia_node loaded from file.
+ *
+ * @author Juraj Nižnanský
+ * */
 public class SvkNode {
     private final String id;
     private final double latitude;

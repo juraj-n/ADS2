@@ -6,6 +6,11 @@ import poiApp.model.PoiCoordinate;
 
 import java.util.List;
 
+/**
+ * Implementation of TreeAtapert<Poi> using QuadKDTree.
+ *
+ * @author Juraj Nižnanský
+ * */
 public class QuadKDTreeAdapter implements TreeAdapter<Poi> {
     private final QuadKDTree<Poi> tree = new QuadKDTree<>(
             new PoiCoordinate(-90.0),

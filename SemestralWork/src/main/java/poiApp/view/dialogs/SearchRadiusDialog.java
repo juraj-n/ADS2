@@ -3,6 +3,11 @@ package poiApp.view.dialogs;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Dialog that asks user for latitude and longitude and radius of the Pois to be found.
+ *
+ * @author Juraj Nižnanský
+ * */
 public class SearchRadiusDialog extends FormDialog {
     private final JTextField latField = new JTextField(10);
     private final JTextField lonField = new JTextField(10);

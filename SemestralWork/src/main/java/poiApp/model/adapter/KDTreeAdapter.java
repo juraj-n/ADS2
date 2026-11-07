@@ -6,6 +6,11 @@ import poiApp.model.PoiCoordinate;
 
 import java.util.List;
 
+/**
+ * Implementation of TreeAtapert<Poi> using KDTree.
+ *
+ * @author Juraj Nižnanský
+ * */
 public class KDTreeAdapter implements TreeAdapter<Poi> {
     private final KDTree<Poi> tree = new KDTree<>(2);
 

@@ -3,6 +3,11 @@ package poiApp.view.dialogs;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Base class for modal form dialog with submit and cancel button and area for displaying error message.
+ *
+ * @author Juraj Nižnanský
+ * */
 public class FormDialog {
     private final JFrame owner;
     private final JDialog dialog;
@@ -22,6 +27,11 @@ public class FormDialog {
         return this.cancelBtn;
     }
 
+    /**
+     * Adds specific form to the dialog.
+     *
+     * @param form to be added.
+     * */
     public void addForm(JPanel form) {
         this.dialog.add(form, BorderLayout.CENTER);
         this.dialog.add(this.error, BorderLayout.SOUTH);

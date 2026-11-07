@@ -1,10 +1,12 @@
 package poiApp.model;
 
-import javax.lang.model.util.Elements;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 
+/**
+ * Class represents the POI with its location and other data.
+ *
+ * @author Juraj Nižnanský
+ * */
 public class PoiDto {
     private final String id;
     private final String name, description, address;

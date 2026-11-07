@@ -1,5 +1,10 @@
 package s1t2.loadData;
 
+/**
+ * Class represents loaded rectangular area.
+ *
+ * @author Juraj Nižnanský
+ * */
 public class SvkNodesArea {
     private final String id;
     private final double minLat;

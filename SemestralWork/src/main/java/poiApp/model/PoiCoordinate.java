@@ -3,6 +3,11 @@ package poiApp.model;
 import dataStructures.common.Comparable;
 import dataStructures.common.QuadKey;
 
+/**
+ * Implementation of QuadKey using double value which determines the coordinate.
+ *
+ * @author Juraj Nižnanský
+ * */
 public class PoiCoordinate implements QuadKey {
     private final double value;
     public PoiCoordinate(double value) {

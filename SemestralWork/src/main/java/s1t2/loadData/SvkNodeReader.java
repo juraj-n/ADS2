@@ -4,6 +4,11 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class represents custom file reader.
+ *
+ * @author Juraj Nižnanský
+ * */
 public class SvkNodeReader {
     // slovakia_nodes = id;lat;lon
     // testovacie_oblasti = id;min_lat;min_lon;max_lat;max_lon
@@ -11,6 +16,10 @@ public class SvkNodeReader {
 
     /**
      * Kód vytvorený pomocou AI, zdokumentované v kapitole 2.
+     * Loads data from file to SvkNode and adds it into nodes list.
+     *
+     * @param path the path of the file.
+     * @return List<SvkNode> list of loaded SvkNodes.
      * */
     public static List<SvkNode> loadSvkNodes(String path) {
         List<SvkNode> svkNodes = new ArrayList<>();
@@ -34,6 +43,12 @@ public class SvkNodeReader {
 
         return svkNodes;
     }
+    /**
+     * Loads data from file to SvkNodesArea and add it into areas list.
+     *
+     * @param path the path of the file.
+     * @return List<SvkNodesArea> list of loaded SvkNodesAreas.
+     * */
     public static List<SvkNodesArea> loadSvkNodesAreas(String path) {
         List<SvkNodesArea> svkNodesAreas = new ArrayList<>();
 

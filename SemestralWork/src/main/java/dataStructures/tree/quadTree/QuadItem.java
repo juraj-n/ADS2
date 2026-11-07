@@ -2,6 +2,11 @@ package dataStructures.tree.quadTree;
 
 import dataStructures.common.QuadKey;
 
+/**
+ * Class represents stored keys and value in QuadTree.
+ *
+ * @author Juraj Nižnanský
+ * */
 public class QuadItem<T> {
     private final QuadKey _xKey, _yKey;
     private final T _data;

@@ -4,6 +4,12 @@ import dataStructures.common.Comparable;
 
 import java.util.LinkedList;
 
+/**
+ * Generic class represents KDTree.
+ *
+ * @param <T> the type of value that is stored.
+ * @author Juraj Nižnanský
+ * */
 public class KDTree<T> {
     private final int _k;
     private KDNode<T> _root;
@@ -16,6 +22,14 @@ public class KDTree<T> {
         this._root = null;
     }
 
+    /**
+     * Inserts keys and value into tree to the correct place.
+     *
+     * @param keys the keys that determine the position.
+     * @param data the data that represents stored value.
+     * @throws IllegalArgumentException when the number of keys is not equal to K dimensions.
+     * @return true if the operation was successfull.
+     * */
     public boolean insert(Comparable[] keys, T data) {
         if (keys.length != this._k) {
             throw new IllegalArgumentException("Number of keys must be the same as number of dimesions!");
@@ -54,11 +68,22 @@ public class KDTree<T> {
             }
         }
     }
+    /**
+     * Point search by keys.
+     *
+     * @param keys the keys that determines the position of finding values.
+     * @return LinkedList<T> of found values.
+     * */
     public LinkedList<T> find(Comparable[] keys) {
         return this.find(keys, keys);
     }
     /**
      * Kód vytvorený pomocou AI, zdokumentované v kapitole 1.
+     * Interval search by k-dimensional region.
+     *
+     * @param minKeys minimal values of the region.
+     * @param maxKeys maximal values of the region.
+     * @return LinkedList<T> of found values.
      * */
     public LinkedList<T> find(Comparable[] minKeys, Comparable[] maxKeys) {
         // Exchange keys if min > max
@@ -132,6 +157,14 @@ public class KDTree<T> {
     public boolean isEmpty() {
         return this._root == null;
     }
+    /**
+     * Checks if node is in the k-dimensional region.
+     *
+     * @param node the node to be checked.
+     * @param minKeys minimal values of the region.
+     * @param maxKeys maximal values of the region.
+     * @return true if the node belongs to each interval.
+     * */
     private boolean nodeInInterval(KDNode<T> node, Comparable[] minKeys, Comparable[] maxKeys) {
         for (int i = 0; i < this._k; i++) {
             if (minKeys[i].compare(node.getKey(i)) == 1

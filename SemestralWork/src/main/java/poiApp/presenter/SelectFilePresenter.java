@@ -5,6 +5,11 @@ import poiApp.view.views.SelectFileView;
 import javax.swing.*;
 import java.util.List;
 
+/**
+ * Class represents Presenter layer of application that connects GUI to model. Used by PoiAppNavigator.
+ *
+ * @author Juraj Nižnanský
+ * */
 public class SelectFilePresenter {
     private final SelectFileView view = new SelectFileView();
 

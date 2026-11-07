@@ -3,6 +3,11 @@ package s1t2.loadData;
 import dataStructures.common.Comparable;
 import dataStructures.common.QuadKey;
 
+/**
+ * Implementation of QuadKey representing double value with subtract, half and compare operation.
+ *
+ * @author Juraj Nižnanský
+ * */
 public class SvkDouble implements QuadKey {
     private final double value;
     public SvkDouble(double val) {

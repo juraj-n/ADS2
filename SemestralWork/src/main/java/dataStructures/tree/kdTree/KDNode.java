@@ -4,6 +4,11 @@ import dataStructures.common.Comparable;
 
 import java.util.Arrays;
 
+/**
+ * Class represents the node of KDTree.
+ *
+ * @author Juraj Nižnanský
+ * */
 public class KDNode<T> {
     private Comparable[] _keys;
     private T _data;

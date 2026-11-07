@@ -5,6 +5,11 @@ import dataStructures.common.QuadKey;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+/**
+ * Class represents the node of QuadTree.
+ *
+ * @author Juraj Nižnanský
+ * */
 public class QuadNode<T> {
     private final QuadKey _xMin, _xMax, _yMin, _yMax;
     private ArrayList<QuadNode<T>> _sons;
@@ -26,6 +31,13 @@ public class QuadNode<T> {
     public QuadNode<T> getSon(int index) {
         return this._sons.get(index);
     }
+    /**
+     * Determines in which subregion the keys belong to.
+     *
+     * @param xKey the position along x-axis.
+     * @param yKey the position along y-axis.
+     * @return integer that represents the NW, NE, SW, SE quadrant.
+     * */
     public int getQuadrantIndex(QuadKey xKey, QuadKey yKey) {
         QuadKey xHalf = this._xMax.subtract(this._xMax.subtract(this._xMin).half());
         QuadKey yHalf = this._yMax.subtract(this._yMax.subtract(this._yMin).half());
@@ -51,6 +63,13 @@ public class QuadNode<T> {
         this._data = data;
     }
 
+    /**
+     * Check if this node contains equal keys.
+     *
+     * @param xKey xKey to check.
+     * @param yKey yKey to check.
+     * @return true if this node contains keys from arguments.
+     * */
     public boolean equalKeys(QuadKey xKey, QuadKey yKey) {
         for (var data : this._data) {
             if (data.xKey().compare(xKey) == 0 && data.yKey().compare(yKey) == 0)
@@ -70,6 +89,9 @@ public class QuadNode<T> {
         return !this._data.isEmpty();
     }
 
+    /**
+     * Subdivides this node into four quadrants and redistributes its data into correct quadrant.
+     * */
     public void subdivide() {
         QuadKey xHalf = this._xMax.subtract(this._xMax.subtract(this._xMin).half());
         QuadKey yHalf = this._yMax.subtract(this._yMax.subtract(this._yMin).half());
@@ -81,6 +103,9 @@ public class QuadNode<T> {
 
         this.redistributeData();
     }
+    /**
+     * Redistributes the data from this node into correct subquadrant.
+     * */
     private void redistributeData() {
         QuadItem<T> first = this._data.getFirst();
         int childIndex = this.getQuadrantIndex(first.xKey(), first.yKey());

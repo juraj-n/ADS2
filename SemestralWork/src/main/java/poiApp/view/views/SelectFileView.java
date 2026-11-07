@@ -5,6 +5,11 @@ import java.awt.*;
 import java.util.function.Consumer;
 import java.util.List;
 
+/**
+ * Class represents the file selection view of the application siplaying file names that user can choose and button for user to create new evidence.
+ *
+ * @author Juraj Nižnanský
+ * */
 public class SelectFileView {
     private final JPanel view;
     private final JPanel filesPanel;
@@ -28,6 +33,10 @@ public class SelectFileView {
 
     /**
      * Kód vytvorený pomocou AI, zdokumentované v kapitole 4.
+     * Displays file names for user to choose from.
+     *
+     * @param fileNames list of file names to choose from.
+     * @param onSelected Consumer functional interface to provide action listener for select button from presenter.
      * */
     public void setFiles(List<String> fileNames, Consumer<String> onSelected) {
         for (String name : fileNames) {

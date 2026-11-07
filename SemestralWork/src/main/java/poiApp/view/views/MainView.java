@@ -9,6 +9,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.function.Consumer;
 
+/**
+ * Class represents the main view of the application displaying top bar with action buttons and scrollable mainbar with list of PoiDtos.
+ *
+ * @author Juraj Nižnanský
+ * */
 public class MainView {
     private final JPanel view = new JPanel(new BorderLayout());
     private JPanel mainbar, topbar;
@@ -63,6 +68,13 @@ public class MainView {
 
         this.mainbar.add(scrollPane);
     }
+    /**
+     * Displays current PoiDtos in mainbar after action is performed in presenter.
+     *
+     * @param pois list of PoiDtos to be displayed.
+     * @param onDeleteBtn Consumer functional interface to provide action listener for delete button from presenter.
+     * @param onEditBtn Consumer functional interface to provide action listener for edit button from presenter.
+     * */
     public void setPois(List<PoiDto> pois, Consumer<PoiDto> onDeleteBtn, Consumer<PoiDto> onEditBtn) {
         this.poiPanel.removeAll();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");

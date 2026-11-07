@@ -3,6 +3,11 @@ package poiApp.view.dialogs;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Dialog that asks user how many elements and in which area to be generated.
+ *
+ * @author Juraj Nižnanský
+ * */
 public class GenerateDialog extends FormDialog {
     private final JTextField countField = new JTextField(10);
     private final JTextField minLatField = new JTextField(10);
