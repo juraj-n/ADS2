@@ -44,7 +44,7 @@ public class PoiMiscMethods {
      * @return List<String> of CSV file names inside data/S1T3 folder.
      * */
     public List<String> listCsvFiles() {
-        File folder = new File("data/S1T3");
+        File folder = new File("saved_pois/");
         String[] names = folder.list((dir, name) -> name.endsWith(".csv"));
 
         return names == null ? List.of() : Arrays.asList(names);
@@ -58,7 +58,7 @@ public class PoiMiscMethods {
     public void loadFileToModel(String fileName, PoiModel model) {
         if (fileName != null) {
             // id;name;description;lat;lon;address;created_at;updated_at
-            try (BufferedReader br = new BufferedReader(new FileReader("data/S1T3/" + fileName))) {
+            try (BufferedReader br = new BufferedReader(new FileReader("saved_pois/" + fileName))) {
                 String line;
                 br.readLine(); // Skips header
                 while ((line = br.readLine()) != null) {
