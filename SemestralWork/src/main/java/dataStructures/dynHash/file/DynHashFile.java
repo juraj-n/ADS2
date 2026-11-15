@@ -7,6 +7,7 @@ import dataStructures.dynHash.indexTrie.InternalNode;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class DynHashFile<T extends Record<T>> {
 
             block.print();
 
-            System.out.println("_________________");
+            System.out.println("________________");
         }
     }
     public boolean insert(T record) {
@@ -67,7 +68,7 @@ public class DynHashFile<T extends Record<T>> {
             return true;
         }
         // Block is not full
-        else if (external.getCount() < this._blockFactor) {
+        if (external.getCount() < this._blockFactor) {
             Block<T> block = this.readBlock(external.getBlockIndex());
             block.addRecords(List.of(record));
 
@@ -76,9 +77,48 @@ public class DynHashFile<T extends Record<T>> {
 
             return true;
         }
+        // Block is full
+        List<T> allRecords = new ArrayList<>(this.readBlock(external.getBlockIndex()).getRecords());
+        allRecords.add(record);
 
+        int oldBlockIndex = external.getBlockIndex();
+        ExternalNode<T> currentToRedistribute = external;
 
-        return false;
+        while (true) {
+            InternalNode<T> newInternal = this.externalToInternal(currentToRedistribute);
+            ExternalNode<T> leftSon = (ExternalNode<T>) newInternal.getLeftSon();
+            ExternalNode<T> rightSon = (ExternalNode<T>) newInternal.getRightSon();
+
+            List<T> leftRecords = new ArrayList<>();
+            List<T> rightRecords = new ArrayList<>();
+            for (T rec : allRecords) {
+                if (rec.getHash().get(depth))
+                    rightRecords.add(rec);
+                else
+                    leftRecords.add(rec);
+            }
+
+            depth++; // Adding depth for possible next iteration
+            if (leftRecords.isEmpty()) { // Each record went right
+                currentToRedistribute = rightSon;
+                continue;
+            }
+            if (rightRecords.isEmpty()) { // Each record went left
+                currentToRedistribute = leftSon;
+                continue;
+            }
+
+            leftSon.setBlockIndex(oldBlockIndex);
+            rightSon.setBlockIndex(this._blockCount++);
+
+            leftSon.setCount(leftRecords.size());
+            rightSon.setCount(rightRecords.size());
+
+            this.writeBlock(leftSon.getBlockIndex(), leftRecords);
+            this.writeBlock(rightSon.getBlockIndex(), rightRecords);
+
+            return true;
+        }
     }
 
     private void writeBlock(int index, List<T> records) {
@@ -106,5 +146,28 @@ public class DynHashFile<T extends Record<T>> {
         block.fromBytes(blockBytes);
 
         return block;
+    }
+
+    private InternalNode<T> externalToInternal(ExternalNode<T> external) {
+        InternalNode<T> internal = new InternalNode<>();
+        ExternalNode<T> leftSon = new ExternalNode<>();
+        ExternalNode<T> rightSon = new ExternalNode<>();
+
+        internal.setLeftSon(leftSon);
+        internal.setRightSon(rightSon);
+        leftSon.setParent(internal);
+        rightSon.setParent(internal);
+
+        // Replace external with new internal node
+        InternalNode<T> parent = external.getParent();
+        if (parent == null) {
+            this._root = internal;
+        } else if (parent.getLeftSon() == external) {
+            parent.setLeftSon(internal);
+        } else {
+            parent.setRightSon(internal);
+        }
+
+        return internal;
     }
 }
