@@ -2,8 +2,8 @@ package s1RandTest;
 
 import s1RandTest.adapter.myAdapter.KDTreeAdapter;
 import s1RandTest.adapter.TreeAdapter;
-import s1RandTest.misc.TestConstants;
-import s1RandTest.misc.TestItem;
+import misc.TestConstants;
+import misc.TestItem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

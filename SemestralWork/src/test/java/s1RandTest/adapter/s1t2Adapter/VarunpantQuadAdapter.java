@@ -2,7 +2,7 @@ package s1RandTest.adapter.s1t2Adapter;
 
 import com.github.varunpant.quadtree.QuadTree;
 import s1RandTest.adapter.TreeAdapter;
-import s1RandTest.misc.TestConstants;
+import misc.TestConstants;
 
 import java.util.LinkedList;
 import java.util.List;

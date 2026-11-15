@@ -1,4 +1,4 @@
-package dataStructures.dynHash.test;
+package misc;
 
 import dataStructures.dynHash.file.Record;
 
@@ -66,3 +66,4 @@ public class TestRecord implements Record<TestRecord> {
         System.out.println("ID: " + this.id + ", Name: " + this.name);
     }
 }
+

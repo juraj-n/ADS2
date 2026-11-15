@@ -1,4 +1,4 @@
-package s1RandTest.misc;
+package misc;
 
 public class TestItem {
     public final double[] keys;

@@ -2,8 +2,8 @@ package s1RandTest.adapter.myAdapter;
 
 import dataStructures.tree.quadTree.QuadTree;
 import s1RandTest.adapter.TreeAdapter;
-import s1RandTest.misc.TestConstants;
-import s1RandTest.misc.TestDouble;
+import misc.TestConstants;
+import misc.TestDouble;
 
 import java.util.List;
 
