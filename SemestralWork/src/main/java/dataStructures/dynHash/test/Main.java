@@ -6,7 +6,7 @@ public class Main {
     public static void main(String[] args) {
         TestRecord tr = new TestRecord();
 
-        DynHashFile<TestRecord> dynHashFile = new DynHashFile<>(2, "file.bin");
+        DynHashFile<TestRecord> dynHashFile = new DynHashFile<>(2, "file.bin", tr);
         dynHashFile.insert(tr);
 
         dynHashFile.close();
