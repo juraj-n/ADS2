@@ -1,12 +1,9 @@
-package generalRandTest;
+package s1RandTest;
 
-import generalRandTest.adapter.myAdapter.KDTreeAdapter;
-import generalRandTest.adapter.myAdapter.QuadKDTreeAdapter;
-import generalRandTest.adapter.myAdapter.QuadTreeAdapter;
-import generalRandTest.adapter.TreeAdapter;
-import generalRandTest.adapter.s1t2Adapter.*;
-import generalRandTest.misc.TestConstants;
-import generalRandTest.misc.TestItem;
+import s1RandTest.adapter.myAdapter.KDTreeAdapter;
+import s1RandTest.adapter.TreeAdapter;
+import s1RandTest.misc.TestConstants;
+import s1RandTest.misc.TestItem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

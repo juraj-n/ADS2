@@ -1,9 +1,9 @@
-package generalRandTest.adapter.myAdapter;
+package s1RandTest.adapter.myAdapter;
 
 import dataStructures.tree.kdTree.KDTree;
-import generalRandTest.adapter.TreeAdapter;
-import generalRandTest.misc.TestConstants;
-import generalRandTest.misc.TestDouble;
+import s1RandTest.adapter.TreeAdapter;
+import s1RandTest.misc.TestConstants;
+import s1RandTest.misc.TestDouble;
 
 import java.util.List;
 

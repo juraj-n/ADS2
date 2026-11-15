@@ -1,10 +1,10 @@
-package generalRandTest.adapter.s1t2Adapter;
+package s1RandTest.adapter.s1t2Adapter;
 
 import com.thegeekyasian.geoassist.kdtree.KDTree;
 import com.thegeekyasian.geoassist.kdtree.KDTreeObject;
 import com.thegeekyasian.geoassist.kdtree.geometry.BoundingBox;
 import com.thegeekyasian.geoassist.kdtree.geometry.Point;
-import generalRandTest.adapter.TreeAdapter;
+import s1RandTest.adapter.TreeAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
-package generalRandTest.adapter.s1t2Adapter;
+package s1RandTest.adapter.s1t2Adapter;
 
-import generalRandTest.adapter.TreeAdapter;
+import s1RandTest.adapter.TreeAdapter;
 import org.tinspin.index.kdtree.KDTree;
 
 import java.util.LinkedList;

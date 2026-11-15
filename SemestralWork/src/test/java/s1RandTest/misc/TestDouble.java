@@ -1,4 +1,4 @@
-package generalRandTest.misc;
+package s1RandTest.misc;
 
 import dataStructures.common.Comparable;
 import dataStructures.common.QuadKey;

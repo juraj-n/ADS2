@@ -1,8 +1,8 @@
-package generalRandTest.adapter.s1t2Adapter;
+package s1RandTest.adapter.s1t2Adapter;
 
 import edu.wlu.cs.levy.cg.KDTree;
-import generalRandTest.adapter.TreeAdapter;
-import generalRandTest.misc.TestConstants;
+import s1RandTest.adapter.TreeAdapter;
+import s1RandTest.misc.TestConstants;
 
 import java.util.LinkedList;
 import java.util.List;

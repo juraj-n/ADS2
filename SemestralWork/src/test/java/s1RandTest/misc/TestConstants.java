@@ -1,4 +1,4 @@
-package generalRandTest.misc;
+package s1RandTest.misc;
 
 public class TestConstants {
     public static final int DIM = 2;

@@ -1,4 +1,4 @@
-package generalRandTest.adapter;
+package s1RandTest.adapter;
 
 import java.util.List;
 

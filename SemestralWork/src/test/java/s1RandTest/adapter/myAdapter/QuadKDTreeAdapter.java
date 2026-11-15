@@ -1,21 +1,20 @@
-package generalRandTest.adapter.myAdapter;
+package s1RandTest.adapter.myAdapter;
 
-import dataStructures.tree.quadTree.QuadTree;
-import generalRandTest.adapter.TreeAdapter;
-import generalRandTest.misc.TestConstants;
-import generalRandTest.misc.TestDouble;
+import dataStructures.tree.quadKDTree.QuadKDTree;
+import s1RandTest.adapter.TreeAdapter;
+import s1RandTest.misc.TestConstants;
+import s1RandTest.misc.TestDouble;
 
 import java.util.List;
 
-public class QuadTreeAdapter<T> implements TreeAdapter<T> {
-    private final QuadTree<T> tree = new QuadTree<>(
+public class QuadKDTreeAdapter<T> implements TreeAdapter<T> {
+    private final QuadKDTree<T> tree = new QuadKDTree<>(
             new TestDouble(0),
             new TestDouble(TestConstants.WORLD_SIZE),
             new TestDouble(0),
             new TestDouble(TestConstants.WORLD_SIZE),
             TestConstants.Q_DEPTH
     );
-
     @Override
     public boolean insert(double[] keys, T value) {
         TestDouble xKey = new TestDouble(keys[0]);
