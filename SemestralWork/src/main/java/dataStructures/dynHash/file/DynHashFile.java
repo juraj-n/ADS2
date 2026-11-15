@@ -47,6 +47,7 @@ public class DynHashFile<T extends Record<T>> {
             System.out.println("________________");
         }
     }
+
     public boolean insert(T record) {
         BitSet hash = record.getHash();
 
@@ -119,6 +120,31 @@ public class DynHashFile<T extends Record<T>> {
 
             return true;
         }
+    }
+    public T find(T key) {
+        BitSet hash = key.getHash();
+
+        IndexNode<T> current = this._root;
+        int depth = 0;
+
+        while (current instanceof InternalNode<T> internal) {
+            current = hash.get(depth) ? internal.getRightSon() : internal.getLeftSon();
+            depth++;
+        }
+        ExternalNode<T> external = (ExternalNode<T>) current;
+
+        if (external.getBlockIndex() == -1) {
+            return null;
+        }
+
+        Block<T> block = this.readBlock(external.getBlockIndex());
+        for (T rec : block.getRecords()) {
+            if (rec.isEqualTo(key)) {
+                return rec;
+            }
+        }
+
+        return null;
     }
 
     private void writeBlock(int index, List<T> records) {

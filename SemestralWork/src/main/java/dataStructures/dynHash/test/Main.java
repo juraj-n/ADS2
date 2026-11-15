@@ -41,6 +41,10 @@ public class Main {
         dynHashFile.insert(tr5);
         dynHashFile.printFile();
 
+        System.out.println("FOUND: ");
+        TestRecord found = dynHashFile.find(tr3);
+        found.print();
+
         dynHashFile.close();
     }
 }
