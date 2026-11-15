@@ -9,4 +9,5 @@ public interface Record<T> {
     byte[] toBytes();
     void fromBytes(byte[] bytes);
     T createClass();
+    void print();
 }

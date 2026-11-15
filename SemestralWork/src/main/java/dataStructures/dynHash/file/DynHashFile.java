@@ -36,6 +36,16 @@ public class DynHashFile<T extends Record<T>> {
             System.out.println(ioex.getMessage());
         }
     }
+    public void printFile() {
+        for (int i = 0; i < this._blockCount; i++) {
+            Block<T> block = this.readBlock(i);
+            System.out.println("Block [" + i + "] (" + block.getValidCount() + "/" + this._blockFactor + ")");
+
+            block.print();
+
+            System.out.println("_________________");
+        }
+    }
     public boolean insert(T record) {
         BitSet hash = record.getHash();
 
@@ -58,7 +68,13 @@ public class DynHashFile<T extends Record<T>> {
         }
         // Block is not full
         else if (external.getCount() < this._blockFactor) {
+            Block<T> block = this.readBlock(external.getBlockIndex());
+            block.addRecords(List.of(record));
 
+            this.writeBlock(external.getBlockIndex(), block.getRecords());
+            external.addCount();
+
+            return true;
         }
 
 
@@ -76,5 +92,19 @@ public class DynHashFile<T extends Record<T>> {
         } catch (IOException ioex) {
             throw new IllegalStateException("Error writing block to file. ", ioex);
         }
+    }
+    private Block<T> readBlock(int index) {
+        Block<T> block = new Block<>(this._blockFactor, this._prototype);
+
+        byte[] blockBytes = new byte[block.getSize()];
+        try {
+            this._file.seek((long) index * block.getSize());
+            this._file.readFully(blockBytes);
+        } catch (IOException ioex) {
+            throw new IllegalStateException("Error reading block from file. ", ioex);
+        }
+        block.fromBytes(blockBytes);
+
+        return block;
     }
 }

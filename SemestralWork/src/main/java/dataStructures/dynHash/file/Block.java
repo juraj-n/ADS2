@@ -20,8 +20,11 @@ public class Block<T extends Record<T>> {
         }
     }
 
+    public int getValidCount() {
+        return this._validCount;
+    }
     public List<T> getRecords() {
-        return this._records;
+        return this._records.subList(0, this._validCount);
     }
     public void addRecords(List<T> records) {
         if ((records.size() + this._validCount) > this._blockFactor)
@@ -66,5 +69,16 @@ public class Block<T extends Record<T>> {
     }
     public int getSize() {
         return Integer.BYTES + this._prototype.getSize() * this._blockFactor;
+    }
+
+    public void print() {
+        for (int i = 0; i < this._records.size(); i++) {
+            System.out.print("  [Record " + i + "] - ");
+            if (i < this._validCount) {
+                this._records.get(i).print();
+            } else {
+                System.out.println("(empty)");
+            }
+        }
     }
 }
