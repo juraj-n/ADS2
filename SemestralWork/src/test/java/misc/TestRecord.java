@@ -16,7 +16,7 @@ public class TestRecord implements Record<TestRecord> {
 
     @Override
     public boolean isEqualTo(TestRecord other) {
-        return this.id == other.id;
+        return this.id == other.id && this.name.equals(other.name);
     }
     @Override
     public int getSize() {

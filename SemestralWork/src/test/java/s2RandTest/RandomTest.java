@@ -10,10 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class RandomTest {
     private final long seed = System.nanoTime();
     private final Random generator = new Random(this.seed);
-    private final DynHashFile<TestRecord> dynHashFile = new DynHashFile<>(3, "file.bin", new TestRecord());
+    private final DynHashFile<TestRecord> dynHashFile = new DynHashFile<>(TestConstants.BLOCK_FACTOR, "file.bin", new TestRecord());
 
     @BeforeEach
     public void consolePrint() {
@@ -39,23 +42,46 @@ public class RandomTest {
                 this.findRandomKeys(this.dynHashFile, inserted);
             }
         }
+
+        System.out.println("[INSERTED] " + insertCount);
+        System.out.println("[  FIND  ] " + findCount);
+    }
+    @Test
+    public void testContainsExpected() {
+        List<TestRecord> inserted = new ArrayList<>(TestConstants.NUMBER_OF_OPERATIONS);
+        for (int i = 0; i < TestConstants.NUMBER_OF_OPERATIONS; i++) {
+            insertRandomKeys(this.dynHashFile, inserted);
+        }
+
+        List<TestRecord> found = new ArrayList<>(TestConstants.NUMBER_OF_OPERATIONS);
+        for (int i = 0; i < TestConstants.NUMBER_OF_OPERATIONS; i++) {
+            TestRecord expected = inserted.get(i);
+            TestRecord foundRecord = this.dynHashFile.find(expected);
+            found.add(foundRecord);
+
+            assertTrue(foundRecord.isEqualTo(expected), "Found record isn't equal to expected!");
+        }
+
+        assertEquals(inserted.size(), found.size(), "Expected size does not match found size!");
     }
 
     private void insertRandomKeys(DynHashFile<TestRecord> file, List<TestRecord> inserted) {
-        int id = generator.nextInt();
         TestRecord tr = new TestRecord();
-        tr.id = id;
-        tr.name = "random name" + generator.nextInt();
+        tr.id = generator.nextInt();
+        tr.name = "" + generator.nextInt();
 
         if (file.insert(tr))
             inserted.add(tr);
     }
     private void findRandomKeys(DynHashFile<TestRecord> file, List<TestRecord> inserted) {
-        if (inserted.size() > 0) {
-            TestRecord random = inserted.get(generator.nextInt(inserted.size()));
-            file.find(random);
+        if (!inserted.isEmpty()) {
+            TestRecord expected = inserted.get(generator.nextInt(inserted.size()));
 
-            // TODO: finish tests
+            //this.dynHashFile.printFile();
+
+            TestRecord found = file.find(expected);
+
+            assertTrue(found.isEqualTo(expected), "Found does not match expected!");
         }
     }
 }
